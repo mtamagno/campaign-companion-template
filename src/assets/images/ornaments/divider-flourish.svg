@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+  <!-- Left line with terminal dot -->
+  <line x1="10" y1="20" x2="160" y2="20" />
+  <circle cx="6" cy="20" r="2" fill="currentColor" stroke="none" />
+  <!-- Left curl -->
+  <path d="M160 20 q 8 -10 16 0 q 8 10 16 0" />
+  <!-- Central diamond -->
+  <path d="M200 8 L212 20 L200 32 L188 20 Z" />
+  <circle cx="200" cy="20" r="2" fill="currentColor" stroke="none" />
+  <!-- Right curl (mirror) -->
+  <path d="M208 20 q 8 -10 16 0 q 8 10 16 0" />
+  <!-- Right line with terminal dot -->
+  <line x1="240" y1="20" x2="390" y2="20" />
+  <circle cx="394" cy="20" r="2" fill="currentColor" stroke="none" />
+</svg>

@@ -1,0 +1,99 @@
+// ============================================
+// Shared narrative empty state
+// ============================================
+
+@use 'variables' as *;
+
+.empty-state {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  min-height: 280px;
+  padding: $spacing-2xl $spacing-lg;
+  overflow: hidden;
+  text-align: center;
+  border: $border-width-thin solid $color-border-default;
+  border-radius: $border-radius-lg;
+  background:
+    radial-gradient(circle at 50% 0%, var(--campaign-glow, rgba(201, 166, 52, 0.09)), transparent 55%),
+    linear-gradient(145deg, rgba($color-bg-elevated, 0.9), rgba($color-bg-deep, 0.94));
+  box-shadow: $shadow-md, $shadow-inner;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 220px;
+    height: 1px;
+    top: $spacing-xl;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--campaign-accent, #{$color-gold-dark}),
+      transparent
+    );
+    opacity: 0.65;
+  }
+
+  &::after {
+    top: auto;
+    bottom: $spacing-xl;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: $spacing-xs;
+    font-size: $font-size-2xl;
+    border: $border-width-thin solid var(--campaign-accent, #{$color-gold-dark});
+    border-radius: 50%;
+    color: var(--campaign-accent-light, #{$color-gold-light});
+    background: rgba($color-bg-void, 0.35);
+    box-shadow: 0 0 22px var(--campaign-glow, rgba(201, 166, 52, 0.16));
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    color: var(--campaign-accent-light, #{$color-gold-light});
+  }
+
+  &__text {
+    max-width: 520px;
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: $font-size-md;
+    line-height: $line-height-base;
+  }
+}
+
+@media (max-width: 767px) {
+  .empty-state {
+    min-height: 240px;
+    padding: $spacing-xl $spacing-md;
+
+    &::before,
+    &::after {
+      width: 140px;
+    }
+
+    &__icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    &__title {
+      font-size: $font-size-lg;
+    }
+
+    &__text {
+      font-size: $font-size-base;
+    }
+  }
+}

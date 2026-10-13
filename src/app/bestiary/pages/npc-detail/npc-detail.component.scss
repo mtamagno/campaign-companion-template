@@ -1,0 +1,226 @@
+// ============================================
+// 🐉 npc-detail.component.scss
+// Full NPC page: header with status badges, profile grid, gallery.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.npc-detail {
+  @include flex-column;
+  gap: $spacing-2xl;
+  animation: fade-in-up $transition-base;
+
+  // --- Header ---
+  &__header {
+    @include flex-column;
+    gap: $spacing-sm;
+  }
+
+  // --- Hero banner: profile + info + full-body portrait ---
+  &__hero {
+    display: flex;
+    gap: $spacing-xl;
+    align-items: stretch;
+    @include surface-card;
+    padding: $spacing-lg;
+
+    @include respond-below(md) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  &__portrait-frame {
+    flex-shrink: 0;
+    width: 350px;
+    border: $border-width-default solid $color-border-accent;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    box-shadow: $shadow-glow-gold;
+    @include image-loading-container;
+
+    @include respond-below(md) {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  &__portrait {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include image-loading-target;
+  }
+
+  &__header-info {
+    @include flex-column;
+    justify-content: center;
+    gap: $spacing-sm;
+    flex: 1;
+    padding: $spacing-md 0;
+  }
+
+  // --- Full-body portrait (right side, desktop only) ---
+  &__fullbody-frame {
+    flex-shrink: 0;
+    width: 250px;
+    border: $border-width-default solid $color-border-accent;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    box-shadow: $shadow-glow-gold;
+    @include image-loading-container;
+
+    @include respond-below(md) {
+      display: none;
+    }
+  }
+
+  &__fullbody {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include image-loading-target;
+  }
+
+  &__name {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+
+    @include respond-below(md) {
+      font-size: $font-size-2xl;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-style: italic;
+    margin: 0;
+  }
+
+  // --- Status badges ---
+  &__status-badges {
+    display: flex;
+    gap: $spacing-sm;
+    margin-top: $spacing-xs;
+
+    @include respond-below(md) {
+      justify-content: center;
+    }
+  }
+
+  &__badge {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    border: $border-width-thin solid;
+
+    &--ally {
+      color: $color-success;
+      border-color: $color-success;
+      background-color: rgba($color-success, 0.1);
+    }
+
+    &--enemy {
+      color: $color-danger;
+      border-color: $color-danger;
+      background-color: rgba($color-danger, 0.1);
+    }
+
+    &--neutral {
+      color: $color-warning;
+      border-color: $color-warning;
+      background-color: rgba($color-warning, 0.1);
+    }
+
+    &--alive {
+      color: $color-success;
+      border-color: $color-success;
+      background-color: rgba($color-success, 0.1);
+    }
+
+    &--dead {
+      color: $color-text-muted;
+      border-color: $color-border-subtle;
+      background-color: rgba($color-text-muted, 0.1);
+    }
+  }
+
+  // --- Section containers ---
+  &__section {
+    @include surface-card;
+    padding: $spacing-xl;
+  }
+
+  &__section-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0 0 $spacing-lg;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  // --- Profile grid ---
+  &__profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  &__profile-item {
+    @include flex-column;
+    gap: $spacing-xs;
+
+    h3 {
+      font-family: $font-family-heading;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-gold;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    p {
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      line-height: $line-height-relaxed;
+      margin: 0;
+    }
+
+    // Full-width item spanning all columns
+    &--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  // --- Loading / not found states ---
+  &__loading,
+  &__not-found {
+    @include flex-center;
+    @include flex-column;
+    min-height: 300px;
+    color: $color-text-muted;
+    text-align: center;
+  }
+}

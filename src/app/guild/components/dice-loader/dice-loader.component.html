@@ -1,0 +1,13 @@
+<div class="dice-loader">
+  <img
+    class="dice-loader__icon"
+    src="/assets/images/ornaments/dice-d20.svg"
+    alt=""
+    aria-hidden="true"
+    [style.width.px]="size()"
+    [style.height.px]="size()"
+  />
+  @if (label()) {
+    <p class="dice-loader__label">{{ label() }}</p>
+  }
+</div>

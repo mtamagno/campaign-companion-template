@@ -1,0 +1,130 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  position: sticky;
+  top: $spacing-sm;
+  z-index: 5;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.sheet-navigation {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm;
+  width: 100%;
+  overflow-x: auto;
+  background: rgba($color-bg-deep, 0.94);
+  border: $border-width-thin solid $color-border-default;
+  border-radius: $border-radius-pill;
+  box-shadow: $shadow-md;
+  backdrop-filter: blur(12px);
+
+  > span {
+    flex: 0 0 auto;
+    padding: 0 $spacing-sm;
+    color: $color-text-muted;
+    font-family: $font-family-heading;
+    font-size: 0.62rem;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+  }
+
+  > button {
+    flex: 0 0 auto;
+    padding: $spacing-xs $spacing-md;
+    color: $color-text-secondary;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    cursor: pointer;
+    background: transparent;
+    border: $border-width-thin solid transparent;
+    border-radius: $border-radius-pill;
+    transition:
+      color $transition-fast,
+      background $transition-fast,
+      border-color $transition-fast;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-gold-light;
+      background: rgba($color-gold, 0.1);
+      border-color: rgba($color-gold, 0.35);
+      outline: none;
+    }
+  }
+
+  &__archive {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    padding: $spacing-md $spacing-lg;
+    color: $color-text-secondary;
+    background: linear-gradient(90deg, rgba($color-gold, 0.12), rgba($color-bg-elevated, 0.8));
+    border: $border-width-thin solid rgba($color-gold, 0.4);
+    border-radius: $border-radius-md;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-2xs;
+    }
+
+    strong {
+      color: $color-gold-light;
+      font-family: $font-family-heading;
+    }
+
+    span {
+      font-size: $font-size-sm;
+    }
+
+    button {
+      flex: 0 0 auto;
+      padding: $spacing-sm $spacing-md;
+      color: $color-bg-deep;
+      font-family: $font-family-heading;
+      font-weight: $font-weight-bold;
+      cursor: pointer;
+      background: $color-gold-light;
+      border: 0;
+      border-radius: $border-radius-sm;
+
+      &:hover,
+      &:focus-visible {
+        background: $color-parchment-light;
+        outline: 2px solid $color-gold-light;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  @include respond-below(sm) {
+    margin-right: (-$spacing-xs);
+    margin-left: (-$spacing-xs);
+    border-radius: $border-radius-md;
+
+    > span {
+      display: none;
+    }
+
+    &__archive {
+      align-items: stretch;
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@include respond-below(sm) {
+  :host {
+    top: $spacing-xs;
+  }
+}

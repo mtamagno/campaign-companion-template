@@ -1,0 +1,154 @@
+// ============================================
+// ✨ _spell-meta.scss
+// Spell metadata panel — used in the entry-detail page for spell entries.
+// Applied globally to reduce the entry-detail component style budget.
+// ============================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.spell-meta {
+  @include surface-elevated;
+  padding: $spacing-lg;
+  @include flex-column;
+  gap: $spacing-md;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__level-badge {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-bg-deep;
+    background-color: $color-gold;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__school-badge {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-accent;
+    background-color: $color-bg-base;
+    border: $border-width-thin solid $color-border-accent;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__tag {
+    font-family: $font-family-body;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-pill;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wider;
+
+    &--ritual {
+      color: $color-info-light;
+      background-color: rgba($color-info, 0.2);
+      border: $border-width-thin solid $color-info;
+    }
+
+    &--concentration {
+      color: $color-warning-light;
+      background-color: rgba($color-warning, 0.2);
+      border: $border-width-thin solid $color-warning;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+    margin: 0;
+
+    @include respond-to(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__field {
+    @include flex-column;
+    gap: $spacing-2xs;
+  }
+
+  &__label {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wider;
+    margin: 0;
+  }
+
+  &__value {
+    font-family: $font-family-body;
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: $line-height-base;
+    margin: 0;
+  }
+
+  &__lists,
+  &__classes {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__lists-label,
+  &__classes-label {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wider;
+  }
+
+  &__list-tag {
+    font-family: $font-family-body;
+    font-size: $font-size-sm;
+    color: $color-parchment;
+    background-color: $color-bg-base;
+    border: $border-width-thin solid $color-border-default;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-sm;
+  }
+
+  &__class-link {
+    font-family: $font-family-body;
+    font-size: $font-size-sm;
+    color: $color-text-link;
+    background-color: $color-bg-base;
+    border: $border-width-thin solid $color-border-subtle;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    text-decoration: none;
+    @include transition-colors;
+
+    &:hover {
+      color: $color-text-link-hover;
+      border-color: $color-border-accent;
+      background-color: $color-bg-elevated;
+    }
+
+    &:focus-visible {
+      outline: $border-width-default solid $color-gold-dark;
+      outline-offset: $spacing-2xs;
+      border-radius: $border-radius-sm;
+    }
+  }
+}

@@ -1,0 +1,105 @@
+<section class="sheet-history" aria-labelledby="sheet-history-title">
+  <div class="sheet-history__heading">
+    <div>
+      <span>{{ isItalian() ? 'Cronaca della crescita' : 'Chronicle of growth' }}</span>
+      <h3 id="sheet-history-title">
+        {{ isItalian() ? 'Evoluzione della scheda' : 'Character progression' }}
+      </h3>
+    </div>
+    <p>
+      {{
+        isItalian()
+          ? 'Ogni livello resta consultabile come una pagina del viaggio.'
+          : 'Every level remains available as a page of the journey.'
+      }}
+    </p>
+  </div>
+
+  <div class="sheet-history__summary" aria-live="polite">
+    <span>
+      <strong>{{ snapshots().length }}</strong>
+      {{
+        isItalian()
+          ? snapshots().length === 1
+            ? 'capitolo'
+            : 'capitoli'
+          : snapshots().length === 1
+            ? 'chapter'
+            : 'chapters'
+      }}
+    </span>
+    <span>
+      {{ isItalian() ? 'Livelli registrati' : 'Recorded levels' }}
+      <strong>{{ levelRange() }}</strong>
+    </span>
+    <span class="sheet-history__summary-status" [class.is-archive]="!isCurrentSelection()">
+      {{
+        isCurrentSelection()
+          ? isItalian()
+            ? 'Capitolo attuale'
+            : 'Current chapter'
+          : isItalian()
+            ? 'Memoria d’archivio'
+            : 'Archived memory'
+      }}
+    </span>
+  </div>
+
+  <div
+    class="sheet-history__timeline"
+    [class.sheet-history__timeline--single]="snapshots().length === 1"
+    role="list"
+    aria-label="Character sheet levels"
+  >
+    @for (snapshot of snapshots(); track snapshot.sheet.level) {
+      <button
+        type="button"
+        role="listitem"
+        class="sheet-history__level"
+        [class.sheet-history__level--active]="snapshot.sheet.level === selectedLevel()"
+        [attr.aria-pressed]="snapshot.sheet.level === selectedLevel()"
+        (click)="selectLevel(snapshot.sheet.level)"
+      >
+        <span>{{ isItalian() ? 'Livello' : 'Level' }}</span>
+        <strong>{{ snapshot.sheet.level }}</strong>
+        @if (snapshot.sheet.level === currentLevel()) {
+          <small>{{ isItalian() ? 'Attuale' : 'Current' }}</small>
+        } @else {
+          <small>{{ isItalian() ? 'Archivio' : 'Archive' }}</small>
+        }
+      </button>
+    }
+  </div>
+
+  @if (selectedSnapshot()?.title; as title) {
+    <p class="sheet-history__chapter-title">
+      {{ isItalian() ? title.it : title.en }}
+    </p>
+  }
+
+  @if (changes().length > 0) {
+    <div class="sheet-history__changes" aria-label="Changes from previous level">
+      <span>{{ isItalian() ? 'Dal livello precedente' : 'Since the previous level' }}</span>
+      <ul>
+        @for (change of changes(); track change.label) {
+          <li [attr.title]="change.detail ?? null">
+            <span
+              ><strong>{{ change.value }}</strong> {{ change.label }}</span
+            >
+            @if (change.detail) {
+              <small>{{ change.detail }}</small>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  } @else {
+    <p class="sheet-history__origin">
+      {{
+        isItalian()
+          ? 'Questo è il primo capitolo registrato della sua avventura.'
+          : 'This is the first recorded chapter of the adventure.'
+      }}
+    </p>
+  }
+</section>

@@ -1,0 +1,452 @@
+<!-- Character Sheet — password-protected, game-ready fantasy RPG overview -->
+<div class="character-sheet">
+  <header class="character-sheet__header">
+    <div>
+      <span class="character-sheet__eyebrow">
+        {{ isItalian() ? 'Dossier dell’avventuriero' : 'Adventurer dossier' }}
+      </span>
+      <h2 class="character-sheet__title">
+        {{ isItalian() ? 'Scheda personaggio' : 'Character sheet' }}
+      </h2>
+    </div>
+    @if (isUnlocked() && !isSheetEmpty()) {
+      <button
+        class="character-sheet__pdf-button"
+        type="button"
+        [disabled]="isGeneratingPdf()"
+        (click)="downloadPdf()"
+        [attr.aria-label]="
+          isItalian()
+            ? 'Scarica la scheda personaggio in PDF'
+            : 'Download the character sheet as a PDF'
+        "
+      >
+        @if (isGeneratingPdf()) {
+          <span class="character-sheet__pdf-spinner" aria-hidden="true"></span>
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" />
+          </svg>
+        }
+        <span>
+          {{
+            isGeneratingPdf()
+              ? isItalian()
+                ? 'Preparazione…'
+                : 'Preparing…'
+              : isItalian()
+                ? 'Scarica PDF'
+                : 'Download PDF'
+          }}
+        </span>
+        <small>A4</small>
+      </button>
+    }
+  </header>
+
+  @if (pdfError()) {
+    <p class="character-sheet__pdf-error" role="alert">
+      {{
+        isItalian()
+          ? 'Non è stato possibile creare il PDF. Riprova tra qualche istante.'
+          : 'The PDF could not be created. Please try again in a moment.'
+      }}
+    </p>
+  }
+
+  @if (isUnlocked()) {
+    @if (isSheetEmpty()) {
+      <div class="character-sheet__empty">
+        <span class="character-sheet__empty-icon" aria-hidden="true">📜</span>
+        <p class="character-sheet__empty-title">
+          {{ isItalian() ? 'Scheda ancora da compilare' : 'Character sheet not yet compiled' }}
+        </p>
+        <p class="character-sheet__empty-text">
+          {{
+            isItalian()
+              ? 'L’avventura è appena iniziata: la storia di questo eroe deve ancora essere scritta.'
+              : 'The adventure has just begun — this hero’s tale is still being written.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <div class="character-sheet__content">
+        <app-character-sheet-history
+          [snapshots]="sheetSnapshots()"
+          [selectedLevel]="sheet().level"
+          [currentLevel]="currentSheet().level"
+          [isItalian]="isItalian()"
+          (levelSelected)="selectSheetLevel($event)"
+        />
+
+        <app-character-sheet-navigation
+          [characterId]="characterId()"
+          [isItalian]="isItalian()"
+          [hasEquipment]="sheet().equipment.length > 0"
+          [hasSpells]="spellGroups().length > 0"
+          [selectedLevel]="sheet().level"
+          [currentLevel]="currentSheet().level"
+          (currentRequested)="showCurrentSheet()"
+          (sectionRequested)="scrollToSection($event)"
+        />
+
+        <section
+          class="character-sheet__identity"
+          [id]="'character-sheet-overview-' + characterId()"
+          [style.scroll-margin-top.px]="84"
+          aria-label="Character overview"
+        >
+          <div class="character-sheet__identity-copy">
+            <span class="character-sheet__level-seal">
+              <small>{{ isItalian() ? 'Livello' : 'Level' }}</small>
+              <strong>{{ sheet().level }}</strong>
+            </span>
+            <div>
+              <p class="character-sheet__classline">
+                {{ sheet().race }} · {{ sheet().classType }}
+                @if (sheet().subclass) {
+                  <span>— {{ sheet().subclass }}</span>
+                }
+              </p>
+              <p class="character-sheet__identity-meta">
+                {{ sheet().background }} · {{ sheet().alignment }}
+              </p>
+            </div>
+          </div>
+          <div class="character-sheet__xp">
+            <span>XP</span>
+            <strong>{{ sheet().experiencePoints }}</strong>
+          </div>
+        </section>
+
+        <section class="character-sheet__dashboard" aria-label="Combat essentials">
+          <div class="character-sheet__vital character-sheet__vital--hp">
+            <span class="character-sheet__vital-icon" aria-hidden="true">♥</span>
+            <span class="character-sheet__vital-label">HP</span>
+            <strong
+              >{{ sheet().hitPoints }}<small>/{{ sheet().maxHitPoints }}</small></strong
+            >
+          </div>
+          <div class="character-sheet__vital">
+            <span class="character-sheet__vital-icon" aria-hidden="true">◇</span>
+            <span class="character-sheet__vital-label">AC</span>
+            <strong>{{ sheet().armorClass }}</strong>
+          </div>
+          <div class="character-sheet__vital">
+            <span class="character-sheet__vital-icon" aria-hidden="true">➜</span>
+            <span class="character-sheet__vital-label">
+              {{ isItalian() ? 'Velocità' : 'Speed' }}
+            </span>
+            <strong>{{ sheet().speed }}<small>ft</small></strong>
+          </div>
+          <div class="character-sheet__vital">
+            <span class="character-sheet__vital-icon" aria-hidden="true">⚡</span>
+            <span class="character-sheet__vital-label">
+              {{ isItalian() ? 'Iniziativa' : 'Initiative' }}
+            </span>
+            <strong>{{ initiativeModifier() }}</strong>
+          </div>
+          <div class="character-sheet__vital">
+            <span class="character-sheet__vital-icon" aria-hidden="true">◉</span>
+            <span class="character-sheet__vital-label">
+              {{ isItalian() ? 'Percezione passiva' : 'Passive Perception' }}
+            </span>
+            <strong>{{ passivePerception() }}</strong>
+          </div>
+          <div class="character-sheet__vital">
+            <span class="character-sheet__vital-icon" aria-hidden="true">✦</span>
+            <span class="character-sheet__vital-label">
+              {{ isItalian() ? 'Competenza' : 'Proficiency' }}
+            </span>
+            <strong>+{{ sheet().proficiencyBonus }}</strong>
+          </div>
+
+          @if (currencyEntries().length > 0) {
+            <div class="character-sheet__purse">
+              <div class="character-sheet__purse-heading">
+                <span aria-hidden="true">◎</span>
+                <span>{{ isItalian() ? 'Borsa' : 'Coin purse' }}</span>
+              </div>
+              <div class="character-sheet__coins">
+                @for (coin of currencyEntries(); track coin.code) {
+                  <div class="character-sheet__coin" [attr.title]="coin.label">
+                    <strong>{{ coin.value }}</strong>
+                    <span>{{ coin.code }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </section>
+
+        <section
+          class="character-sheet__panel character-sheet__abilities"
+          [id]="'character-sheet-abilities-' + characterId()"
+          [style.scroll-margin-top.px]="84"
+        >
+          <div class="character-sheet__section-heading">
+            <div>
+              <span>{{ isItalian() ? 'Fondamenta' : 'Core' }}</span>
+              <h3>{{ isItalian() ? 'Caratteristiche' : 'Ability scores' }}</h3>
+            </div>
+          </div>
+          <div class="character-sheet__ability-grid">
+            @for (ability of abilityScoreEntries(); track ability.name) {
+              <div class="character-sheet__ability">
+                <span class="character-sheet__ability-name">{{ ability.name }}</span>
+                <span class="character-sheet__ability-mod">{{ ability.modifier }}</span>
+                <span class="character-sheet__ability-score">{{ ability.value }}</span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <div
+          class="character-sheet__columns"
+          [id]="'character-sheet-training-' + characterId()"
+          [style.scroll-margin-top.px]="84"
+        >
+          <section class="character-sheet__panel">
+            <div class="character-sheet__section-heading">
+              <div>
+                <span>{{ isItalian() ? 'Addestramento' : 'Training' }}</span>
+                <h3>{{ isItalian() ? 'Competenze' : 'Proficiencies' }}</h3>
+              </div>
+            </div>
+
+            @if (sheet().savingThrows.length > 0) {
+              <div class="character-sheet__list-section">
+                <h4>{{ isItalian() ? 'Tiri salvezza' : 'Saving throws' }}</h4>
+                <div class="character-sheet__tags">
+                  @for (save of sheet().savingThrows; track save) {
+                    <span class="character-sheet__tag character-sheet__tag--accent">{{
+                      save
+                    }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sheet().skills.length > 0) {
+              <div class="character-sheet__list-section">
+                <h4>{{ isItalian() ? 'Abilità' : 'Skills' }}</h4>
+                <div class="character-sheet__tags">
+                  @for (skill of sheet().skills; track skill) {
+                    <span class="character-sheet__tag">{{ skill }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (sheet().languages.length > 0) {
+              <div class="character-sheet__list-section">
+                <h4>{{ isItalian() ? 'Lingue' : 'Languages' }}</h4>
+                <p class="character-sheet__prose-list">{{ sheet().languages.join(' · ') }}</p>
+              </div>
+            }
+          </section>
+
+          <section class="character-sheet__panel">
+            <div class="character-sheet__section-heading">
+              <div>
+                <span>{{ isItalian() ? 'Talenti' : 'Talents' }}</span>
+                <h3>{{ isItalian() ? 'Privilegi e tratti' : 'Features & traits' }}</h3>
+              </div>
+            </div>
+            @if (sheet().features.length > 0) {
+              <ul class="character-sheet__feature-list">
+                @for (feature of sheet().features; track feature) {
+                  <li><span aria-hidden="true">✦</span>{{ feature }}</li>
+                }
+              </ul>
+            }
+          </section>
+        </div>
+
+        @if (sheet().equipment.length > 0) {
+          <section
+            class="character-sheet__panel character-sheet__inventory"
+            [id]="'character-sheet-inventory-' + characterId()"
+            [style.scroll-margin-top.px]="84"
+          >
+            <div class="character-sheet__section-heading">
+              <div>
+                <span>{{ isItalian() ? 'Al seguito' : 'Carried gear' }}</span>
+                <h3>{{ isItalian() ? 'Inventario' : 'Inventory' }}</h3>
+              </div>
+              <span class="character-sheet__count">
+                {{ sheet().equipment.length }} {{ isItalian() ? 'voci' : 'items' }}
+              </span>
+            </div>
+            <ul class="character-sheet__inventory-grid">
+              @for (item of sheet().equipment; track item) {
+                <li><span aria-hidden="true">◆</span>{{ item }}</li>
+              }
+            </ul>
+          </section>
+        }
+
+        @if (spellGroups().length > 0) {
+          <section
+            class="character-sheet__spellbook"
+            [id]="'character-sheet-spells-' + characterId()"
+            [style.scroll-margin-top.px]="84"
+          >
+            <div class="character-sheet__spellbook-heading">
+              <div>
+                <span class="character-sheet__spellbook-kicker">
+                  {{ isItalian() ? 'Repertorio arcano' : 'Arcane repertoire' }}
+                </span>
+                <h3>{{ isItalian() ? 'Incantesimi conosciuti' : 'Known spells' }}</h3>
+                <p>
+                  {{
+                    isItalian()
+                      ? 'Apri una carta per consultare regole, componenti ed effetti completi nel Compendio.'
+                      : 'Open a card to read its complete rules, components, and effects in the Compendium.'
+                  }}
+                </p>
+              </div>
+
+              @if (spellcastingSummary(); as spellcasting) {
+                <dl class="character-sheet__casting-stats">
+                  <div>
+                    <dt>{{ isItalian() ? 'Caratteristica' : 'Ability' }}</dt>
+                    <dd>{{ spellcasting.ability }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ isItalian() ? 'CD salvezza' : 'Save DC' }}</dt>
+                    <dd>{{ spellcasting.saveDC }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ isItalian() ? 'Attacco' : 'Attack' }}</dt>
+                    <dd>{{ spellcasting.attackBonus }}</dd>
+                  </div>
+                </dl>
+              }
+            </div>
+
+            @if (sheet().spellcasting?.slots; as slots) {
+              @if (slots.length > 0) {
+                <div class="character-sheet__slots" aria-label="Spell slots">
+                  <span class="character-sheet__slots-label">
+                    {{ isItalian() ? 'Slot disponibili' : 'Available slots' }}
+                  </span>
+                  @for (slot of slots; track slot.level) {
+                    <div class="character-sheet__slot">
+                      <span>{{ isItalian() ? 'Liv.' : 'Lvl' }} {{ slot.level }}</span>
+                      <strong>{{ slot.total - (slot.used ?? 0) }} / {{ slot.total }}</strong>
+                    </div>
+                  }
+                </div>
+              }
+            }
+
+            @for (group of spellGroups(); track group.label) {
+              <div class="character-sheet__spell-level">
+                <div class="character-sheet__spell-level-heading">
+                  <h4>{{ group.label }}</h4>
+                  <span>{{ group.spells.length }}</span>
+                </div>
+                <div class="character-sheet__spell-grid">
+                  @for (spell of group.spells; track spell.originalName) {
+                    @if (spell.categoryId; as categoryId) {
+                      @if (spell.key; as spellKey) {
+                        <a
+                          class="character-sheet__spell-card"
+                          [routerLink]="['/compendium', categoryId, spellKey]"
+                          [attr.aria-label]="
+                            (isItalian() ? 'Apri la descrizione di ' : 'Open description for ') +
+                            spell.name
+                          "
+                        >
+                          <ng-container
+                            *ngTemplateOutlet="spellCard; context: { $implicit: spell }"
+                          />
+                        </a>
+                      }
+                    } @else {
+                      <div
+                        class="character-sheet__spell-card character-sheet__spell-card--unlinked"
+                      >
+                        <ng-container
+                          *ngTemplateOutlet="spellCard; context: { $implicit: spell }"
+                        />
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            }
+          </section>
+        }
+      </div>
+    }
+  } @else {
+    <div class="character-sheet__locked">
+      <span class="character-sheet__lock-icon" aria-hidden="true">📋🔒</span>
+      <p>
+        {{
+          isItalian()
+            ? 'La scheda è protetta. Inserisci la password per consultare statistiche e inventario.'
+            : 'The character sheet is protected. Enter the password to view stats and inventory.'
+        }}
+      </p>
+      <button class="character-sheet__unlock-btn" type="button" (click)="openDialog()">
+        {{ isItalian() ? 'Inserisci password' : 'Enter password' }}
+      </button>
+    </div>
+  }
+</div>
+
+<ng-template #spellCard let-spell>
+  <div class="character-sheet__spell-topline">
+    <span>{{ spell.school ?? (isItalian() ? 'Incantesimo' : 'Spell') }}</span>
+    <span class="character-sheet__spell-badges">
+      @if (spell.isConcentration) {
+        <span title="Concentration">C</span>
+      }
+      @if (spell.isRitual) {
+        <span title="Ritual">R</span>
+      }
+    </span>
+  </div>
+  <h5>{{ spell.name }}</h5>
+  @if (spell.description) {
+    <p>{{ spell.description }}</p>
+  }
+  <dl class="character-sheet__spell-meta">
+    @if (spell.castingTime) {
+      <div>
+        <dt>{{ isItalian() ? 'Lancio' : 'Cast' }}</dt>
+        <dd>{{ spell.castingTime }}</dd>
+      </div>
+    }
+    @if (spell.range) {
+      <div>
+        <dt>{{ isItalian() ? 'Gittata' : 'Range' }}</dt>
+        <dd>{{ spell.range }}</dd>
+      </div>
+    }
+    @if (spell.duration) {
+      <div>
+        <dt>{{ isItalian() ? 'Durata' : 'Duration' }}</dt>
+        <dd>{{ spell.duration }}</dd>
+      </div>
+    }
+  </dl>
+  @if (spell.key) {
+    <span class="character-sheet__spell-link">
+      {{ isItalian() ? 'Leggi la descrizione' : 'Read description' }}
+      <span aria-hidden="true">→</span>
+    </span>
+  }
+</ng-template>
+
+@if (isDialogOpen()) {
+  <app-password-dialog
+    [characterName]="characterName()"
+    [hasError]="hasPasswordError()"
+    (passwordSubmit)="onPasswordSubmit($event)"
+    (dialogClose)="closeDialog()"
+  />
+}

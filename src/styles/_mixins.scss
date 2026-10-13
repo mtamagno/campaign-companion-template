@@ -1,0 +1,354 @@
+// ============================================
+// 🔧 _mixins.scss
+// Reusable mixin library for common patterns.
+// Import with: @use '../../styles/mixins' as *;
+// ============================================
+
+@use 'variables' as *;
+
+// --- 📱 Responsive breakpoints ---
+// Usage: @include respond-to(md) { ... }
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: $breakpoint-2xl) { @content; }
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: ($breakpoint-sm - 1)) { @content; }
+  } @else if $breakpoint == md {
+    @media (max-width: ($breakpoint-md - 1)) { @content; }
+  } @else if $breakpoint == lg {
+    @media (max-width: ($breakpoint-lg - 1)) { @content; }
+  } @else if $breakpoint == xl {
+    @media (max-width: ($breakpoint-xl - 1)) { @content; }
+  }
+}
+
+// --- 📐 Flexbox shortcuts ---
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row-gap($gap: $spacing-md) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+// --- ✂️ Text utilities ---
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// --- 🎨 Parchment / Card surfaces ---
+// Used for content cards, panels, and container backgrounds.
+
+@mixin surface-card {
+  background-color: $color-bg-surface;
+  border: $border-width-thin solid $color-border-subtle;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+}
+
+@mixin surface-elevated {
+  background-color: $color-bg-elevated;
+  border: $border-width-thin solid $color-border-default;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+}
+
+@mixin surface-parchment {
+  background-color: $color-parchment;
+  color: $color-text-inverse;
+  border: $border-width-default solid $color-parchment-dark;
+  border-radius: $border-radius-sm;
+}
+
+// --- ⚔️ Fantasy ornamental borders ---
+// Golden accented borders for important sections.
+
+@mixin border-ornamental {
+  border: $border-width-default solid $color-border-accent;
+  box-shadow: $shadow-glow-gold;
+}
+
+@mixin border-ornamental-strong {
+  border: $border-width-thick solid $color-border-gold;
+  box-shadow: $shadow-glow-gold-strong;
+}
+
+// --- 🖼️ Avatar ---
+// Square avatars with ornamental border.
+
+@mixin avatar($size: $avatar-size-md) {
+  width: $size;
+  height: $size;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: $border-width-default solid $color-border-accent;
+  border-radius: $border-radius-sm;
+}
+
+// --- 🔒 Locked section overlay ---
+
+@mixin locked-overlay {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: $color-bg-overlay;
+    backdrop-filter: blur(4px);
+    border-radius: inherit;
+  }
+}
+
+// --- 📜 Scrollbar custom ---
+// Dark themed scrollbar matching the fantasy aesthetic.
+
+@mixin scrollbar-custom {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-bg-deep;
+    border-radius: $border-radius-pill;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-border-strong;
+    border-radius: $border-radius-pill;
+
+    &:hover {
+      background: $color-gold-dark;
+    }
+  }
+}
+
+// --- 🌀 Gold text glow ---
+// For headings and important text that needs emphasis.
+
+@mixin text-gold-glow {
+  color: $color-gold-light;
+  text-shadow: 0 0 8px rgba($color-gold, 0.4);
+}
+
+// --- ⏱️ Transition helpers ---
+
+@mixin transition-all($speed: $transition-base) {
+  transition: all $speed;
+}
+
+@mixin transition-colors($speed: $transition-base) {
+  transition: color $speed, background-color $speed, border-color $speed, box-shadow $speed;
+}
+
+// --- 🖼️ Image loading shimmer ---
+// Apply to a container wrapping an <img>. The container shows a shimmer
+// animation while the image loads, then fades in the image on completion.
+// Requires the image to have the `.is-loaded` class toggled via JS/Angular
+// when its `load` event fires.
+
+@mixin image-loading-container {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    $color-bg-surface 25%,
+    $color-bg-elevated 50%,
+    $color-bg-surface 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@mixin image-loading-target {
+  opacity: 0;
+  transition: opacity $transition-base ease-in;
+
+  &.is-loaded {
+    opacity: 1;
+  }
+}
+
+// ============================================
+// ✨ Restyle toolkit (Phase C)
+// Drop-in mixins for cards, dividers, drop caps, and button micro-interactions.
+// All mixins honor `prefers-reduced-motion` where applicable.
+// Phase D consumers will apply these to existing components.
+// ============================================
+
+// --- 🃏 Card hover lift ---
+// Subtle vertical lift + golden glow on hover. No-ops on touch devices
+// (hover: hover guard) and on reduced-motion (transform skipped, glow kept).
+// Apply to card-like containers that are interactive (clickable / navigable).
+
+@mixin card-hover-lift($lift: 4px, $glow: $shadow-glow-gold) {
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-$lift);
+      box-shadow: $shadow-md, $glow;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: box-shadow $transition-base;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+        box-shadow: $shadow-md, $glow;
+      }
+    }
+  }
+}
+
+// --- 📏 Ornate divider ---
+// Decorative flourish dividing prose sections. Renders the hand-authored SVG
+// (drives `currentColor` via the `color` property). Default height suits
+// body-text contexts; override for headings or hero sections.
+
+@mixin ornate-divider($height: 24px) {
+  display: block;
+  width: 100%;
+  height: $height;
+  margin-block: $spacing-lg;
+  color: $color-gold;
+  background-image: url('/assets/images/ornaments/divider-flourish.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: none;
+}
+
+// --- 🅰️ Drop cap ---
+// Enlarges the first letter of the first paragraph of a prose block.
+// Apply on a container that wraps the prose, e.g. `<article>` or `.prose`.
+
+@mixin drop-cap($size: 3.5rem, $color: $color-gold-light) {
+  & > p:first-of-type::first-letter {
+    float: left;
+    font-family: $font-family-heading;
+    font-size: $size;
+    line-height: 1;
+    padding-right: $spacing-sm;
+    padding-top: $spacing-2xs;
+    color: $color;
+    text-shadow: 0 0 8px rgba($color-gold, 0.3);
+  }
+}
+
+// --- 🖱️ Button pressed ---
+// Subtle press feedback on :active. Reduced-motion: no-op (no transform).
+
+@mixin button-pressed {
+  &:active {
+    transform: translateY(1px) scale(0.98);
+    transition: transform 80ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// --- 💥 Button ripple ---
+// Pure-SCSS ripple approximation. Triggers on :active via the
+// `ripple-expand` keyframe (defined in _animations.scss).
+//
+// LIMITATION (intentional): the ripple originates from the element's CENTER,
+// not from the click coordinates. A coordinate-aware ripple would require
+// JS to set CSS custom properties on each click. We trade fidelity for
+// zero-JS simplicity. Do not "fix" this without a stronger reason.
+
+@mixin button-ripple($color: rgba($color-gold, 0.35)) {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at center, $color 0%, transparent 60%);
+    opacity: 0;
+    transform: scale(0);
+    pointer-events: none;
+  }
+
+  &:active::after {
+    animation: ripple-expand 500ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:active::after {
+      animation: none;
+    }
+  }
+}
+
+// --- 🌅 Fade slide-in animation ---
+// Reuses the existing `fade-in-up` keyframe (no duplicate keyframe).
+// On reduced-motion, falls back to a plain fade-in so transform is skipped
+// while the visual cue is preserved.
+
+@mixin fade-slide-in-animation($duration: $transition-base, $delay: 0ms) {
+  animation: fade-in-up $duration ease-out $delay both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade-in $duration ease-out $delay both;
+  }
+}
+
+// --- 🎯 Interactive button (composite) ---
+// Combines `button-pressed` + `button-ripple` for any action button.
+// Phase D — applied to primary action buttons across domains.
+// Note: callers must ensure the host has space for the ripple ::after; the
+// ripple mixin sets `position: relative` and `overflow: hidden` itself.
+
+@mixin interactive-button($ripple-color: rgba($color-gold, 0.35)) {
+  @include button-pressed;
+  @include button-ripple($ripple-color);
+}

@@ -1,0 +1,347 @@
+// ============================================
+// 🏠 homepage.component.scss
+// Landing page styles: hero image with overlay, character quote, and nav cards.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.homepage {
+  @include flex-column;
+  gap: $spacing-xl;
+  padding-bottom: $spacing-3xl;
+
+  // --- Hero section ---
+  &__hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-lg;
+    min-height: clamp(360px, 58vh, 720px);
+    border: $border-width-thin solid $color-border-subtle;
+    background: $color-bg-deep;
+
+    &--fallback {
+      background:
+        linear-gradient(to top, rgba($color-bg-void, 0.96), rgba($color-bg-void, 0.16)),
+        radial-gradient(circle at 50% 34%, rgba($color-gold-dark, 0.22), transparent 26%),
+        linear-gradient(145deg, #282436, #14131b 58%, #09090d);
+    }
+
+    @include respond-below(md) {
+      min-height: 430px;
+    }
+  }
+
+  &__hero-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__atmosphere {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &__hero-overlay {
+    position: absolute;
+    inset: 0;
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-md;
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 15, 0.85) 0%,
+      rgba(10, 10, 15, 0.4) 40%,
+      rgba(10, 10, 15, 0.2) 100%
+    );
+    padding: $spacing-2xl;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: $color-parchment-dark;
+  }
+
+  &__hero-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    margin: 0;
+
+    @include respond-below(md) {
+      font-size: $font-size-2xl;
+    }
+  }
+
+  &__subtitle {
+    font-family: $font-family-body;
+    font-size: $font-size-lg;
+    color: $color-text-primary;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    margin: 0;
+    max-width: 720px;
+
+    @include respond-below(md) {
+      font-size: $font-size-base;
+    }
+  }
+
+  // --- Campaign pulse / useful first-session fallback ---
+  &__pulse {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+    gap: $spacing-xl;
+    align-items: center;
+    padding: $spacing-xl;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-lg;
+    background: linear-gradient(135deg, rgba($color-bg-surface, 0.94), rgba($color-bg-deep, 0.96));
+    box-shadow: $shadow-md;
+
+    @include respond-below(md) {
+      grid-template-columns: 1fr;
+      padding: $spacing-lg;
+    }
+  }
+
+  &__pulse-copy {
+    min-width: 0;
+  }
+
+  &__pulse-kicker {
+    display: block;
+    margin-bottom: $spacing-xs;
+    color: var(--campaign-accent-light, #{$color-gold-light});
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+  }
+
+  &__pulse-title {
+    margin: 0 0 $spacing-sm;
+    font-size: $font-size-xl;
+    color: $color-parchment-light;
+  }
+
+  &__pulse-text {
+    max-width: 66ch;
+    margin: 0 0 $spacing-md;
+    color: $color-text-secondary;
+  }
+
+  &__pulse-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border: $border-width-thin solid var(--campaign-accent, #{$color-gold});
+    border-radius: $border-radius-md;
+    color: $color-text-primary;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    transition:
+      color $transition-fast,
+      background-color $transition-fast,
+      box-shadow $transition-fast;
+
+    &:hover {
+      color: $color-parchment-light;
+      background: rgba($color-gold, 0.08);
+      box-shadow: $shadow-glow-gold;
+    }
+  }
+
+  &__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-sm;
+    margin: 0;
+  }
+
+  &__metric {
+    padding: $spacing-md;
+    text-align: center;
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-md;
+    background: rgba($color-bg-void, 0.24);
+
+    dt {
+      color: $color-text-secondary;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin: $spacing-xs 0 0;
+      color: var(--campaign-accent-light, #{$color-gold-light});
+      font-family: $font-family-heading;
+      font-size: $font-size-2xl;
+      line-height: 1;
+    }
+  }
+
+  // --- Quote section ---
+  &__quote-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+  }
+
+  &__quote {
+    @include surface-card;
+    padding: $spacing-lg $spacing-xl;
+    border-left: $border-width-thick solid $color-gold;
+    margin: 0;
+    position: relative;
+  }
+
+  &__quote-text {
+    font-family: $font-family-body;
+    font-size: $font-size-lg;
+    font-style: italic;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    margin: 0 0 $spacing-md;
+  }
+
+  &__quote-attribution {
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__quote-author {
+    font-family: $font-family-heading;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__quote-context {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  // --- Navigation cards ---
+  &__nav {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: $spacing-sm;
+    padding: 0 $spacing-md;
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+
+    @include respond-below(md) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__nav-card {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-xs;
+    @include surface-card;
+    @include card-hover-lift($lift: 2px);
+    min-height: 92px;
+    padding: $spacing-md $spacing-xs;
+    text-decoration: none;
+    color: $color-text-primary;
+    cursor: pointer;
+    min-width: 0;
+
+    &:hover {
+      border-color: $color-border-accent;
+    }
+  }
+
+  &__nav-icon {
+    font-size: $font-size-xl;
+    line-height: 1;
+  }
+
+  &__nav-label {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+    text-align: center;
+    transition: color $transition-base;
+
+    .homepage__nav-card:hover & {
+      color: $color-gold-light;
+    }
+  }
+
+  &--gothic {
+    .homepage__hero--fallback {
+      background:
+        linear-gradient(to top, rgba($color-bg-void, 0.97), rgba($color-bg-void, 0.12)),
+        radial-gradient(
+          circle at 50% 28%,
+          rgba($color-gothic-burgundy-light, 0.3),
+          transparent 24%
+        ),
+        linear-gradient(145deg, $color-gothic-surface, $color-gothic-burgundy-dark 58%, #09080c);
+    }
+
+    .homepage__atmosphere {
+      opacity: 0.34;
+      filter: blur(22px);
+      background:
+        linear-gradient(12deg, transparent 20%, rgba($color-gothic-fog, 0.5) 36%, transparent 48%),
+        linear-gradient(-9deg, transparent 42%, rgba($color-gothic-fog, 0.38) 58%, transparent 70%);
+    }
+
+    .homepage__title {
+      color: $color-parchment-light;
+      text-shadow:
+        0 2px 10px $color-bg-void,
+        0 0 22px rgba($color-gothic-burgundy-light, 0.35);
+    }
+
+    .homepage__nav-card:hover {
+      border-color: $color-gothic-burgundy-light;
+      box-shadow:
+        $shadow-md,
+        0 0 18px rgba($color-gothic-burgundy, 0.18);
+    }
+  }
+}

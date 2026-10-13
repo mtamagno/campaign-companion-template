@@ -1,0 +1,11 @@
+<!-- Diary Entry — Single timeline item -->
+<article class="diary-entry">
+  <div class="diary-entry__dot"></div>
+  <div class="diary-entry__content">
+    <div class="diary-entry__meta">
+      <time class="diary-entry__date">{{ entry().date }}</time>
+    </div>
+    <h3 class="diary-entry__title">{{ entry().title | bilingual }}</h3>
+    <p class="diary-entry__text">{{ entry().content | bilingual }}</p>
+  </div>
+</article>

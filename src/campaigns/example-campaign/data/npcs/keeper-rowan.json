@@ -1,0 +1,29 @@
+{
+  "id": "keeper-rowan",
+  "name": "Keeper Rowan",
+  "sex": { "en": "Man", "it": "Uomo" },
+  "title": "Keeper of Embercross",
+  "profileImageUrl": "images/npcs/rowan.svg",
+  "portraitImageUrl": "images/npcs/rowan.svg",
+  "avatar": { "url": "images/npcs/rowan.svg", "alt": "Portrait of Keeper Rowan" },
+  "gallery": [],
+  "profile": {
+    "description": {
+      "en": "An elderly keeper with soot-dark hands and an excellent memory.",
+      "it": "Un anziano custode dalle mani annerite dalla fuliggine e dalla memoria eccellente."
+    },
+    "role": { "en": "Guide and quest giver", "it": "Guida e committente" },
+    "personality": {
+      "en": "Warm, precise, reluctant to speculate.",
+      "it": "Cordiale, preciso, restio alle supposizioni."
+    },
+    "location": { "en": "Embercross watch house", "it": "Casa di guardia di Crocebrace" },
+    "knownHistory": {
+      "en": "He has maintained the valley's road lights for forty years.",
+      "it": "Mantiene le luci stradali della valle da quarant'anni."
+    }
+  },
+  "allegiance": "ally",
+  "isAlive": true,
+  "category": "Embercross"
+}

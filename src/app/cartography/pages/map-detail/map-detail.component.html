@@ -1,0 +1,65 @@
+<!-- Map Detail — Full location view -->
+@if (isLoading()) {
+  <div class="map-detail__loading">
+    <app-dice-loader label="Loading location data..." [playSound]="false" />
+  </div>
+} @else if (location(); as loc) {
+  <article class="map-detail">
+    <!-- Header -->
+    <header class="map-detail__header">
+      <app-language-toggle />
+      <h1 class="map-detail__name">{{ loc.name | bilingual }}</h1>
+      <p class="map-detail__region">{{ loc.region | bilingual }}</p>
+      <span
+        class="map-detail__status"
+        [class.map-detail__status--completed]="loc.explorationStatus === 'completed'"
+        [class.map-detail__status--in-progress]="loc.explorationStatus === 'in-progress'"
+        [class.map-detail__status--unexplored]="loc.explorationStatus === 'unexplored'"
+      >
+        @switch (loc.explorationStatus) {
+          @case ('completed') {
+            Fully Explored
+          }
+          @case ('in-progress') {
+            Exploration in Progress
+          }
+          @case ('unexplored') {
+            Unexplored
+          }
+        }
+      </span>
+    </header>
+
+    <!-- Description -->
+    <section class="map-detail__section">
+      <h2 class="map-detail__section-title">📜 Description</h2>
+      <p class="map-detail__description">{{ loc.description | bilingual }}</p>
+    </section>
+
+    <!-- Map images -->
+    @if (loc.images.length > 0) {
+      <section class="map-detail__section">
+        <app-image-gallery [images]="loc.images" galleryTitle="Maps & Illustrations" />
+      </section>
+    }
+
+    <!-- Discoveries -->
+    @if (loc.discoveries.length > 0) {
+      <section class="map-detail__section">
+        <h2 class="map-detail__section-title">🔍 Discoveries</h2>
+        <div class="map-detail__discoveries">
+          @for (discovery of loc.discoveries; track discovery.title.en) {
+            <div class="map-detail__discovery">
+              <h3 class="map-detail__discovery-title">{{ discovery.title | bilingual }}</h3>
+              <p class="map-detail__discovery-desc">{{ discovery.description | bilingual }}</p>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  </article>
+} @else {
+  <div class="map-detail__not-found">
+    <p>Location not found.</p>
+  </div>
+}

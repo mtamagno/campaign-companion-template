@@ -1,0 +1,87 @@
+{
+  "id": "aria-vale",
+  "name": "Aria Vale",
+  "sex": { "en": "Woman", "it": "Donna" },
+  "playerName": "Sample Player",
+  "avatar": { "url": "images/characters/aria.svg", "alt": "Portrait of Aria Vale" },
+  "gallery": [],
+  "profileImageUrl": "images/characters/aria.svg",
+  "portraitImageUrl": "images/characters/aria.svg",
+  "publicProfile": {
+    "backstory": {
+      "en": "Aria once repaired the signal lanterns that guide travellers through the valley. She joined the road when one flame began pointing somewhere impossible.",
+      "it": "Aria riparava le lanterne di segnalazione che guidano i viandanti nella valle. Si mise in viaggio quando una fiamma iniziò a indicare un luogo impossibile."
+    },
+    "traits": {
+      "en": "Patient, observant, quietly funny.",
+      "it": "Paziente, attenta, ironica senza darlo a vedere."
+    },
+    "ideals": {
+      "en": "No one should be left without a way home.",
+      "it": "Nessuno dovrebbe restare senza una via di casa."
+    },
+    "bonds": {
+      "en": "She carries her mentor's last unlit lantern.",
+      "it": "Porta con sé l'ultima lanterna spenta della sua mentore."
+    },
+    "flaws": {
+      "en": "She waits too long before asking for help.",
+      "it": "Aspetta troppo prima di chiedere aiuto."
+    },
+    "knownHistory": {
+      "en": "Known in Embercross as a careful craftswoman.",
+      "it": "Conosciuta a Crocebrace come artigiana scrupolosa."
+    }
+  },
+  "privateProfile": {
+    "secretBackstory": {
+      "en": "The impossible flame whispered her name.",
+      "it": "La fiamma impossibile ha sussurrato il suo nome."
+    },
+    "hiddenMotivations": {
+      "en": "Discover who relit the forbidden beacon.",
+      "it": "Scoprire chi ha riacceso il faro proibito."
+    },
+    "secrets": [
+      {
+        "en": "She kept a shard from the beacon lens.",
+        "it": "Ha conservato una scheggia della lente del faro."
+      }
+    ],
+    "dmNotes": {
+      "en": "Connect the shard to a future location.",
+      "it": "Collega la scheggia a un luogo futuro."
+    }
+  },
+  "sheet": {
+    "level": 1,
+    "classType": "Wayfinder",
+    "race": "Human",
+    "background": "Lantern Keeper",
+    "alignment": "Compassionate",
+    "experiencePoints": 0,
+    "hitPoints": 10,
+    "maxHitPoints": 10,
+    "armorClass": 14,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "abilityScores": {
+      "strength": 10,
+      "dexterity": 15,
+      "constitution": 14,
+      "intelligence": 13,
+      "wisdom": 16,
+      "charisma": 12
+    },
+    "savingThrows": ["Dexterity", "Wisdom"],
+    "skills": ["Investigation", "Perception", "Survival"],
+    "languages": ["Common", "Old Road Signs"],
+    "equipment": ["Traveller's coat", "Repair tools", "Unlit lantern", "Rope"],
+    "features": ["Keen Observer", "Trail Sense"],
+    "currency": { "gp": 12, "sp": 5 }
+  },
+  "diary": [],
+  "sessionKnowledge": [],
+  "quotes": [],
+  "password": "cambiami"
+}

@@ -1,0 +1,79 @@
+<!-- Story Chapter — Literary prose narrative for a single session -->
+@if (isLoading()) {
+  <div class="story-chapter__loading">
+    <app-dice-loader label="The chronicler prepares the manuscript..." [playSound]="false" />
+  </div>
+} @else if (session(); as session) {
+  <article class="story-chapter">
+    <header class="story-chapter__header">
+      <app-language-toggle />
+      <p class="story-chapter__chapter-label">Chapter {{ chapterLabel() }}</p>
+      <h1 class="story-chapter__title">{{ session.title | bilingual }}</h1>
+      <div class="story-chapter__ornament">⚜</div>
+    </header>
+
+    @if (proseChunks().length > 0) {
+      <section class="story-chapter__body">
+        @for (chunk of proseChunks(); track $index) {
+          <div
+            class="story-chapter__prose"
+            [class.story-chapter__prose--first]="$first"
+            [innerHTML]="chunk.html"
+          ></div>
+
+          @if (chunk.images.length > 0) {
+            @for (image of chunk.images; track image.url) {
+              <figure class="story-chapter__inline-image">
+                <img [src]="image.url" [alt]="image.alt | bilingual" loading="lazy" />
+                @if (image.caption) {
+                  <figcaption class="story-chapter__inline-caption">
+                    {{ image.caption | bilingual }}
+                  </figcaption>
+                }
+              </figure>
+            }
+          }
+
+          @if (!$last) {
+            <div class="story-chapter__scene-break" aria-hidden="true">⁂</div>
+          }
+        }
+      </section>
+    } @else {
+      <section class="story-chapter__body">
+        <p class="story-chapter__no-prose">
+          ✍️ Still writing... The chronicler's quill is hard at work.
+        </p>
+      </section>
+    }
+
+    @if (galleryImages().length > 0) {
+      <hr class="story-chapter__divider" aria-hidden="true" />
+      <section class="story-chapter__gallery">
+        <h2 class="story-chapter__gallery-title">Session Gallery</h2>
+        <div class="story-chapter__gallery-grid">
+          @for (image of galleryImages(); track image.url) {
+            <figure class="story-chapter__gallery-item">
+              <img [src]="image.url" [alt]="image.alt | bilingual" loading="lazy" />
+              @if (image.caption) {
+                <figcaption class="story-chapter__gallery-caption">
+                  {{ image.caption | bilingual }}
+                </figcaption>
+              }
+            </figure>
+          }
+        </div>
+      </section>
+    }
+
+    <footer class="story-chapter__footer">
+      <a class="story-chapter__back-link" [routerLink]="['/', campaignId() ?? '', 'campaign']">
+        ← Back to Session Chronicles
+      </a>
+    </footer>
+  </article>
+} @else {
+  <div class="story-chapter__not-found">
+    <p>Chapter not found. The scroll has been lost to time.</p>
+  </div>
+}

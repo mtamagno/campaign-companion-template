@@ -1,0 +1,27 @@
+{
+  "id": "session-1",
+  "sessionNumber": 1,
+  "date": "2026-01-01",
+  "title": { "en": "The Last Light", "it": "L'ultima luce" },
+  "summary": {
+    "en": "The Wayfarers arrive in Embercross as the last lantern fails.",
+    "it": "I Viandanti arrivano a Crocebrace mentre l'ultima lanterna si spegne."
+  },
+  "keyEvents": [
+    {
+      "description": {
+        "en": "Keeper Rowan asks the party to follow the darkened road.",
+        "it": "Il custode Rowan chiede al gruppo di seguire la strada ormai buia."
+      }
+    }
+  ],
+  "location": { "en": "Embercross", "it": "Crocebrace" },
+  "prose": {
+    "en": "Rain polished the stones when the final flame went out.<hr>The road beyond the gate waited in perfect darkness.",
+    "it": "La pioggia lucidava le pietre quando l'ultima fiamma si spense.<hr>Oltre il cancello, la strada attendeva nel buio assoluto."
+  },
+  "storySoFar": {
+    "en": "The last lantern is dark, and the road is calling.",
+    "it": "L'ultima lanterna è spenta e la strada chiama."
+  }
+}

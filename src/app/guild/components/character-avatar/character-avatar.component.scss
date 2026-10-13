@@ -1,0 +1,78 @@
+// ============================================
+// 🖼️ character-avatar.component.scss
+// Square avatar with ornamental border and initials fallback.
+// Supports 4 size presets: sm, md, lg, xl.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: inline-block;
+}
+
+.avatar {
+  @include flex-center;
+  aspect-ratio: 1 / 1;
+  border: $border-width-default solid $color-border-accent;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  background-color: $color-bg-surface;
+
+  // --- Size presets ---
+  &--sm {
+    width: $avatar-size-sm;
+    height: $avatar-size-sm;
+    border-width: $border-width-thin;
+  }
+
+  &--md {
+    width: $avatar-size-md;
+    height: $avatar-size-md;
+  }
+
+  &--lg {
+    width: $avatar-size-lg;
+    height: $avatar-size-lg;
+    @include border-ornamental;
+  }
+
+  &--xl {
+    width: $avatar-size-xl;
+    height: $avatar-size-xl;
+    @include border-ornamental-strong;
+  }
+
+  // --- Image ---
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  // --- Initials fallback ---
+  &__initials {
+    font-family: $font-family-heading;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    text-transform: uppercase;
+    user-select: none;
+
+    .avatar--sm & {
+      font-size: $font-size-xs;
+    }
+
+    .avatar--md & {
+      font-size: $font-size-lg;
+    }
+
+    .avatar--lg & {
+      font-size: $font-size-2xl;
+    }
+
+    .avatar--xl & {
+      font-size: $font-size-3xl;
+    }
+  }
+}

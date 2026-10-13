@@ -1,0 +1,49 @@
+<nav
+  class="sheet-navigation"
+  [attr.aria-label]="isItalian() ? 'Indice della scheda' : 'Character sheet index'"
+>
+  <span>{{ isItalian() ? 'Vai a' : 'Jump to' }}</span>
+  <button type="button" (click)="sectionRequested.emit('overview')">
+    {{ isItalian() ? 'Riepilogo' : 'Overview' }}
+  </button>
+  <button type="button" (click)="sectionRequested.emit('abilities')">
+    {{ isItalian() ? 'Caratteristiche' : 'Abilities' }}
+  </button>
+  <button type="button" (click)="sectionRequested.emit('training')">
+    {{ isItalian() ? 'Competenze' : 'Training' }}
+  </button>
+  @if (hasEquipment()) {
+    <button type="button" (click)="sectionRequested.emit('inventory')">
+      {{ isItalian() ? 'Inventario' : 'Inventory' }}
+    </button>
+  }
+  @if (hasSpells()) {
+    <button type="button" (click)="sectionRequested.emit('spells')">
+      {{ isItalian() ? 'Incantesimi' : 'Spells' }}
+    </button>
+  }
+</nav>
+
+@if (selectedLevel() !== currentLevel()) {
+  <aside class="sheet-navigation__archive" role="status">
+    <div>
+      <strong>
+        {{
+          isItalian()
+            ? 'Stai consultando una scheda archiviata'
+            : 'You are viewing an archived sheet'
+        }}
+      </strong>
+      <span>
+        {{
+          isItalian()
+            ? 'Statistiche, inventario e PDF riflettono il livello selezionato.'
+            : 'Stats, inventory, and the PDF reflect the selected level.'
+        }}
+      </span>
+    </div>
+    <button type="button" (click)="currentRequested.emit()">
+      {{ isItalian() ? 'Torna al livello ' + currentLevel() : 'Return to level ' + currentLevel() }}
+    </button>
+  </aside>
+}

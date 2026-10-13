@@ -1,0 +1,115 @@
+// ============================================
+// 📜 session-summary.component.scss
+// Single session chronicle entry — parchment card style on a timeline.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.session-summary {
+  @include surface-parchment;
+  padding: $spacing-lg $spacing-xl;
+  @include flex-column;
+  gap: $spacing-sm;
+
+  // --- Header row ---
+  &__header {
+    @include flex-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &__number {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-gold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  &__date {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+
+  // --- Title ---
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-text-inverse;
+    margin: 0;
+  }
+
+  // --- Location tag ---
+  &__location {
+    font-size: $font-size-sm;
+    color: $color-leather;
+    font-style: italic;
+  }
+
+  // --- Summary text ---
+  &__text {
+    font-size: $font-size-base;
+    color: $color-text-inverse;
+    line-height: $line-height-relaxed;
+    margin: $spacing-xs 0 0;
+    opacity: 0.85;
+  }
+
+  // --- Story link ---
+  &__story-link {
+    display: inline-block;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-gold;
+    text-decoration: none;
+    letter-spacing: $letter-spacing-wide;
+    transition: color $transition-fast;
+    margin-top: $spacing-xs;
+
+    &:hover {
+      color: $color-gold-light;
+      text-decoration: underline;
+    }
+  }
+
+  // --- Key events ---
+  &__events {
+    margin-top: $spacing-sm;
+    padding-top: $spacing-sm;
+    border-top: $border-width-thin solid rgba($color-leather, 0.3);
+  }
+
+  &__events-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-leather;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    margin: 0 0 $spacing-xs;
+  }
+
+  &__events-list {
+    margin: 0;
+    padding-left: $spacing-lg;
+    @include flex-column;
+    gap: $spacing-xs;
+
+    li {
+      font-size: $font-size-sm;
+      color: $color-text-inverse;
+      opacity: 0.8;
+      line-height: $line-height-base;
+    }
+  }
+}

@@ -1,0 +1,138 @@
+// ============================================
+// 📝 _typography.scss
+// Base typography rules: fonts, headings, body text, links.
+// Fantasy serif fonts for the medieval campaign aesthetic.
+// ============================================
+
+@use 'variables' as *;
+
+// --- 🔤 Font imports ---
+// Cinzel: decorative serif for headings (Google Fonts)
+// Crimson Text: readable serif for body text (Google Fonts)
+// Playfair Display: classic newspaper masthead/headline serif (Google Fonts)
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+// --- 📄 Base typography ---
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: $font-family-body;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  color: $color-text-primary;
+  background-color: $color-bg-base;
+}
+
+// --- 📌 Headings ---
+// All headings use Cinzel — the fantasy display font.
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family-heading;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-wide;
+  color: $color-text-accent;
+}
+
+h1 {
+  font-size: $font-size-4xl;
+  letter-spacing: $letter-spacing-wider;
+}
+
+h2 {
+  font-size: $font-size-3xl;
+}
+
+h3 {
+  font-size: $font-size-2xl;
+}
+
+h4 {
+  font-size: $font-size-xl;
+}
+
+h5 {
+  font-size: $font-size-lg;
+}
+
+h6 {
+  font-size: $font-size-md;
+}
+
+// --- 📖 Body text ---
+
+p {
+  margin-bottom: $spacing-md;
+  line-height: $line-height-relaxed;
+}
+
+strong,
+b {
+  font-weight: $font-weight-bold;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+small {
+  font-size: $font-size-sm;
+}
+
+// --- 🔗 Links ---
+
+a {
+  color: $color-text-link;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-text-link-hover;
+  }
+}
+
+// --- 📜 Blockquote — for flavor text and lore ---
+
+blockquote {
+  padding: $spacing-md $spacing-lg;
+  margin: $spacing-lg 0;
+  border-left: $border-width-thick solid $color-gold-dark;
+  background-color: $color-bg-surface;
+  font-style: italic;
+  color: $color-text-secondary;
+}
+
+// --- ⌨️ Code ---
+
+code {
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  padding: $spacing-2xs $spacing-xs;
+  background-color: $color-bg-elevated;
+  border-radius: $border-radius-sm;
+}
+
+// --- 📏 Horizontal rule — ornamental divider ---
+
+hr {
+  border: none;
+  height: $border-width-thin;
+  background: linear-gradient(
+    to right,
+    transparent,
+    $color-gold-dark,
+    $color-gold,
+    $color-gold-dark,
+    transparent
+  );
+  margin: $spacing-xl 0;
+}

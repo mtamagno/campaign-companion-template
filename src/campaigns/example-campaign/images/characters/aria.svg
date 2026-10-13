@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Aria Vale</title><desc id="desc">Original geometric placeholder portrait of Aria Vale.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#17243b"/><stop offset="1" stop-color="#7c493f"/></linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#bg)"/><circle cx="400" cy="315" r="150" fill="#c8a27d"/><path d="M220 330Q235 105 410 115Q615 130 592 390Q520 235 400 215Q300 300 220 330Z" fill="#362b2b"/><path d="M155 955Q185 540 400 520Q620 540 650 955Z" fill="#304952"/><path d="M400 560v340" stroke="#d5a64b" stroke-width="18"/><circle cx="400" cy="675" r="74" fill="#d18d32" stroke="#2b2018" stroke-width="18"/><path d="M370 690l30-70 30 70-30 35Z" fill="#ffe7a3"/><text x="400" y="950" text-anchor="middle" fill="#f4e7c7" font-family="Georgia,serif" font-size="46">ARIA VALE</text>
+</svg>

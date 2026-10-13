@@ -1,0 +1,66 @@
+<!-- Private Profile — Locked/Unlocked view -->
+<div class="private-profile">
+  <div class="private-profile__header">
+    <h2 class="private-profile__title">🔒 Secret Profile</h2>
+
+    @if (isUnlocked()) {
+      <button
+        class="private-profile__lock-btn"
+        type="button"
+        (click)="lockProfile()"
+        aria-label="Lock private profile"
+      >
+        Lock
+      </button>
+    }
+  </div>
+
+  @if (isUnlocked()) {
+    <div class="private-profile__content">
+      <div class="private-profile__item">
+        <h3>Secret Backstory</h3>
+        <p>{{ privateProfile().secretBackstory | bilingual }}</p>
+      </div>
+
+      <div class="private-profile__item">
+        <h3>Hidden Motivations</h3>
+        <p>{{ privateProfile().hiddenMotivations | bilingual }}</p>
+      </div>
+
+      @if (privateProfile().secrets.length > 0) {
+        <div class="private-profile__item">
+          <h3>Secrets</h3>
+          <ul class="private-profile__secrets">
+            @for (secret of privateProfile().secrets; track secret) {
+              <li>{{ secret | bilingual }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (privateProfile().dmNotes) {
+        <div class="private-profile__item private-profile__item--dm">
+          <h3>DM Notes</h3>
+          <p>{{ privateProfile().dmNotes | bilingual }}</p>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="private-profile__locked">
+      <span class="private-profile__lock-icon">🔒</span>
+      <p>This section contains the character's secrets.</p>
+      <button class="private-profile__unlock-btn" type="button" (click)="openDialog()">
+        Enter Password
+      </button>
+    </div>
+  }
+</div>
+
+@if (isDialogOpen()) {
+  <app-password-dialog
+    [characterName]="characterName()"
+    [hasError]="hasPasswordError()"
+    (passwordSubmit)="onPasswordSubmit($event)"
+    (dialogClose)="closeDialog()"
+  />
+}

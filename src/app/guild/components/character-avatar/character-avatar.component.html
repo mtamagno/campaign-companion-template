@@ -1,0 +1,14 @@
+<!-- Character Avatar — Square with ornamental border and initials fallback -->
+<div class="avatar" [class]="sizeClass()">
+  @if (!hasImageError()) {
+    <img
+      class="avatar__image"
+      [src]="imageUrl()"
+      [alt]="name()"
+      (error)="onImageError()"
+      loading="lazy"
+    />
+  } @else {
+    <span class="avatar__initials">{{ initials() }}</span>
+  }
+</div>

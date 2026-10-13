@@ -1,0 +1,46 @@
+<!-- Session Summary — Single chronicle entry -->
+<article class="session-summary">
+  <!-- Header: session number + date -->
+  <div class="session-summary__header">
+    <h3 class="session-summary__number">Session {{ session().sessionNumber }}</h3>
+    <time class="session-summary__date">{{ session().date }}</time>
+  </div>
+
+  <!-- Title -->
+  <h2 class="session-summary__title">{{ session().title | bilingual }}</h2>
+
+  <!-- Location tag -->
+  <span class="session-summary__location">📍 {{ session().location | bilingual }}</span>
+
+  <!-- Summary text -->
+  <p class="session-summary__text">{{ session().summary | bilingual }}</p>
+
+  <!-- Read the Story link -->
+  <a
+    class="session-summary__story-link"
+    [routerLink]="['/', campaignId() ?? '', 'campaign', 'story', session().id]"
+  >
+    📖 Read the Story
+  </a>
+
+  <!-- Key events -->
+  @if (session().keyEvents.length > 0) {
+    <div class="session-summary__events">
+      <h4 class="session-summary__events-title">Key Events</h4>
+      <ul class="session-summary__events-list">
+        @for (event of session().keyEvents; track event.description.en) {
+          <li>
+            {{ event.description | bilingual }}
+            @if (event.image) {
+              <img
+                class="session-summary__event-image"
+                [src]="event.image.url"
+                [alt]="event.image.alt"
+              />
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</article>

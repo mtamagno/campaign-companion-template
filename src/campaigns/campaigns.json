@@ -1,0 +1,12 @@
+[
+  {
+    "id": "example-campaign",
+    "name": { "en": "The Lantern Road", "it": "La Via delle Lanterne" },
+    "description": {
+      "en": "An original sample campaign ready to replace with your own world.",
+      "it": "Una campagna di esempio originale, pronta da sostituire con il tuo mondo."
+    },
+    "thumbnail": "campaigns/example-campaign/images/group/hero.svg",
+    "status": { "en": "Template", "it": "Modello" }
+  }
+]

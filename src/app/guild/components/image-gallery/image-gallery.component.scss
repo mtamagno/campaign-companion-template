@@ -1,0 +1,87 @@
+// ============================================
+// 🖼️ image-gallery.component.scss
+// Responsive image grid with hover effects.
+// Thumbnails open a fullscreen lightbox on click.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.gallery {
+  // --- Section title ---
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0 0 $spacing-md;
+  }
+
+  // --- Thumbnail grid ---
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: $spacing-sm;
+
+    @include respond-to(md) {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: $spacing-md;
+    }
+  }
+
+  // --- Individual thumbnail ---
+  &__item {
+    position: relative;
+    background: none;
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-sm;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    @include transition-all;
+    @include image-loading-container;
+    aspect-ratio: 4 / 3;
+
+    &:hover {
+      border-color: $color-gold-dark;
+      box-shadow: $shadow-glow-gold;
+      transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+      outline: $border-width-default solid $color-gold;
+      outline-offset: 2px;
+    }
+  }
+
+  &__thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    @include transition-all;
+    @include image-loading-target;
+
+    .gallery__item:hover & {
+      transform: scale(1.05);
+    }
+  }
+
+  // --- Caption overlay ---
+  &__caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing-xs $spacing-sm;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+    color: $color-text-primary;
+    font-size: $font-size-xs;
+    @include text-truncate;
+  }
+}

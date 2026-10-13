@@ -1,0 +1,41 @@
+<!-- Map Card — Location preview -->
+<a class="map-card" [routerLink]="['/', campaignId() ?? '', 'maps', map().id]" appSfxHover>
+  <!-- Preview image -->
+  @if (previewUrl()) {
+    <div class="map-card__image-wrapper">
+      <img class="map-card__image" [src]="previewUrl()" [alt]="(map().name | bilingual) + ' map'" />
+    </div>
+  }
+
+  <!-- Info -->
+  <div class="map-card__info">
+    <h3 class="map-card__name">{{ map().name | bilingual }}</h3>
+    <p class="map-card__region">{{ map().region | bilingual }}</p>
+
+    <div class="map-card__meta">
+      <span
+        class="map-card__status"
+        [class.map-card__status--completed]="map().explorationStatus === 'completed'"
+        [class.map-card__status--in-progress]="map().explorationStatus === 'in-progress'"
+        [class.map-card__status--unexplored]="map().explorationStatus === 'unexplored'"
+      >
+        @switch (map().explorationStatus) {
+          @case ('completed') {
+            Explored
+          }
+          @case ('in-progress') {
+            In progress
+          }
+          @case ('unexplored') {
+            Unexplored
+          }
+        }
+      </span>
+      @if (discoveryCount() > 0) {
+        <span class="map-card__discoveries">
+          {{ discoveryCount() }} {{ discoveryCount() === 1 ? 'discovery' : 'discoveries' }}
+        </span>
+      }
+    </div>
+  </div>
+</a>

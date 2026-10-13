@@ -1,0 +1,113 @@
+// ============================================
+// 🕸️ npc-relationships.component.scss
+// NPC relationships page layout with node-type legend.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.npc-relationships {
+  @include flex-column;
+  gap: $spacing-xl;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: $spacing-xl 0 $spacing-3xl;
+  animation: fade-in-up $transition-base;
+
+  &__header {
+    text-align: center;
+    padding-bottom: $spacing-lg;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__eyebrow {
+    display: block;
+    margin-bottom: $spacing-xs;
+    color: var(--campaign-accent-light, #{$color-gold-light});
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+  }
+
+  &__heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+  }
+
+  &__subtitle {
+    max-width: 720px;
+    margin: $spacing-sm auto 0;
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-style: italic;
+  }
+
+  // --- Node type legend ---
+  &__node-legend {
+    display: flex;
+    gap: $spacing-lg;
+    justify-content: center;
+    margin-top: $spacing-md;
+  }
+
+  &__empty {
+    min-height: 360px;
+  }
+
+  &__node-legend-item {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    letter-spacing: $letter-spacing-wide;
+
+    &--pc {
+      color: $color-gold;
+    }
+
+    &--npc {
+      color: $color-text-secondary;
+    }
+  }
+
+  &__loading {
+    @include flex-center;
+    min-height: 300px;
+    color: $color-text-muted;
+  }
+}
+
+@include respond-below(md) {
+  .npc-relationships {
+    padding-top: $spacing-md;
+
+    &__title {
+      font-size: $font-size-2xl;
+    }
+
+    &__node-legend {
+      gap: $spacing-sm;
+      flex-direction: column;
+    }
+
+    &__empty {
+      min-height: 320px;
+    }
+  }
+}

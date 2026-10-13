@@ -1,0 +1,121 @@
+<!-- NPC List — Grouped by Allegiance + Category -->
+@if (isLoading()) {
+  <div class="npc-list__loading">
+    <app-dice-loader
+      [label]="
+        lang() === 'it'
+          ? 'Raccolgo informazioni sui volti noti...'
+          : 'Gathering intelligence on known figures...'
+      "
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <article class="npc-list">
+    <header class="npc-list__header">
+      <h1 class="npc-list__title">
+        👥 {{ lang() === 'it' ? 'Volti conosciuti' : 'Known Figures' }}
+      </h1>
+      <p class="npc-list__subtitle">
+        {{
+          lang() === 'it'
+            ? 'Alleati, nemici e figure ambigue: le persone che hanno segnato il viaggio della compagnia.'
+            : "Allies, enemies, and everyone in between — the people who shaped the party's journey."
+        }}
+      </p>
+    </header>
+
+    @if (allegianceGroups().length === 0) {
+      <div class="empty-state npc-list__empty">
+        <span class="empty-state__icon" aria-hidden="true">✦</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it'
+              ? 'Le nebbie non hanno ancora rivelato nessuno'
+              : 'The mists have revealed no one yet'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'I personaggi incontrati durante le sessioni appariranno qui, insieme a ruolo e alleanza.'
+              : 'Characters met during play will appear here with their role and allegiance.'
+          }}
+        </p>
+      </div>
+    } @else {
+      @for (group of allegianceGroups(); track group.allegiance) {
+        <app-accordion [title]="group.icon + ' ' + group.label" [startOpen]="true">
+          @for (catGroup of group.categories; track catGroup.category) {
+            <section class="npc-list__category">
+              <h3 class="npc-list__category-title">📍 {{ catGroup.category }}</h3>
+              <div class="npc-list__grid">
+                @for (npc of catGroup.npcs; track npc.id) {
+                  <a
+                    class="npc-card"
+                    [routerLink]="['/', campaignId() ?? '', 'npcs', npc.id]"
+                    appSfxHover
+                  >
+                    <div class="npc-card__portrait-frame">
+                      <img
+                        class="npc-card__portrait"
+                        [src]="resolveCardPortraitUrl(npc)"
+                        [alt]="npc.name"
+                        loading="lazy"
+                        (error)="onPortraitError($event)"
+                      />
+                      @if (!npc.isAlive) {
+                        <span class="npc-card__deceased-overlay">💀</span>
+                      }
+                    </div>
+                    <div class="npc-card__info">
+                      <h4 class="npc-card__name">{{ npc.name }}</h4>
+                      @if (npc.title) {
+                        <p class="npc-card__title">{{ npc.title }}</p>
+                      }
+                      <div class="npc-card__badges">
+                        <span
+                          class="npc-card__badge"
+                          [class.npc-card__badge--ally]="npc.allegiance === 'ally'"
+                          [class.npc-card__badge--enemy]="npc.allegiance === 'enemy'"
+                          [class.npc-card__badge--neutral]="npc.allegiance === 'neutral'"
+                        >
+                          @switch (npc.allegiance) {
+                            @case ('ally') {
+                              {{ lang() === 'it' ? 'Alleato' : 'Ally' }}
+                            }
+                            @case ('enemy') {
+                              {{ lang() === 'it' ? 'Nemico' : 'Enemy' }}
+                            }
+                            @case ('neutral') {
+                              {{ lang() === 'it' ? 'Neutrale' : 'Neutral' }}
+                            }
+                          }
+                        </span>
+                        <span
+                          class="npc-card__badge"
+                          [class.npc-card__badge--alive]="npc.isAlive"
+                          [class.npc-card__badge--dead]="!npc.isAlive"
+                        >
+                          {{
+                            npc.isAlive
+                              ? lang() === 'it'
+                                ? 'Vivo'
+                                : 'Alive'
+                              : lang() === 'it'
+                                ? 'Morto'
+                                : 'Dead'
+                          }}
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                }
+              </div>
+            </section>
+          }
+        </app-accordion>
+      }
+    }
+  </article>
+}

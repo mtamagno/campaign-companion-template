@@ -1,0 +1,125 @@
+<!-- Gallery — All campaign images organized by category -->
+@if (isLoading()) {
+  <div class="gallery__loading">
+    <app-dice-loader
+      [label]="lang() === 'it' ? 'Raccolgo i ricordi...' : 'Gathering memories...'"
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <div class="gallery">
+    <header class="gallery__header">
+      <div class="gallery__heading-row">
+        <h1 class="gallery__title">🖼️ {{ lang() === 'it' ? 'Galleria' : 'Gallery' }}</h1>
+        <app-language-toggle />
+      </div>
+      <p class="gallery__subtitle">
+        {{
+          lang() === 'it'
+            ? 'Ritratti, scene e ricordi raccolti durante la campagna.'
+            : 'A collection of portraits, scenes, and memories from the campaign.'
+        }}
+      </p>
+    </header>
+
+    @for (section of sections(); track section.title) {
+      @if (section.collapsible) {
+        <section class="gallery__section gallery__section--collapsible">
+          <app-accordion
+            [title]="section.icon + ' ' + section.title"
+            [startOpen]="section.startOpen ?? false"
+          >
+            <ng-container *ngTemplateOutlet="sectionBody; context: { $implicit: section }" />
+          </app-accordion>
+        </section>
+      } @else {
+        <section class="gallery__section">
+          <h2 class="gallery__section-title">{{ section.icon }} {{ section.title }}</h2>
+          <ng-container *ngTemplateOutlet="sectionBody; context: { $implicit: section }" />
+        </section>
+      }
+    }
+
+    @if (sections().length === 0) {
+      <div class="empty-state gallery__empty">
+        <span class="empty-state__icon" aria-hidden="true">◇</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it' ? 'Nessun ricordo illustrato, per ora' : 'No illustrated memories yet'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'Ritratti e scene delle sessioni appariranno qui mentre la storia prende forma.'
+              : 'Portraits and session scenes will appear here as the story takes shape.'
+          }}
+        </p>
+      </div>
+    }
+  </div>
+
+  <!-- Lightbox overlay -->
+  @if (isLightboxOpen()) {
+    <app-image-lightbox
+      [images]="lightboxImages()"
+      [currentIndex]="lightboxIndex()"
+      (indexChange)="onLightboxNavigate($event)"
+      (lightboxClose)="closeLightbox()"
+    />
+  }
+}
+
+<!-- Reusable body template: renders flat items or grouped subgroups. -->
+<ng-template #sectionBody let-section>
+  @if (section.subgroups; as subgroups) {
+    @for (subgroup of subgroups; track subgroup.title) {
+      <h3 class="gallery__subgroup-title">{{ subgroup.title }}</h3>
+      <div class="gallery__grid">
+        @for (item of subgroup.items; track item.url; let idx = $index) {
+          <figure
+            class="gallery__item"
+            (click)="openLightbox(subgroup.items, idx)"
+            (keydown.enter)="openLightbox(subgroup.items, idx)"
+            tabindex="0"
+            role="button"
+            [attr.aria-label]="(lang() === 'it' ? 'Apri ' : 'View ') + item.label"
+          >
+            <img
+              class="gallery__image"
+              [src]="item.thumbUrl"
+              [alt]="item.alt | bilingual"
+              loading="lazy"
+              (load)="$event.target.classList.add('is-loaded')"
+              (error)="onImageError($event)"
+            />
+            <figcaption class="gallery__label">{{ item.label }}</figcaption>
+          </figure>
+        }
+      </div>
+    }
+  } @else if (section.items; as items) {
+    <div class="gallery__grid">
+      @for (item of items; track item.url; let idx = $index) {
+        <figure
+          class="gallery__item"
+          (click)="openLightbox(items, idx)"
+          (keydown.enter)="openLightbox(items, idx)"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="(lang() === 'it' ? 'Apri ' : 'View ') + item.label"
+        >
+          <img
+            class="gallery__image"
+            [src]="item.thumbUrl"
+            [alt]="item.alt | bilingual"
+            loading="lazy"
+            (load)="$event.target.classList.add('is-loaded')"
+            (error)="onImageError($event)"
+          />
+          <figcaption class="gallery__label">{{ item.label }}</figcaption>
+        </figure>
+      }
+    </div>
+  }
+</ng-template>

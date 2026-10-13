@@ -1,0 +1,23 @@
+[
+  {
+    "id": "embercross",
+    "name": { "en": "Embercross", "it": "Crocebrace" },
+    "description": {
+      "en": "A rain-worn village built around an ancient road beacon.",
+      "it": "Un villaggio consumato dalla pioggia, sorto attorno a un antico faro stradale."
+    },
+    "images": [{ "url": "images/group/hero.svg", "alt": "The lantern road at dusk" }],
+    "discoveries": [
+      {
+        "title": { "en": "The cold beacon", "it": "Il faro freddo" },
+        "description": {
+          "en": "Its lens is cracked from within.",
+          "it": "La lente è incrinata dall'interno."
+        },
+        "sessionId": "session-1"
+      }
+    ],
+    "explorationStatus": "in-progress",
+    "region": { "en": "The Lantern Valley", "it": "La Valle delle Lanterne" }
+  }
+]

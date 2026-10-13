@@ -1,0 +1,240 @@
+<!-- Character Detail Page -->
+@if (isLoading()) {
+  <div class="character-detail__loading">
+    <app-dice-loader
+      [label]="
+        lang() === 'it' ? 'Apro la scheda del personaggio...' : 'Opening the character sheet...'
+      "
+      [playSound]="false"
+    />
+  </div>
+} @else if (character(); as char) {
+  <article class="character-detail">
+    <!-- Header: Hero banner with profile + name + full-body portrait -->
+    <header class="character-detail__header">
+      <app-language-toggle />
+      <div class="character-detail__hero">
+        <div class="character-detail__portrait-frame">
+          <img
+            class="character-detail__portrait"
+            [class.is-loaded]="isProfileLoaded()"
+            [src]="displayProfileUrl() ?? char.profileImageUrl"
+            [alt]="char.name"
+            (load)="isProfileLoaded.set(true)"
+            (error)="onProfileImageError($event)"
+          />
+        </div>
+        <div class="character-detail__header-info">
+          <h1 class="character-detail__name">{{ char.name }}</h1>
+          <p class="character-detail__meta">
+            {{ char.sheet.race }} · {{ char.sheet.classType }}
+            @if (char.sheet.subclass) {
+              ({{ char.sheet.subclass }})
+            }
+            · Level {{ char.sheet.level }}
+          </p>
+          @if (isCharacterReady()) {
+            <dl class="character-detail__quick-stats" aria-label="Statistiche principali">
+              <div class="character-detail__quick-stat">
+                <dt>HP</dt>
+                <dd>{{ char.sheet.hitPoints }}/{{ char.sheet.maxHitPoints }}</dd>
+              </div>
+              <div class="character-detail__quick-stat">
+                <dt>AC</dt>
+                <dd>{{ char.sheet.armorClass }}</dd>
+              </div>
+              <div class="character-detail__quick-stat">
+                <dt>{{ lang() === 'it' ? 'Competenza' : 'Proficiency' }}</dt>
+                <dd>+{{ char.sheet.proficiencyBonus }}</dd>
+              </div>
+            </dl>
+          } @else {
+            <span class="character-detail__pending">
+              {{ lang() === 'it' ? 'Scheda in preparazione' : 'Character sheet in preparation' }}
+            </span>
+          }
+          @if (char.playerName) {
+            <p class="character-detail__player">
+              Played by <strong>{{ char.playerName }}</strong>
+            </p>
+          }
+        </div>
+        @if (hasDistinctPortrait()) {
+          <div class="character-detail__fullbody-frame">
+            <img
+              class="character-detail__fullbody"
+              [class.is-loaded]="isPortraitLoaded()"
+              [src]="displayPortraitUrl() ?? char.portraitImageUrl"
+              [alt]="char.name + ' full body'"
+              (load)="isPortraitLoaded.set(true)"
+              (error)="onPortraitImageError($event)"
+            />
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Public Profile -->
+    <section class="character-detail__section">
+      <app-accordion
+        [title]="lang() === 'it' ? 'Profilo pubblico' : 'Public Profile'"
+        icon="📜"
+        [startOpen]="true"
+      >
+        <div class="character-detail__profile-grid">
+          @if (isRecorded(char.publicProfile.backstory)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Storia' : 'Backstory' }}</h3>
+              <p>{{ char.publicProfile.backstory | bilingual }}</p>
+            </div>
+          }
+          @if (isRecorded(char.publicProfile.traits)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Tratti caratteriali' : 'Personality Traits' }}</h3>
+              <p>{{ char.publicProfile.traits | bilingual }}</p>
+            </div>
+          }
+          @if (isRecorded(char.publicProfile.ideals)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Ideali' : 'Ideals' }}</h3>
+              <p>{{ char.publicProfile.ideals | bilingual }}</p>
+            </div>
+          }
+          @if (isRecorded(char.publicProfile.bonds)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Legami' : 'Bonds' }}</h3>
+              <p>{{ char.publicProfile.bonds | bilingual }}</p>
+            </div>
+          }
+          @if (isRecorded(char.publicProfile.flaws)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Difetti' : 'Flaws' }}</h3>
+              <p>{{ char.publicProfile.flaws | bilingual }}</p>
+            </div>
+          }
+        </div>
+        @if (!hasPublicProfile()) {
+          <p class="character-detail__profile-empty">
+            {{
+              lang() === 'it'
+                ? 'Il profilo pubblico verrà completato prima dell’inizio dell’avventura.'
+                : 'The public profile will be completed before the adventure begins.'
+            }}
+          </p>
+        }
+      </app-accordion>
+    </section>
+
+    <!-- Known History — collapsible, grows over time -->
+    <section class="character-detail__section">
+      <app-accordion
+        [title]="lang() === 'it' ? 'Storia conosciuta' : 'Known History'"
+        icon="📖"
+        [startOpen]="false"
+      >
+        <div class="character-detail__known-history">
+          <p>{{ char.publicProfile.knownHistory | bilingual }}</p>
+        </div>
+      </app-accordion>
+    </section>
+
+    <!-- Private Profile (password-protected) -->
+    <section class="character-detail__section">
+      <app-accordion
+        [title]="lang() === 'it' ? 'Profilo segreto' : 'Secret Profile'"
+        icon="🔒"
+        [startOpen]="false"
+      >
+        <app-private-profile
+          [characterId]="char.id"
+          [characterName]="char.name"
+          [privateProfile]="char.privateProfile"
+          [password]="char.password ?? defaultCharacterPassword"
+        />
+      </app-accordion>
+    </section>
+
+    <!-- Character Sheet (password-protected) -->
+    <section class="character-detail__section">
+      <app-accordion
+        [title]="lang() === 'it' ? 'Scheda personaggio' : 'Character Sheet'"
+        icon="📋"
+        [startOpen]="false"
+        [allowOverflow]="true"
+      >
+        <app-character-sheet
+          [characterId]="char.id"
+          [characterName]="char.name"
+          [sheet]="char.sheet"
+          [sheetHistory]="char.sheetHistory ?? []"
+          [publicProfile]="char.publicProfile"
+          [profileImageUrl]="displayProfileUrl() ?? char.profileImageUrl"
+          [portraitImageUrl]="displayPortraitUrl() ?? char.portraitImageUrl"
+          [password]="char.password ?? defaultCharacterPassword"
+        />
+      </app-accordion>
+    </section>
+
+    <!-- Image Gallery -->
+    @if (char.gallery.length > 0) {
+      <section class="character-detail__section">
+        <app-accordion
+          [title]="lang() === 'it' ? 'Galleria' : 'Gallery'"
+          icon="🖼️"
+          [startOpen]="true"
+        >
+          <app-image-gallery [images]="char.gallery" galleryTitle="" />
+        </app-accordion>
+      </section>
+    }
+
+    <!-- Iconic Quotes -->
+    @if (char.quotes.length > 0) {
+      <section class="character-detail__section">
+        <app-accordion
+          [title]="lang() === 'it' ? 'Citazioni iconiche' : 'Iconic Quotes'"
+          icon="💬"
+          [startOpen]="true"
+        >
+          <div class="character-detail__quotes">
+            @for (quote of char.quotes; track quote.sessionId) {
+              <blockquote class="character-detail__quote">
+                <p class="character-detail__quote-text">{{ quote.text | bilingual }}</p>
+                @if (quote.context) {
+                  <cite class="character-detail__quote-context">{{
+                    quote.context | bilingual
+                  }}</cite>
+                }
+              </blockquote>
+            }
+          </div>
+        </app-accordion>
+      </section>
+    }
+
+    <!-- Session Diary -->
+    @if (char.diary.length > 0) {
+      <section id="diary" class="character-detail__section">
+        <app-accordion
+          [title]="lang() === 'it' ? 'Diario delle sessioni' : 'Session Diary'"
+          icon="📓"
+          [startOpen]="true"
+        >
+          <app-session-diary [entries]="char.diary" />
+        </app-accordion>
+      </section>
+    }
+  </article>
+} @else {
+  <div class="character-detail__not-found">
+    <div class="character-detail__not-found-icon">?</div>
+    <h2>Lost in the Mists</h2>
+    <p>The adventurer you seek has wandered beyond the reach of divination magic.</p>
+    <p class="character-detail__not-found-hint">
+      Perhaps they never existed, or the scrying spell fizzled out.
+    </p>
+    <a [routerLink]="['/', campaignId() ?? '', 'party']" class="character-detail__not-found-link">
+      ← Return to the Party
+    </a>
+  </div>
+}

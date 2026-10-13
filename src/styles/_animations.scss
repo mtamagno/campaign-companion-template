@@ -1,0 +1,143 @@
+// ============================================
+// ✨ _animations.scss
+// Shared keyframes and transition utilities.
+// Used across components for consistent motion design.
+// ============================================
+
+@use 'variables' as *;
+
+// --- 🌅 Fade in ---
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+// --- 📤 Fade in + slide up ---
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- 📥 Fade in + slide down ---
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// --- 📏 Scale in (for modals/dialogs) ---
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// --- 🌟 Gold pulse glow (for locked/important elements) ---
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba($color-gold, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba($color-gold, 0.5);
+  }
+}
+
+// --- 🔄 Spin (for loading indicators) ---
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// --- ✨ Shimmer (for image/content loading placeholders) ---
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// --- 📜 Slide in from left (sidebar) ---
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+// --- 📜 Slide in from right ---
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+// --- 🎲 Dice roll (DiceLoaderComponent) ---
+// Three rotations with a subtle scale wobble. Color-agnostic — geometry only.
+@keyframes dice-roll {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(540deg) scale(1.08);
+  }
+
+  100% {
+    transform: rotate(1080deg) scale(1);
+  }
+}
+
+// --- 💥 Ripple expand (button-ripple mixin) ---
+// Radial expansion + fade-out. Triggered on :active via the button-ripple mixin.
+@keyframes ripple-expand {
+  0% {
+    opacity: 0.4;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}

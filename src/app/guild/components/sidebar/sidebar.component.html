@@ -1,0 +1,229 @@
+<!-- Sidebar Navigation — Campaign-aware with party, NPCs, and section links -->
+<aside class="sidebar" [class.sidebar--open]="isOpen()">
+  <!-- Header -->
+  <div class="sidebar__header">
+    <h1 class="sidebar__title">
+      @if (activeCampaignId(); as cId) {
+        <a [routerLink]="['/', cId]" class="sidebar__title-link" (click)="close()">{{
+          campaignTitle()
+        }}</a>
+      } @else {
+        <a routerLink="/" class="sidebar__title-link" (click)="close()">Campaign Companion</a>
+      }
+    </h1>
+    <button
+      class="sidebar__close"
+      type="button"
+      (click)="close()"
+      [attr.aria-label]="isItalian() ? 'Chiudi navigazione' : 'Close navigation'"
+    >
+      ✕
+    </button>
+  </div>
+
+  <nav
+    class="sidebar__nav"
+    [attr.aria-label]="isItalian() ? 'Navigazione principale' : 'Main navigation'"
+  >
+    <!-- Campaign selector link -->
+    <a
+      class="sidebar__home-link"
+      routerLink="/"
+      routerLinkActive="sidebar__home-link--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="close()"
+    >
+      🏠 {{ isItalian() ? 'Campagne' : 'Campaigns' }}
+    </a>
+
+    <!-- Campaign-specific sections — only visible when a campaign is active -->
+    @if (activeCampaignId(); as cId) {
+      <!-- Party section -->
+      <section class="sidebar__section">
+        <h2 class="sidebar__section-title">
+          <span>⚔️ {{ isItalian() ? 'Il gruppo' : 'The Party' }}</span>
+          <span class="sidebar__section-count">{{ characters().length }}</span>
+        </h2>
+
+        @if (isLoading()) {
+          <app-dice-loader
+            [label]="isItalian() ? 'Convocazione avventurieri...' : 'Loading adventurers...'"
+            [size]="28"
+            [playSound]="false"
+          />
+        } @else {
+          <ul class="sidebar__list">
+            @for (character of characters(); track character.id) {
+              <li class="sidebar__item">
+                <a
+                  class="sidebar__link"
+                  [routerLink]="['/', cId, 'party', character.id]"
+                  routerLinkActive="sidebar__link--active"
+                  (click)="close()"
+                >
+                  <span class="sidebar__name">{{ character.name }}</span>
+                  @if (character.sheet.level > 0) {
+                    <span class="sidebar__detail"
+                      >{{ character.sheet.classType }} · Lv {{ character.sheet.level }}</span
+                    >
+                  } @else {
+                    <span class="sidebar__detail sidebar__detail--pending">
+                      {{ isItalian() ? 'Scheda in preparazione' : 'Sheet in preparation' }}
+                    </span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        }
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'party', 'relationships']"
+          routerLinkActive="sidebar__section-link--active"
+          (click)="close()"
+        >
+          🔗 {{ isItalian() ? 'Legami del gruppo' : 'Party Relationships' }}
+        </a>
+      </section>
+
+      <!-- NPC section -->
+      <section class="sidebar__section">
+        <h2 class="sidebar__section-title">
+          <span>🐉 NPCs</span>
+          <span class="sidebar__section-count">{{ aliveNpcCount() }}</span>
+        </h2>
+
+        @if (isLoading()) {
+          <app-dice-loader
+            [label]="isItalian() ? 'Ricerca dei PNG...' : 'Loading NPCs...'"
+            [size]="28"
+            [playSound]="false"
+          />
+        } @else {
+          @for (group of npcGroups(); track group.category) {
+            <h3
+              class="sidebar__category-title"
+              (click)="toggleNpcCategory(group.category)"
+              (keydown.enter)="toggleNpcCategory(group.category)"
+              (keydown.space)="toggleNpcCategory(group.category)"
+              role="button"
+              [attr.tabindex]="0"
+              [attr.aria-expanded]="isNpcCategoryOpen(group.category)"
+            >
+              {{ group.category }}
+              <span
+                class="sidebar__toggle-icon"
+                [class.sidebar__toggle-icon--open]="isNpcCategoryOpen(group.category)"
+                >▸</span
+              >
+            </h3>
+
+            @if (isNpcCategoryOpen(group.category)) {
+              <ul class="sidebar__list">
+                @for (npc of group.npcs; track npc.id) {
+                  <li class="sidebar__item">
+                    <a
+                      class="sidebar__link"
+                      [routerLink]="['/', cId, 'npcs', npc.id]"
+                      routerLinkActive="sidebar__link--active"
+                      [class.sidebar__link--dead]="!npc.isAlive"
+                      (click)="close()"
+                    >
+                      <span class="sidebar__name">
+                        {{ npc.name }}
+                        @if (!npc.isAlive) {
+                          <span class="sidebar__dead-marker">💀</span>
+                        }
+                      </span>
+                      @if (npc.title) {
+                        <span class="sidebar__detail">{{ npc.title }}</span>
+                      }
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          }
+        }
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'npcs']"
+          routerLinkActive="sidebar__section-link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="close()"
+        >
+          📋 {{ isItalian() ? 'Lista NPC' : 'NPC List' }}
+        </a>
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'npcs', 'relationships']"
+          routerLinkActive="sidebar__section-link--active"
+          (click)="close()"
+        >
+          🗺️ {{ isItalian() ? 'Relazioni PNG' : 'NPC Relationships' }}
+        </a>
+      </section>
+
+      <!-- Campaign & Maps links -->
+      <section class="sidebar__section">
+        <h2 class="sidebar__section-title">📜 {{ isItalian() ? 'Campagna' : 'Campaign' }}</h2>
+
+        @if (hasSessions()) {
+          <a
+            class="sidebar__section-link"
+            [routerLink]="latestChapterRoute()"
+            routerLinkActive="sidebar__section-link--active"
+            (click)="close()"
+          >
+            📖 {{ isItalian() ? 'Ultimo Capitolo' : 'Latest Chapter' }}
+          </a>
+        }
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'campaign', 'story-so-far']"
+          routerLinkActive="sidebar__section-link--active"
+          (click)="close()"
+        >
+          📚 {{ isItalian() ? 'La Storia Fin Qui' : 'The Story So Far' }}
+        </a>
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'campaign']"
+          routerLinkActive="sidebar__section-link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="close()"
+        >
+          🗝️ {{ isItalian() ? 'Eventi Chiave' : 'Key Events' }}
+        </a>
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'maps']"
+          routerLinkActive="sidebar__section-link--active"
+          (click)="close()"
+        >
+          🗺️ {{ isItalian() ? 'Luoghi Esplorati' : 'Explored Locations' }}
+        </a>
+
+        <a
+          class="sidebar__section-link"
+          [routerLink]="['/', cId, 'gallery']"
+          routerLinkActive="sidebar__section-link--active"
+          (click)="close()"
+        >
+          🖼️ {{ isItalian() ? 'Galleria' : 'Gallery' }}
+        </a>
+      </section>
+    }
+  </nav>
+
+  <!-- Sidebar footer — global utility controls (audio preferences) -->
+  <footer class="sidebar__footer">
+    <app-audio-toggle />
+  </footer>
+</aside>

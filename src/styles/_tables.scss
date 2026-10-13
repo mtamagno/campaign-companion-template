@@ -1,0 +1,184 @@
+// ============================================
+// 📋 _tables.scss
+// Shared compendium table styles — used across multiple arcana pages.
+// Applied globally so they don't count against individual component budgets.
+// ============================================
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// --- 📋 Table wrapper — horizontal scroll on small screens ---
+.table-wrapper {
+  overflow-x: auto;
+  @include scrollbar-custom;
+}
+
+// --- 📋 Compendium table — dark fantasy data table ---
+.compendium-table,
+.spellbook-table,
+.armory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font-family-body;
+  font-size: $font-size-sm;
+
+  th {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-gold;
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-wider;
+    text-align: left;
+    padding: $spacing-sm $spacing-md;
+    border-bottom: $border-width-default solid $color-border-accent;
+    background-color: $color-bg-deep;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: $spacing-sm $spacing-md;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+    color: $color-text-primary;
+    vertical-align: top;
+  }
+
+  tbody tr.row-clickable {
+    cursor: pointer;
+    @include transition-colors($transition-fast);
+
+    &:hover,
+    &:focus-visible {
+      background-color: $color-bg-elevated;
+      border-left: $border-width-thick solid $color-gold;
+      outline: none;
+
+      .row-arrow {
+        opacity: 1;
+        color: $color-gold-light;
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+// --- 🔑 Key cell — monospaced accent ---
+.cell-key {
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+  white-space: nowrap;
+}
+
+// --- 📝 Description cell — clamped to 2 lines ---
+.cell-description {
+  color: $color-text-secondary;
+  min-width: 280px;
+  line-height: $line-height-base;
+  @include text-clamp(2);
+}
+
+// --- ➡️ Action cell — arrow indicator ---
+.cell-action {
+  width: 32px;
+  text-align: center;
+  padding: $spacing-sm;
+}
+
+.row-arrow {
+  font-size: $font-size-md;
+  color: $color-gold-dark;
+  opacity: 0.4;
+  transition: opacity $transition-fast, color $transition-fast, transform $transition-fast;
+}
+
+// --- Empty state ---
+.cell-empty {
+  text-align: center;
+  color: $color-text-muted;
+  font-style: italic;
+  padding: $spacing-xl;
+}
+
+// --- Spell table cell variants ---
+.cell-name {
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+}
+
+.cell-level {
+  text-align: center;
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+}
+
+.cell-school {
+  color: $color-text-secondary;
+  white-space: nowrap;
+}
+
+.cell-cast-time {
+  color: $color-text-secondary;
+  white-space: nowrap;
+  font-size: $font-size-xs;
+}
+
+.cell-components {
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+  white-space: nowrap;
+}
+
+.cell-icon {
+  width: 32px;
+  text-align: center;
+  padding: $spacing-xs;
+}
+
+.icon-concentration,
+.icon-ritual {
+  font-size: $font-size-sm;
+}
+
+// --- 🗡️ Item table cell variants (Armory) ---
+.cell-category {
+  color: $color-text-secondary;
+  white-space: nowrap;
+  font-size: $font-size-xs;
+}
+
+.cell-cost {
+  white-space: nowrap;
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+}
+
+.cell-weight {
+  white-space: nowrap;
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.cell-properties {
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+  min-width: 140px;
+}
+
+.cell-rarity {
+  white-space: nowrap;
+  font-size: $font-size-xs;
+  color: $color-text-accent;
+}
+
+.icon-attunement {
+  font-size: $font-size-sm;
+  color: $color-gold;
+}

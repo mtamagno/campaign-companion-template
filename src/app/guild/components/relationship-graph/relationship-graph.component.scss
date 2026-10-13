@@ -1,0 +1,333 @@
+// ============================================
+// 🕸️ relationship-graph.component.scss
+// SVG-based relationship graph with circular node layout.
+// Nodes have avatar circles with gold/silver rings, edges with colored lines.
+// Supports focus mode: clicking a node centers it and dims unrelated connections.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.relationship-graph {
+  @include flex-column;
+  gap: $spacing-md;
+
+  &__instructions {
+    margin: 0;
+    text-align: center;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+    font-style: italic;
+  }
+
+  // --- Title ---
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    text-align: center;
+  }
+
+  // --- Empty state ---
+  &__empty {
+    text-align: center;
+    color: $color-text-muted;
+    padding: $spacing-2xl;
+  }
+
+  // --- SVG container ---
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: $spacing-md;
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-lg;
+    background:
+      radial-gradient(circle at 50% 50%, rgba($color-gold, 0.06), transparent 48%),
+      rgba($color-bg-void, 0.18);
+    box-shadow: $shadow-inner;
+  }
+
+  &__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  // --- Edge hover tooltip ---
+  &__tooltip {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    margin-top: -$spacing-lg;
+    @include surface-elevated;
+    padding: $spacing-sm $spacing-md;
+    border: $border-width-thin solid $color-border-accent;
+    border-radius: $border-radius-md;
+    max-width: 280px;
+    pointer-events: none;
+    z-index: $z-index-tooltip;
+    animation: fade-in 0.15s ease-out;
+
+    strong {
+      display: block;
+      margin-bottom: $spacing-2xs;
+      color: $color-gold-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+  }
+
+  &__tooltip-desc {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  // --- Focus mode mini-tooltip (appears above centered node) ---
+  &__focus-tooltip {
+    position: absolute;
+    top: calc(50% - 55px);
+    left: 50%;
+    transform: translate(-50%, -100%);
+    @include surface-elevated;
+    padding: $spacing-xs $spacing-md;
+    border: $border-width-thin solid $color-gold;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    z-index: $z-index-tooltip;
+    animation: fade-in 0.2s ease-out;
+    white-space: nowrap;
+  }
+
+  &__focus-tooltip-name {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: 0.3px;
+  }
+
+  &__focus-tooltip-link {
+    background: none;
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-sm;
+    padding: $spacing-2xs $spacing-sm;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition:
+      color $transition-fast,
+      border-color $transition-fast;
+
+    &:hover {
+      color: $color-gold-light;
+      border-color: $color-gold;
+    }
+  }
+
+  &__focus-tooltip-close {
+    background: none;
+    border: none;
+    padding: 0 $spacing-2xs;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    cursor: pointer;
+    line-height: 1;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-text-primary;
+    }
+  }
+
+  // --- Legend ---
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm $spacing-md;
+    justify-content: center;
+    padding: $spacing-sm $spacing-md;
+    @include surface-card;
+    border-radius: $border-radius-md;
+    transition: opacity $transition-base;
+  }
+
+  &__legend-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__legend-item {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+  }
+}
+
+// --- Graph edge styles ---
+.graph-edge {
+  cursor: pointer;
+  transition: opacity 400ms ease;
+
+  &__hitarea {
+    stroke: transparent;
+    stroke-width: 16;
+    fill: none;
+  }
+
+  &__line {
+    stroke-width: 2.5;
+    fill: none;
+    opacity: 0.7;
+    transition:
+      opacity 0.2s ease,
+      stroke-width 0.2s ease;
+  }
+
+  &__label {
+    font-size: 16px;
+    opacity: 0.8;
+    transition: opacity 400ms ease;
+  }
+
+  &__bidi {
+    font-size: 12px;
+    fill: $color-text-muted;
+    transition: opacity 400ms ease;
+  }
+
+  &:hover {
+    .graph-edge__line {
+      opacity: 1;
+      stroke-width: 4;
+    }
+
+    .graph-edge__label {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    .graph-edge__line {
+      opacity: 1;
+      stroke-width: 4;
+      filter: drop-shadow(0 0 5px currentColor);
+    }
+  }
+
+  // Dimmed state during focus mode
+  &--dimmed {
+    opacity: 0.08;
+    pointer-events: none;
+  }
+}
+
+// --- Graph node styles ---
+.graph-node {
+  cursor: pointer;
+  transition:
+    transform 500ms ease,
+    opacity 400ms ease;
+
+  // Background circle
+  &__circle {
+    fill: $color-bg-deep;
+  }
+
+  // Border ring — gold for PCs, silver for NPCs
+  &__ring {
+    fill: none;
+    stroke: $color-gold;
+    stroke-width: 3;
+    transition:
+      stroke-width 0.2s ease,
+      filter 400ms ease;
+  }
+
+  // Name label
+  &__name {
+    font-family: $font-family-heading;
+    font-size: 13px;
+    font-weight: $font-weight-semibold;
+    fill: $color-text-primary;
+    letter-spacing: 0.3px;
+    transition: opacity 400ms ease;
+  }
+
+  // PC nodes — golden ring
+  &--pc .graph-node__ring {
+    stroke: $color-gold;
+  }
+
+  // NPC nodes — silver/muted ring
+  &--npc .graph-node__ring {
+    stroke: $color-text-secondary;
+  }
+
+  &:hover .graph-node__ring {
+    stroke-width: 5;
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    .graph-node__ring {
+      stroke-width: 5;
+      filter: drop-shadow(0 0 8px $color-gold);
+    }
+  }
+
+  // Dimmed state during focus mode — node is not connected to focused node
+  &--dimmed {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  // Focused node — centered with glow
+  &--focused {
+    z-index: 10;
+
+    .graph-node__ring {
+      stroke-width: 5;
+      filter: drop-shadow(0 0 8px $color-gold) drop-shadow(0 0 16px rgba($color-gold, 0.4));
+    }
+  }
+}
+
+@include respond-below(md) {
+  .relationship-graph {
+    &__container {
+      padding: $spacing-xs;
+    }
+
+    &__focus-tooltip {
+      max-width: calc(100% - #{$spacing-lg});
+      white-space: normal;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    &__legend {
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+}

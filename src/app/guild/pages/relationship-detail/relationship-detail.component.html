@@ -1,0 +1,132 @@
+<!-- Relationship Detail — History between two characters -->
+@if (isLoading()) {
+  <div class="rel-detail__loading">
+    <app-dice-loader label="Consulting the chronicles..." [playSound]="false" />
+  </div>
+} @else if (relationship(); as rel) {
+  <article class="rel-detail">
+    <app-language-toggle />
+
+    <!-- Dual avatar header -->
+    <header class="rel-detail__header">
+      @if (sourceEntity(); as source) {
+        <div class="rel-detail__entity">
+          <img
+            class="rel-detail__avatar"
+            [src]="source.profileImageUrl ?? source.avatar.url"
+            [alt]="source.name"
+            (error)="$event.target.src = 'assets/images/placeholders/placeholder-portrait.svg'"
+          />
+          <span class="rel-detail__entity-name">{{ source.name }}</span>
+        </div>
+      }
+
+      <div class="rel-detail__bond">
+        <span class="rel-detail__bond-icon">⚡</span>
+        <span class="rel-detail__bond-type">{{ relationshipTypeLabel() }}</span>
+        @if (rel.isBidirectional) {
+          <span class="rel-detail__bond-bidi">↔ Mutual</span>
+        }
+      </div>
+
+      @if (targetEntity(); as target) {
+        <div class="rel-detail__entity">
+          <img
+            class="rel-detail__avatar"
+            [src]="target.profileImageUrl ?? target.avatar.url"
+            [alt]="target.name"
+            (error)="$event.target.src = 'assets/images/placeholders/placeholder-portrait.svg'"
+          />
+          <span class="rel-detail__entity-name">{{ target.name }}</span>
+        </div>
+      }
+    </header>
+
+    <!-- Description -->
+    <section class="rel-detail__section">
+      <p class="rel-detail__description">{{ rel.description | bilingual }}</p>
+    </section>
+
+    <!-- Shared Events Timeline -->
+    @if (sharedEvents().length > 0) {
+      <section class="rel-detail__section">
+        <h2 class="rel-detail__section-title">📜 Shared Events</h2>
+        <div class="rel-detail__timeline">
+          @for (event of sharedEvents(); track event.sessionId) {
+            <div class="rel-detail__event">
+              <span class="rel-detail__event-dot"></span>
+              <div class="rel-detail__event-content">
+                <h3 class="rel-detail__event-title">{{ event.title | bilingual }}</h3>
+                <p class="rel-detail__event-description">{{ event.description | bilingual }}</p>
+                <span class="rel-detail__event-session">{{ event.sessionId }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Quotes -->
+    @if (quotes().length > 0) {
+      <section class="rel-detail__section">
+        <h2 class="rel-detail__section-title">💬 Memorable Words</h2>
+        <div class="rel-detail__quotes">
+          @for (quote of quotes(); track quote.sessionId + quote.speakerId) {
+            <blockquote class="rel-detail__quote">
+              <p class="rel-detail__quote-text">"{{ quote.text | bilingual }}"</p>
+              <footer class="rel-detail__quote-attribution">
+                — {{ getSpeakerName(quote.speakerId) }}
+              </footer>
+            </blockquote>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Evolution -->
+    @if (evolution().length > 0) {
+      <section class="rel-detail__section">
+        <h2 class="rel-detail__section-title">📈 Relationship Evolution</h2>
+        <div class="rel-detail__evolution">
+          @for (evo of evolution(); track evo.sessionId + evo.toType) {
+            <div class="rel-detail__evo-entry">
+              <div class="rel-detail__evo-change">
+                @if (evo.fromType) {
+                  <span class="rel-detail__evo-type">{{ formatEvolutionType(evo.fromType) }}</span>
+                  <span class="rel-detail__evo-arrow">→</span>
+                }
+                <span class="rel-detail__evo-type rel-detail__evo-type--current">{{
+                  formatEvolutionType(evo.toType)
+                }}</span>
+              </div>
+              <p class="rel-detail__evo-note">{{ evo.note | bilingual }}</p>
+              <span class="rel-detail__evo-session">{{ evo.sessionId }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Back link -->
+    <div class="rel-detail__back">
+      <a
+        class="rel-detail__back-link"
+        [routerLink]="['/', campaignId() ?? '', 'party', 'relationships']"
+      >
+        ← Back to Relationships
+      </a>
+    </div>
+  </article>
+} @else {
+  <div class="rel-detail__not-found">
+    <span class="rel-detail__not-found-icon">🔮</span>
+    <p class="rel-detail__not-found-title">Relationship not found</p>
+    <p class="rel-detail__not-found-text">The threads of fate between these two remain unseen.</p>
+    <a
+      class="rel-detail__back-link"
+      [routerLink]="['/', campaignId() ?? '', 'party', 'relationships']"
+    >
+      ← Back to Relationships
+    </a>
+  </div>
+}

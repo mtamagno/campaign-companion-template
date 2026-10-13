@@ -1,0 +1,32 @@
+// ============================================
+// 🏰 main.scss
+// Master SCSS entry point — imports all partials in correct order.
+// No direct rules here — only @forward directives.
+// ============================================
+
+// 1. Functions (used by variables and mixins)
+@forward 'functions';
+
+// 2. Variables (design tokens)
+@forward 'variables';
+
+// 3. Mixins (reusable patterns)
+@forward 'mixins';
+
+// 4. Reset (browser normalization)
+@use 'reset';
+
+// 5. Typography (base text styles)
+@use 'typography';
+
+// 5b. Shared interaction and empty-state patterns
+@use 'accessibility';
+@use 'empty-states';
+
+// 6. Animations (shared keyframes)
+@use 'animations';
+
+// 7. Shared component patterns (global to reduce per-component budgets)
+@use 'tables';
+@use 'spell-meta';
+@use 'item-meta';

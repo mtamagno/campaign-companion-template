@@ -1,0 +1,161 @@
+<!-- Campaign Selector — Root landing page listing all available campaigns -->
+<div class="campaign-selector">
+  <header class="campaign-selector__hero">
+    <div class="campaign-selector__language"><app-language-toggle /></div>
+    <div class="campaign-selector__hero-copy">
+      <span class="campaign-selector__eyebrow">Tabletop Campaign Companion</span>
+      <h1 class="campaign-selector__title">{{ pageTitle() }}</h1>
+      <p class="campaign-selector__subtitle">{{ pageSubtitle() }}</p>
+      <p class="campaign-selector__intro">
+        {{
+          lang() === 'it'
+            ? 'Cronache, personaggi, legami e strumenti di gioco raccolti in un unico archivio vivente.'
+            : 'Chronicles, characters, bonds and game tools gathered in one living archive.'
+        }}
+      </p>
+    </div>
+    <div class="campaign-selector__crest" aria-hidden="true">
+      <span>20</span>
+    </div>
+  </header>
+
+  @if (isLoaded() && campaigns().length > 0) {
+    <dl class="campaign-selector__overview" aria-label="Campaign overview">
+      <div class="campaign-selector__overview-item">
+        <dt>{{ lang() === 'it' ? 'Cronache' : 'Chronicles' }}</dt>
+        <dd>{{ campaigns().length }}</dd>
+      </div>
+      <div class="campaign-selector__overview-item campaign-selector__overview-item--active">
+        <dt>{{ lang() === 'it' ? 'In corso' : 'In progress' }}</dt>
+        <dd>{{ activeCampaignCount() }}</dd>
+      </div>
+      <div class="campaign-selector__overview-item">
+        <dt>{{ lang() === 'it' ? 'Completate' : 'Completed' }}</dt>
+        <dd>{{ completedCampaignCount() }}</dd>
+      </div>
+      <div class="campaign-selector__overview-note">
+        <strong>{{
+          lang() === 'it' ? 'Il tuo tavolo, sempre con te' : 'Your table, always with you'
+        }}</strong>
+        <span>{{
+          lang() === 'it'
+            ? 'Scegli una cronaca per riprendere il viaggio.'
+            : 'Choose a chronicle to resume the journey.'
+        }}</span>
+      </div>
+    </dl>
+  }
+
+  @if (!isLoaded()) {
+    <app-dice-loader
+      [label]="
+        lang() === 'it' ? 'Apro il registro delle campagne...' : 'Opening the campaign ledger...'
+      "
+      [playSound]="false"
+    />
+  } @else if (campaigns().length === 0) {
+    <div class="empty-state campaign-selector__empty">
+      <span class="empty-state__icon" aria-hidden="true">◇</span>
+      <h2 class="empty-state__title">
+        {{ lang() === 'it' ? 'Nessuna campagna disponibile' : 'No campaigns available' }}
+      </h2>
+      <p class="empty-state__text">
+        {{
+          lang() === 'it'
+            ? 'Il registro è ancora vuoto. Le prossime avventure compariranno qui.'
+            : 'The ledger is still empty. New adventures will appear here.'
+        }}
+      </p>
+    </div>
+  } @else {
+    <div class="campaign-selector__section-heading">
+      <div>
+        <span class="campaign-selector__section-kicker">{{
+          lang() === 'it' ? 'Registro delle avventure' : 'Adventure ledger'
+        }}</span>
+        <h2>{{ lang() === 'it' ? 'Le nostre campagne' : 'Our campaigns' }}</h2>
+      </div>
+      <span class="campaign-selector__section-count">{{ campaigns().length }}</span>
+    </div>
+    <div class="campaign-selector__grid">
+      @for (campaign of campaigns(); track campaign.id) {
+        <button
+          type="button"
+          class="campaign-selector__card"
+          [attr.aria-label]="
+            (lang() === 'it' ? 'Entra nella campagna ' : 'Enter campaign ') + campaign.name[lang()]
+          "
+          (click)="selectCampaign(campaign)"
+          appSfxHover
+        >
+          <div class="campaign-selector__card-art">
+            @if (campaign.thumbnail) {
+              <img
+                class="campaign-selector__card-image"
+                [src]="campaign.thumbnail"
+                [alt]="campaign.name[lang()]"
+                loading="eager"
+                decoding="async"
+              />
+            } @else {
+              <div
+                class="campaign-selector__card-fallback"
+                role="img"
+                [attr.aria-label]="campaign.name[lang()]"
+              >
+                <span class="campaign-selector__mist" aria-hidden="true"></span>
+                <span class="campaign-selector__sigil" aria-hidden="true">✦</span>
+                <span class="campaign-selector__fallback-label">Campaign</span>
+              </div>
+            }
+            @if (campaign.status; as status) {
+              <span class="campaign-selector__status">{{ status[lang()] }}</span>
+            }
+          </div>
+          <div class="campaign-selector__card-body">
+            <h2 class="campaign-selector__card-title">{{ campaign.name[lang()] }}</h2>
+            <p class="campaign-selector__card-description">{{ campaign.description[lang()] }}</p>
+            <span class="campaign-selector__card-cta">
+              {{ lang() === 'it' ? 'Entra nella campagna' : 'Enter campaign' }}
+              <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
+        </button>
+      }
+    </div>
+  }
+</div>
+
+<!-- Spoiler warning modal -->
+@if (pendingCampaign() !== undefined) {
+  <div class="spoiler-modal" (click)="cancelEntry()">
+    <div
+      class="spoiler-modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spoiler-warning-title"
+      aria-describedby="spoiler-warning-message spoiler-warning-remember"
+      (click)="$event.stopPropagation()"
+    >
+      <h2 id="spoiler-warning-title" class="spoiler-modal__title">
+        ⚠️ {{ lang() === 'it' ? 'Attenzione — Spoiler' : 'Warning — Spoilers' }}
+      </h2>
+      <p id="spoiler-warning-message" class="spoiler-modal__message">{{ warningMessage() }}</p>
+      <p id="spoiler-warning-remember" class="spoiler-modal__remember">
+        {{
+          lang() === 'it'
+            ? 'Se scegli “Entra”, ricorderemo questa decisione su questo dispositivo.'
+            : 'If you choose “Enter”, we will remember this decision on this device.'
+        }}
+      </p>
+      <div class="spoiler-modal__actions">
+        <button type="button" class="spoiler-modal__cancel" (click)="cancelEntry()">
+          {{ lang() === 'it' ? 'Annulla' : 'Cancel' }}
+        </button>
+        <button type="button" class="spoiler-modal__confirm" autofocus (click)="confirmEntry()">
+          {{ lang() === 'it' ? 'Entra' : 'Enter' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

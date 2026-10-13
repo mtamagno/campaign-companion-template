@@ -1,0 +1,126 @@
+// ============================================
+// 🏰 app.scss
+// Root layout: sidebar + main content area.
+// Responsive — sidebar fixed on desktop, overlay on mobile.
+// ============================================
+
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.skip-link {
+  position: fixed;
+  top: $spacing-sm;
+  left: 50%;
+  z-index: $z-index-tooltip + 1;
+  padding: $spacing-sm $spacing-md;
+  border: $border-width-thin solid $color-gold;
+  border-radius: $border-radius-md;
+  background: $color-bg-deep;
+  color: $color-parchment-light;
+  font-family: $font-family-heading;
+  transform: translate(-50%, -160%);
+  transition: transform $transition-fast;
+
+  &:focus {
+    transform: translate(-50%, 0);
+  }
+}
+
+.app-layout {
+  --campaign-accent: #{$color-gold};
+  --campaign-accent-light: #{$color-gold-light};
+  --campaign-glow: rgba(201, 166, 52, 0.12);
+
+  display: flex;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 72% 0%, var(--campaign-glow), transparent 42%), $color-bg-base;
+
+  &--gothic {
+    --campaign-accent: #{$color-gothic-burgundy-light};
+    --campaign-accent-light: #d2a2aa;
+    --campaign-glow: rgba(125, 40, 56, 0.18);
+  }
+
+  // --- Hamburger toggle (mobile only) ---
+  &__hamburger {
+    display: none;
+    position: fixed;
+    top: $spacing-md;
+    left: $spacing-md;
+    z-index: $z-index-header;
+    background: $color-bg-elevated;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-sm;
+    color: $color-gold-light;
+    font-size: $font-size-xl;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    line-height: 1;
+    align-items: center;
+    justify-content: center;
+    @include transition-colors;
+
+    &:hover {
+      border-color: $color-gold-dark;
+      box-shadow: $shadow-glow-gold;
+    }
+
+    &[aria-expanded='true'] {
+      color: $color-parchment-light;
+      border-color: var(--campaign-accent, #{$color-gold});
+      background: $color-bg-surface;
+    }
+
+    @include respond-below(lg) {
+      display: flex;
+    }
+  }
+
+  // --- Mobile backdrop ---
+  &__backdrop {
+    display: none;
+
+    @include respond-below(lg) {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(2px);
+      z-index: $z-index-sidebar - 1;
+      animation: fade-in $transition-fast;
+    }
+  }
+
+  // --- Main content ---
+  &__content {
+    flex: 1;
+    margin-left: $sidebar-width;
+    padding: $spacing-xl $spacing-2xl;
+    min-height: 100vh;
+    max-width: $content-max-width;
+    min-width: 0;
+    width: calc(100% - #{$sidebar-width});
+    margin-right: auto;
+
+    @include respond-below(lg) {
+      margin-left: 0;
+      padding: $spacing-xl $spacing-md;
+      padding-top: $spacing-3xl;
+      width: 100%;
+    }
+  }
+
+  // --- Route transition wrapper ---
+  // Each routed component fades+slides in on mount. Reduced-motion safe
+  // via the fade-slide-in-animation mixin.
+  &__route-wrapper {
+    display: contents;
+
+    > :not(router-outlet) {
+      @include fade-slide-in-animation(220ms, 0ms);
+    }
+  }
+}

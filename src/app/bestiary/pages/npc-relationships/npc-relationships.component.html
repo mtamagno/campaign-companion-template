@@ -1,0 +1,74 @@
+<!-- NPC Relationships Page -->
+@if (isLoading()) {
+  <div class="npc-relationships__loading">
+    <app-dice-loader
+      [label]="
+        lang() === 'it'
+          ? 'Sto ricostruendo la rete di conoscenze...'
+          : 'Tracing the web of connections...'
+      "
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <article class="npc-relationships">
+    <header class="npc-relationships__header">
+      <span class="npc-relationships__eyebrow">
+        {{ lang() === 'it' ? 'Volti conosciuti' : 'Known Faces' }}
+      </span>
+      <div class="npc-relationships__heading-row">
+        <h1 class="npc-relationships__title">
+          {{ lang() === 'it' ? 'Intrecci e alleanze' : 'Connections and Alliances' }}
+        </h1>
+        <app-language-toggle />
+      </div>
+      <p class="npc-relationships__subtitle">
+        {{
+          lang() === 'it'
+            ? 'Una rete di alleanze, inimicizie e incontri inattesi che cambia con ogni sessione.'
+            : 'A web of alliances, enmities, and unexpected encounters that changes with every session.'
+        }}
+      </p>
+
+      @if (relationships().length > 0) {
+        <div class="npc-relationships__node-legend">
+          <span class="npc-relationships__node-legend-item npc-relationships__node-legend-item--pc">
+            ● {{ lang() === 'it' ? 'Personaggi giocanti' : 'Player characters' }}
+          </span>
+          <span
+            class="npc-relationships__node-legend-item npc-relationships__node-legend-item--npc"
+          >
+            ● {{ lang() === 'it' ? 'PNG' : 'NPCs' }}
+          </span>
+        </div>
+      }
+    </header>
+
+    @if (relationships().length === 0) {
+      <div class="empty-state npc-relationships__empty">
+        <span class="empty-state__icon" aria-hidden="true">⌘</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it'
+              ? 'La rete di conoscenze è ancora avvolta nella nebbia'
+              : 'The web of connections is still hidden in the mist'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'Quando la compagnia incontrerà nuovi personaggi, alleanze e conflitti prenderanno forma qui.'
+              : 'As the party meets new people, alliances and conflicts will take shape here.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <app-relationship-graph
+        [nodes]="nodes()"
+        [relationships]="relationships()"
+        (edgeClick)="navigateToRelationship($event)"
+        (nodeProfileNavigate)="navigateToCharacter($event)"
+      />
+    }
+  </article>
+}

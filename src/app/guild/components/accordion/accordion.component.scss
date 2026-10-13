@@ -1,0 +1,104 @@
+// ============================================
+// 🎨 accordion.component.scss
+// Collapsible accordion panel with smooth height animation.
+// Dark fantasy theme — gold accent border on open state.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// --- 📦 Accordion container ---
+.accordion {
+  border: $border-width-thin solid $color-border-subtle;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  @include transition-colors;
+
+  & + & {
+    margin-top: $spacing-sm;
+  }
+
+  &--open {
+    border-color: $color-border-accent;
+
+    .accordion__chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion__panel {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &--open.accordion--overflow,
+  &--open.accordion--overflow .accordion__content {
+    overflow: visible;
+  }
+
+  &--open.accordion--overflow .accordion__panel {
+    display: block;
+  }
+}
+
+// --- 🔘 Header button ---
+.accordion__header {
+  @include flex-row-gap($spacing-sm);
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  background-color: $color-bg-elevated;
+  border: none;
+  color: $color-text-primary;
+  font-family: $font-family-heading;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  letter-spacing: $letter-spacing-wide;
+  text-align: left;
+  cursor: pointer;
+  @include transition-colors;
+
+  &:hover {
+    background-color: $color-bg-surface;
+    color: $color-gold-light;
+  }
+
+  &:focus-visible {
+    outline: $border-width-default solid $color-gold;
+    outline-offset: -$border-width-default;
+  }
+}
+
+// --- 🎯 Icon & title ---
+.accordion__icon {
+  flex-shrink: 0;
+  font-size: $font-size-lg;
+  line-height: 1;
+}
+
+.accordion__title {
+  flex: 1;
+}
+
+// --- ▼ Chevron indicator ---
+.accordion__chevron {
+  flex-shrink: 0;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+  transition: transform $transition-base;
+}
+
+// --- 📜 Collapsible panel ---
+// Uses CSS grid row trick for smooth height animation without JS measurement.
+.accordion__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows $transition-slow;
+}
+
+.accordion__content {
+  overflow: hidden;
+  padding: 0 $spacing-lg;
+
+  .accordion--open & {
+    padding: $spacing-md $spacing-lg $spacing-lg;
+  }
+}

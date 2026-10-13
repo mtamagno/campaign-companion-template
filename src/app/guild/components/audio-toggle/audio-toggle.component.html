@@ -1,0 +1,39 @@
+<!-- Audio Toggle — mute button + volume slider for SFX preferences -->
+<div
+  class="audio-toggle"
+  role="group"
+  [attr.aria-label]="isItalian() ? 'Effetti sonori' : 'Sound effects'"
+>
+  <button
+    class="audio-toggle__button"
+    type="button"
+    [attr.aria-pressed]="isMuted()"
+    [attr.aria-label]="
+      isMuted()
+        ? isItalian()
+          ? 'Riattiva effetti sonori'
+          : 'Unmute sound effects'
+        : isItalian()
+          ? 'Disattiva effetti sonori'
+          : 'Mute sound effects'
+    "
+    (click)="toggleMute()"
+  >
+    <span class="audio-toggle__icon" aria-hidden="true">
+      {{ isMuted() ? '🔇' : '🔊' }}
+    </span>
+  </button>
+
+  <input
+    class="audio-toggle__slider"
+    type="range"
+    min="0"
+    max="1"
+    step="0.05"
+    [value]="volume()"
+    [disabled]="isMuted()"
+    [attr.aria-label]="isItalian() ? 'Volume effetti sonori' : 'Sound effects volume'"
+    (input)="onVolumeInput($event)"
+    (change)="onVolumeCommit()"
+  />
+</div>

@@ -1,0 +1,12 @@
+[
+  {
+    "sourceId": "aria-vale",
+    "targetId": "keeper-rowan",
+    "type": "mentor",
+    "description": {
+      "en": "Rowan taught Aria how to read the old road lights.",
+      "it": "Rowan ha insegnato ad Aria a leggere le antiche luci stradali."
+    },
+    "isBidirectional": true
+  }
+]

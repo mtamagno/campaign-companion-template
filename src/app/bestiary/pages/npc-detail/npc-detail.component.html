@@ -1,0 +1,111 @@
+<!-- NPC Detail Page -->
+@if (isLoading()) {
+  <div class="npc-detail__loading">
+    <app-dice-loader label="Loading NPC data..." [playSound]="false" />
+  </div>
+} @else if (npc(); as npc) {
+  <article class="npc-detail">
+    <!-- Header: Hero banner with profile + name + full-body portrait -->
+    <header class="npc-detail__header">
+      <app-language-toggle />
+      <div class="npc-detail__hero">
+        <div class="npc-detail__portrait-frame">
+          <img
+            class="npc-detail__portrait"
+            [class.is-loaded]="isProfileLoaded()"
+            [src]="displayProfileUrl() ?? npc.profileImageUrl ?? npc.avatar.url"
+            [alt]="npc.name"
+            (load)="isProfileLoaded.set(true)"
+            (error)="onProfileImageError($event)"
+          />
+        </div>
+        <div class="npc-detail__header-info">
+          <h1 class="npc-detail__name">{{ npc.name }}</h1>
+          @if (npc.title) {
+            <p class="npc-detail__title">{{ npc.title }}</p>
+          }
+          <div class="npc-detail__status-badges">
+            <span
+              class="npc-detail__badge"
+              [class.npc-detail__badge--ally]="npc.allegiance === 'ally'"
+              [class.npc-detail__badge--enemy]="npc.allegiance === 'enemy'"
+              [class.npc-detail__badge--neutral]="npc.allegiance === 'neutral'"
+            >
+              @switch (npc.allegiance) {
+                @case ('ally') {
+                  Ally
+                }
+                @case ('enemy') {
+                  Enemy
+                }
+                @case ('neutral') {
+                  Neutral
+                }
+              }
+            </span>
+            <span
+              class="npc-detail__badge"
+              [class.npc-detail__badge--alive]="npc.isAlive"
+              [class.npc-detail__badge--dead]="!npc.isAlive"
+            >
+              {{ npc.isAlive ? 'Alive' : 'Dead' }}
+            </span>
+          </div>
+        </div>
+        @if (npc.portraitImageUrl) {
+          <div class="npc-detail__fullbody-frame">
+            <img
+              class="npc-detail__fullbody"
+              [class.is-loaded]="isPortraitLoaded()"
+              [src]="displayPortraitUrl() ?? npc.portraitImageUrl"
+              [alt]="npc.name + ' full body'"
+              (load)="isPortraitLoaded.set(true)"
+              (error)="onPortraitImageError($event)"
+            />
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Profile -->
+    <section class="npc-detail__section">
+      <app-accordion title="Profile" icon="📜" [startOpen]="true">
+        <div class="npc-detail__profile-grid">
+          <div class="npc-detail__profile-item">
+            <h3>Description</h3>
+            <p>{{ npc.profile.description | bilingual }}</p>
+          </div>
+          <div class="npc-detail__profile-item">
+            <h3>Role</h3>
+            <p>{{ npc.profile.role | bilingual }}</p>
+          </div>
+          <div class="npc-detail__profile-item">
+            <h3>Personality</h3>
+            <p>{{ npc.profile.personality | bilingual }}</p>
+          </div>
+          <div class="npc-detail__profile-item">
+            <h3>Location</h3>
+            <p>{{ npc.profile.location | bilingual }}</p>
+          </div>
+          <div class="npc-detail__profile-item npc-detail__profile-item--full">
+            <h3>Known History</h3>
+            <p>{{ npc.profile.knownHistory | bilingual }}</p>
+          </div>
+        </div>
+      </app-accordion>
+    </section>
+
+    <!-- Gallery -->
+    @if (npc.gallery.length > 0) {
+      <section class="npc-detail__section">
+        <app-accordion title="Gallery" icon="🖼️" [startOpen]="true">
+          <app-image-gallery [images]="npc.gallery" galleryTitle="" />
+        </app-accordion>
+      </section>
+    }
+  </article>
+} @else {
+  <div class="npc-detail__not-found">
+    <p>NPC not found.</p>
+  </div>
+}

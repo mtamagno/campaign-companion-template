@@ -1,0 +1,34 @@
+<!-- Main Application Layout — Sidebar + Content -->
+<a class="skip-link" href="#main-content">
+  {{ isItalian() ? 'Vai al contenuto principale' : 'Skip to main content' }}
+</a>
+
+<div class="app-layout">
+  <!-- Mobile hamburger toggle -->
+  <button
+    class="app-layout__hamburger"
+    type="button"
+    (click)="toggleSidebar()"
+    aria-controls="app-sidebar"
+    [attr.aria-expanded]="isSidebarOpen()"
+    [attr.aria-label]="isItalian() ? 'Apri o chiudi la navigazione' : 'Toggle navigation'"
+  >
+    ☰
+  </button>
+
+  <!-- Sidebar navigation -->
+  <app-sidebar id="app-sidebar" [isOpen]="isSidebarOpen()" (sidebarClose)="closeSidebar()" />
+
+  <!-- Mobile backdrop overlay -->
+  @if (isSidebarOpen()) {
+    <div class="app-layout__backdrop" (click)="closeSidebar()" role="presentation"></div>
+  }
+
+  <!-- Main content area -->
+  <main id="main-content" class="app-layout__content" tabindex="-1">
+    <app-site-command-bar />
+    <div class="app-layout__route-wrapper">
+      <router-outlet />
+    </div>
+  </main>
+</div>

@@ -1,0 +1,15 @@
+<!-- Language Toggle — IT/EN switch button -->
+<button
+  class="lang-toggle"
+  type="button"
+  [attr.aria-label]="'Switch language to ' + (currentLanguage() === 'it' ? 'English' : 'Italiano')"
+  (click)="toggle()"
+>
+  <span class="lang-toggle__option" [class.lang-toggle__option--active]="currentLanguage() === 'it'"
+    >IT</span
+  >
+  <span class="lang-toggle__separator">/</span>
+  <span class="lang-toggle__option" [class.lang-toggle__option--active]="currentLanguage() === 'en'"
+    >EN</span
+  >
+</button>

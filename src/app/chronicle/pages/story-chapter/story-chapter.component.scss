@@ -1,0 +1,222 @@
+// ============================================
+// 📖 story-chapter.component.scss
+// Book-style typography for prose narrative pages.
+// Serif fonts, wide margins, elegant spacing — like a novel chapter.
+// Supports inline session images between prose sections.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+// --- 📄 Page container ---
+.story-chapter {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: $spacing-2xl $spacing-lg;
+
+  // --- 📌 Header: chapter label, title, ornament ---
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-2xl;
+    padding-bottom: $spacing-lg;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+    position: relative;
+  }
+
+  &__chapter-label {
+    font-family: $font-family-heading;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    letter-spacing: $letter-spacing-wide;
+    color: $color-text-accent;
+    margin-bottom: $spacing-md;
+    line-height: $line-height-tight;
+  }
+
+  &__ornament {
+    font-size: $font-size-xl;
+    color: $color-gold-muted;
+    margin-top: $spacing-sm;
+  }
+
+  // --- 📖 Prose body — book-style typography ---
+  &__body {
+    margin-bottom: $spacing-2xl;
+  }
+
+  &__prose {
+    font-family: $font-family-body;
+    font-size: $font-size-md;
+    font-weight: $font-weight-normal;
+    line-height: $line-height-relaxed;
+    color: $color-text-primary;
+    text-align: justify;
+
+    // Paragraph spacing — book style with text indent
+    p {
+      margin-bottom: $spacing-md;
+      text-indent: 2em;
+
+      &:first-child {
+        text-indent: 0;
+      }
+    }
+
+    // Emphasis and strong — keep readable
+    em {
+      font-style: italic;
+      color: $color-parchment-light;
+    }
+
+    strong {
+      font-weight: $font-weight-semibold;
+      color: $color-text-accent;
+    }
+
+    // Drop cap only on the first section's first paragraph
+    &--first {
+      @include drop-cap;
+    }
+  }
+
+  // --- ⚜️ Ornate divider between prose body and gallery ---
+  &__divider {
+    @include ornate-divider;
+  }
+
+  // --- ⁂ Scene break decoration between prose sections ---
+  &__scene-break {
+    text-align: center;
+    font-size: $font-size-lg;
+    color: $color-gold-muted;
+    letter-spacing: $letter-spacing-wider;
+    margin: $spacing-xl 0;
+  }
+
+  // --- 🖼️ Inline session images between prose sections ---
+  &__inline-image {
+    margin: $spacing-xl auto;
+    text-align: center;
+    max-width: 100%;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: $border-radius-md;
+      border: $border-width-thin solid $color-border-subtle;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  &__inline-caption {
+    font-family: $font-family-body;
+    font-size: $font-size-sm;
+    font-style: italic;
+    color: $color-text-muted;
+    margin-top: $spacing-sm;
+    line-height: $line-height-base;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__no-prose {
+    font-family: $font-family-body;
+    font-size: $font-size-md;
+    font-style: italic;
+    color: $color-text-muted;
+    text-align: center;
+    padding: $spacing-2xl 0;
+  }
+
+  // --- 🖼️ Session gallery — images without specific section placement ---
+  &__gallery {
+    margin-bottom: $spacing-2xl;
+    padding-top: $spacing-lg;
+    border-top: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__gallery-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    color: $color-text-accent;
+    text-align: center;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $spacing-md;
+  }
+
+  &__gallery-item {
+    text-align: center;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: $border-radius-md;
+      border: $border-width-thin solid $color-border-subtle;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__gallery-caption {
+    font-family: $font-family-body;
+    font-size: $font-size-xs;
+    font-style: italic;
+    color: $color-text-muted;
+    margin-top: $spacing-xs;
+    line-height: $line-height-base;
+  }
+
+  // --- 🔙 Footer: back link ---
+  &__footer {
+    padding-top: $spacing-lg;
+    border-top: $border-width-thin solid $color-border-subtle;
+    text-align: center;
+  }
+
+  &__back-link {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    color: $color-text-link;
+    text-decoration: none;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-text-link-hover;
+    }
+  }
+
+  // --- 🔄 Loading state ---
+  &__loading {
+    text-align: center;
+    padding: $spacing-3xl 0;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  // --- ❓ Not found state ---
+  &__not-found {
+    text-align: center;
+    padding: $spacing-3xl 0;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+}

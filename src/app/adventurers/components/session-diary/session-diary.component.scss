@@ -1,0 +1,29 @@
+// ============================================
+// 📖 session-diary.component.scss
+// Vertical timeline layout for character diary entries.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.session-diary {
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0 0 $spacing-lg;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  // --- Timeline with left border ---
+  &__timeline {
+    @include flex-column;
+    gap: $spacing-lg;
+    padding-left: $spacing-lg;
+    border-left: $border-width-default solid $color-border-accent;
+    margin-left: $spacing-sm;
+  }
+}

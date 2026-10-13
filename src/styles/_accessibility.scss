@@ -1,0 +1,21 @@
+// ============================================
+// Global accessibility affordances
+// ============================================
+
+@use 'variables' as *;
+
+:where(a, button, input, select, textarea, [role='button'], [tabindex]):focus-visible {
+  outline: $border-width-default solid $color-gold-light;
+  outline-offset: $spacing-2xs;
+}
+
+::selection {
+  color: $color-bg-void;
+  background: $color-gold-light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,142 @@
+// ============================================
+// 🔒 private-profile.component.scss
+// Secret profile section with locked/unlocked states.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.private-profile {
+  // --- Header ---
+  &__header {
+    @include flex-between;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+  }
+
+  &__lock-btn {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    color: $color-text-muted;
+    background: none;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-sm;
+    padding: $spacing-xs $spacing-sm;
+    cursor: pointer;
+    @include transition-colors;
+
+    &:hover {
+      color: $color-danger-light;
+      border-color: $color-danger;
+    }
+  }
+
+  // --- Unlocked content ---
+  &__content {
+    @include flex-column;
+    gap: $spacing-lg;
+    animation: fade-in-up $transition-base;
+  }
+
+  &__item {
+    @include flex-column;
+    gap: $spacing-xs;
+
+    h3 {
+      font-family: $font-family-heading;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-gold;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    p {
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      line-height: $line-height-relaxed;
+      margin: 0;
+    }
+
+    &--dm {
+      @include surface-elevated;
+      padding: $spacing-md;
+      border-left: 3px solid $color-warning;
+
+      h3 {
+        color: $color-warning-light;
+      }
+    }
+  }
+
+  &__secrets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    @include flex-column;
+    gap: $spacing-xs;
+
+    li {
+      padding-left: $spacing-md;
+      position: relative;
+      color: $color-text-primary;
+      line-height: $line-height-relaxed;
+
+      &::before {
+        content: '▸';
+        position: absolute;
+        left: 0;
+        color: $color-gold-dark;
+      }
+    }
+  }
+
+  // --- Locked state ---
+  &__locked {
+    @include flex-center;
+    @include flex-column;
+    padding: $spacing-2xl;
+    text-align: center;
+    color: $color-text-muted;
+    gap: $spacing-md;
+  }
+
+  &__lock-icon {
+    font-size: $font-size-4xl;
+    opacity: 0.5;
+  }
+
+  &__unlock-btn {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    color: $color-gold-light;
+    background: $color-bg-elevated;
+    border: $border-width-thin solid $color-gold-dark;
+    border-radius: $border-radius-sm;
+    padding: $spacing-sm $spacing-lg;
+    cursor: pointer;
+    @include transition-colors;
+
+    &:hover {
+      background: $color-gold-dark;
+      color: $color-text-primary;
+      box-shadow: $shadow-glow-gold;
+    }
+  }
+}

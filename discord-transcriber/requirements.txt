@@ -1,0 +1,11 @@
+# Receive-side DAVE support is not in a stable Pycord release yet. Keep this
+# commit pinned so a future change to the PR cannot silently break the bot.
+py-cord[voice] @ git+https://github.com/Pycord-Development/pycord.git@10a5e8cf13bd8db21f95baf62cf866056d1e1091
+davey>=0.1.6,<1
+faster-whisper>=1.2,<2
+# CUDA 12 runtime kept inside the virtual environment (Windows/NVIDIA GPU).
+nvidia-cublas-cu12>=12.9,<13; platform_system == "Windows"
+nvidia-cudnn-cu12>=9.27,<10; platform_system == "Windows"
+# faster-whisper 1.2 calls av.open(metadata_errors=...), removed in PyAV 19.
+av>=11,<17
+python-dotenv>=1.0,<2

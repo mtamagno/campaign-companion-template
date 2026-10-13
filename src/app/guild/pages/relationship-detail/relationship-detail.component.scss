@@ -1,0 +1,295 @@
+// ============================================
+// 🔗 relationship-detail.component.scss
+// Relationship detail page — dual avatar header, event timeline,
+// quotes section, and evolution tracker.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.rel-detail {
+  @include flex-column;
+  gap: $spacing-2xl;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fade-in-up $transition-base;
+
+  // --- Dual avatar header ---
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xl;
+    padding: $spacing-xl 0;
+
+    @include respond-below(md) {
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+  }
+
+  &__entity {
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__avatar {
+    @include avatar(96px);
+    border-radius: 50%;
+    border: $border-width-thick solid $color-border-accent;
+    box-shadow: $shadow-glow-gold;
+  }
+
+  &__entity-name {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    text-align: center;
+  }
+
+  // --- Bond section (between avatars) ---
+  &__bond {
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  &__bond-icon {
+    font-size: $font-size-2xl;
+  }
+
+  &__bond-type {
+    font-family: $font-family-heading;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-accent;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__bond-bidi {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  // --- Sections ---
+  &__section {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__section-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    padding-bottom: $spacing-xs;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__description {
+    font-size: $font-size-md;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    font-style: italic;
+    margin: 0;
+  }
+
+  // --- Timeline ---
+  &__timeline {
+    @include flex-column;
+    gap: 0;
+    padding-left: $spacing-lg;
+    border-left: $border-width-default solid $color-border-accent;
+  }
+
+  &__event {
+    position: relative;
+    padding: $spacing-md 0 $spacing-md $spacing-lg;
+  }
+
+  &__event-dot {
+    position: absolute;
+    left: calc(-#{$spacing-lg} - 5px);
+    top: $spacing-lg;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: $color-gold;
+    border: $border-width-default solid $color-bg-base;
+  }
+
+  &__event-content {
+    @include surface-card;
+    padding: $spacing-md;
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__event-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    margin: 0;
+  }
+
+  &__event-description {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  &__event-session {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  // --- Quotes ---
+  &__quotes {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__quote {
+    @include surface-elevated;
+    padding: $spacing-lg;
+    margin: 0;
+    border-left: $border-width-thick solid $color-gold-dark;
+  }
+
+  &__quote-text {
+    font-size: $font-size-md;
+    color: $color-text-primary;
+    font-style: italic;
+    line-height: $line-height-relaxed;
+    margin: 0 0 $spacing-sm;
+  }
+
+  &__quote-attribution {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    color: $color-text-accent;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  // --- Evolution ---
+  &__evolution {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__evo-entry {
+    @include surface-card;
+    padding: $spacing-md;
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__evo-change {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__evo-type {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    color: $color-text-muted;
+    padding: $spacing-2xs $spacing-sm;
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-sm;
+
+    &--current {
+      color: $color-gold-light;
+      border-color: $color-gold-dark;
+      background-color: rgba($color-gold, 0.1);
+    }
+  }
+
+  &__evo-arrow {
+    color: $color-text-muted;
+    font-size: $font-size-lg;
+  }
+
+  &__evo-note {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  &__evo-session {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  // --- Back link ---
+  &__back {
+    padding-top: $spacing-lg;
+    border-top: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__back-link {
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    color: $color-text-link;
+    text-decoration: none;
+    letter-spacing: $letter-spacing-wide;
+    @include transition-colors;
+
+    &:hover {
+      color: $color-text-link-hover;
+    }
+  }
+
+  // --- Loading / Not found ---
+  &__loading {
+    @include flex-center;
+    min-height: 300px;
+    color: $color-text-muted;
+  }
+
+  &__not-found {
+    @include flex-center;
+    @include flex-column;
+    min-height: 400px;
+    gap: $spacing-md;
+    text-align: center;
+  }
+
+  &__not-found-icon {
+    font-size: $font-size-4xl;
+    opacity: 0.6;
+  }
+
+  &__not-found-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  &__not-found-text {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    font-style: italic;
+    margin: 0;
+  }
+}

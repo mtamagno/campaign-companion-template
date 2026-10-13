@@ -1,0 +1,37 @@
+{
+  "name": "campaign-companion-template",
+  "version": "1.0.0",
+  "description": "A self-hosted, data-driven campaign companion for tabletop role-playing games.",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "node scripts/generate-thumbnails.cjs && node scripts/generate-display-images.cjs && ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "generate:thumbs": "node scripts/generate-thumbnails.cjs",
+    "generate:display": "node scripts/generate-display-images.cjs"
+  },
+  "private": true,
+  "license": "MIT",
+  "packageManager": "npm@11.11.0",
+  "dependencies": {
+    "@angular/common": "^21.2.25",
+    "@angular/compiler": "^21.2.25",
+    "@angular/core": "^21.2.25",
+    "@angular/forms": "^21.2.25",
+    "@angular/platform-browser": "^21.2.25",
+    "@angular/router": "^21.2.25",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.26",
+    "@angular/cli": "^21.2.26",
+    "@angular/compiler-cli": "^21.2.25",
+    "prettier": "^3.8.1",
+    "sharp": "^0.34.5",
+    "typescript": "~5.9.2"
+  }
+}

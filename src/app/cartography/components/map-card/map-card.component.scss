@@ -1,0 +1,112 @@
+// ============================================
+// 🗺️ map-card.component.scss
+// Location preview card — image + name + status badges.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.map-card {
+  display: block;
+  @include surface-card;
+  @include card-hover-lift;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $color-border-accent;
+  }
+
+  // --- Image ---
+  &__image-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: $color-bg-deep;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include transition-all;
+
+    @media (hover: hover) {
+      .map-card:hover & {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // --- Info block ---
+  &__info {
+    padding: $spacing-md $spacing-lg $spacing-lg;
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__name {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    margin: 0;
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__region {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin: 0;
+    font-style: italic;
+  }
+
+  // --- Meta row ---
+  &__meta {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: $spacing-xs;
+  }
+
+  &__status {
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    padding: $spacing-2xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    border: $border-width-thin solid;
+
+    &--completed {
+      color: $color-success;
+      border-color: $color-success;
+      background-color: rgba($color-success, 0.1);
+    }
+
+    &--in-progress {
+      color: $color-warning;
+      border-color: $color-warning;
+      background-color: rgba($color-warning, 0.1);
+    }
+
+    &--unexplored {
+      color: $color-text-muted;
+      border-color: $color-border-default;
+      background-color: rgba($color-text-muted, 0.1);
+    }
+  }
+
+  &__discoveries {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+}

@@ -1,0 +1,40 @@
+<!-- Image Gallery — Responsive thumbnail grid with lightbox integration -->
+@if (images().length > 0) {
+  <section class="gallery">
+    @if (galleryTitle()) {
+      <h3 class="gallery__title">{{ galleryTitle() }}</h3>
+    }
+
+    <div class="gallery__grid">
+      @for (image of images(); track image.url; let i = $index) {
+        <button
+          class="gallery__item"
+          type="button"
+          (click)="openLightbox(i)"
+          [attr.aria-label]="'View ' + image.alt"
+        >
+          <img
+            class="gallery__thumbnail"
+            [src]="thumbnailUrl(image.url)"
+            [alt]="image.alt"
+            loading="lazy"
+            (load)="$event.target.classList.add('is-loaded')"
+            (error)="onThumbnailError($event, image.url)"
+          />
+          @if (image.caption) {
+            <span class="gallery__caption">{{ image.caption }}</span>
+          }
+        </button>
+      }
+    </div>
+
+    @if (isLightboxOpen) {
+      <app-image-lightbox
+        [images]="images()"
+        [currentIndex]="selectedIndex()"
+        (indexChange)="navigateTo($event)"
+        (lightboxClose)="closeLightbox()"
+      />
+    }
+  </section>
+}

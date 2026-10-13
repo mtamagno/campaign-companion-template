@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+  <!-- Outer icosahedron silhouette (hexagonal projection) -->
+  <polygon points="50,6 91,30 91,70 50,94 9,70 9,30" />
+  <!-- Top triangle face -->
+  <polygon points="50,6 91,30 50,38 9,30" />
+  <!-- Bottom triangle face -->
+  <polygon points="9,70 50,62 91,70 50,94" />
+  <!-- Internal diagonals on side faces -->
+  <line x1="50" y1="38" x2="9" y2="70" />
+  <line x1="50" y1="38" x2="91" y2="70" />
+  <line x1="50" y1="38" x2="50" y2="62" />
+  <line x1="9" y1="30" x2="50" y2="62" />
+  <line x1="91" y1="30" x2="50" y2="62" />
+  <!-- "20" label on the front-center face -->
+  <text x="50" y="56" text-anchor="middle" font-family="Cinzel, Palatino, Georgia, serif" font-size="14" font-weight="700" fill="currentColor" stroke="none">20</text>
+</svg>

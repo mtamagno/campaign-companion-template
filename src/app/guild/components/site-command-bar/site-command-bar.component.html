@@ -1,0 +1,128 @@
+<div class="command-bar">
+  <nav
+    class="command-bar__breadcrumbs"
+    [attr.aria-label]="isItalian() ? 'Percorso di navigazione' : 'Breadcrumb'"
+  >
+    @for (crumb of breadcrumbs(); track crumb.url; let last = $last) {
+      @if (!last) {
+        <a class="command-bar__crumb" [routerLink]="crumb.url">{{ crumb.label }}</a>
+        <span class="command-bar__separator" aria-hidden="true">/</span>
+      } @else {
+        <span class="command-bar__crumb command-bar__crumb--current" aria-current="page">{{
+          crumb.label
+        }}</span>
+      }
+    }
+  </nav>
+
+  <div class="command-bar__actions">
+    @if (activeCampaignName(); as campaignName) {
+      <a class="command-bar__campaign-switch" routerLink="/">
+        <span class="command-bar__campaign-dot" aria-hidden="true"></span>
+        <span class="command-bar__campaign-name">{{ campaignName }}</span>
+        <span class="command-bar__switch-copy">{{ isItalian() ? 'Cambia' : 'Switch' }}</span>
+      </a>
+    }
+    <button
+      class="command-bar__search"
+      type="button"
+      (click)="open()"
+      [attr.aria-label]="isItalian() ? 'Apri la navigazione rapida' : 'Open quick navigation'"
+    >
+      <span aria-hidden="true">&#9906;</span>
+      <span class="command-bar__search-label">{{ isItalian() ? 'Vai a...' : 'Go to...' }}</span>
+      <kbd>Ctrl K</kbd>
+    </button>
+  </div>
+</div>
+
+@if (isOpen()) {
+  <div class="command-palette" (click)="close()">
+    <section
+      class="command-palette__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="command-palette-title"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="command-palette__header">
+        <span class="command-palette__mark" aria-hidden="true">&#10022;</span>
+        <div>
+          <h2 id="command-palette-title" class="command-palette__title">
+            {{ isItalian() ? 'Dove vuoi andare?' : 'Where would you like to go?' }}
+          </h2>
+          <p class="command-palette__subtitle">
+            {{
+              isItalian()
+                ? 'Cerca una sezione, una campagna o uno strumento'
+                : 'Find a section, campaign or tool'
+            }}
+          </p>
+        </div>
+        <button
+          class="command-palette__close"
+          type="button"
+          (click)="close()"
+          [attr.aria-label]="isItalian() ? 'Chiudi ricerca' : 'Close search'"
+        >
+          &times;
+        </button>
+      </header>
+
+      <label class="command-palette__search-box">
+        <span aria-hidden="true">&#9906;</span>
+        <input
+          #searchInput
+          type="text"
+          role="searchbox"
+          inputmode="search"
+          autocomplete="off"
+          [value]="query()"
+          (input)="updateQuery($event)"
+          (keydown.escape)="close()"
+          [placeholder]="
+            activeCampaignId()
+              ? isItalian()
+                ? 'Es. incantesimi, PNG, mappe...'
+                : 'Try spells, NPCs, maps...'
+              : isItalian()
+                ? 'Es. campagne, incantesimi, armeria...'
+                : 'Try campaigns, spells, armory...'
+          "
+        />
+        <kbd>Esc</kbd>
+      </label>
+
+      <div class="command-palette__results" role="listbox">
+        @for (command of filteredCommands(); track command.url) {
+          <button
+            class="command-palette__result"
+            type="button"
+            role="option"
+            (click)="navigate(command.url)"
+          >
+            <span class="command-palette__result-icon" aria-hidden="true">{{ command.icon }}</span>
+            <span class="command-palette__result-copy">
+              <strong>{{ command.title }}</strong>
+              <small>{{ command.detail }}</small>
+            </span>
+            <span class="command-palette__result-arrow" aria-hidden="true">&rarr;</span>
+          </button>
+        } @empty {
+          <div class="command-palette__empty">
+            <span aria-hidden="true">&#9671;</span>
+            <strong>{{ isItalian() ? 'Nessun passaggio trovato' : 'No path found' }}</strong>
+            <small>{{
+              isItalian() ? 'Prova con un termine diverso.' : 'Try a different search term.'
+            }}</small>
+          </div>
+        }
+      </div>
+
+      <footer class="command-palette__footer">
+        <span><kbd>Tab</kbd> {{ isItalian() ? 'naviga' : 'navigate' }}</span>
+        <span><kbd>Esc</kbd> {{ isItalian() ? 'chiudi' : 'close' }}</span>
+      </footer>
+    </section>
+  </div>
+}

@@ -1,0 +1,136 @@
+// ============================================
+// 🗺️ map-detail.component.scss
+// Full location detail page — description, gallery, discoveries.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.map-detail {
+  @include flex-column;
+  gap: $spacing-2xl;
+  animation: fade-in-up $transition-base;
+
+  // --- Header ---
+  &__header {
+    @include flex-column;
+    gap: $spacing-xs;
+    text-align: center;
+  }
+
+  &__name {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+  }
+
+  &__region {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-style: italic;
+    margin: 0;
+  }
+
+  &__status {
+    display: inline-block;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    border: $border-width-thin solid;
+    align-self: center;
+
+    &--completed {
+      color: $color-success;
+      border-color: $color-success;
+      background-color: rgba($color-success, 0.1);
+    }
+
+    &--in-progress {
+      color: $color-warning;
+      border-color: $color-warning;
+      background-color: rgba($color-warning, 0.1);
+    }
+
+    &--unexplored {
+      color: $color-text-muted;
+      border-color: $color-border-default;
+      background-color: rgba($color-text-muted, 0.1);
+    }
+  }
+
+  // --- Section containers ---
+  &__section {
+    @include surface-card;
+    padding: $spacing-xl;
+  }
+
+  &__section-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0 0 $spacing-lg;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  // --- Discoveries ---
+  &__discoveries {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__discovery {
+    @include flex-column;
+    gap: $spacing-xs;
+    padding: $spacing-md;
+    @include surface-elevated;
+    border-radius: $border-radius-md;
+    border-left: 3px solid $color-gold;
+  }
+
+  &__discovery-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    color: $color-gold;
+    margin: 0;
+  }
+
+  &__discovery-desc {
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+
+  // --- Loading / not found ---
+  &__loading,
+  &__not-found {
+    @include flex-center;
+    @include flex-column;
+    min-height: 300px;
+    color: $color-text-muted;
+    text-align: center;
+  }
+}

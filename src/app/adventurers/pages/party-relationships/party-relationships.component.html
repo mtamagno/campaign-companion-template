@@ -1,0 +1,55 @@
+<!-- Party Relationships Page -->
+@if (isLoading()) {
+  <div class="party-relationships__loading">
+    <app-dice-loader
+      [label]="lang() === 'it' ? 'Sto intrecciando i legami...' : 'Weaving party bonds...'"
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <article class="party-relationships">
+    <header class="party-relationships__header">
+      <span class="party-relationships__eyebrow">
+        {{ lang() === 'it' ? 'Compagnia' : 'Adventuring party' }}
+      </span>
+      <div class="party-relationships__heading-row">
+        <h1 class="party-relationships__title">
+          {{ lang() === 'it' ? 'Legami del gruppo' : 'Party Bonds' }}
+        </h1>
+        <app-language-toggle />
+      </div>
+      <p class="party-relationships__subtitle">
+        {{
+          lang() === 'it'
+            ? 'I legami tra avventurieri, forgiati nel pericolo e messi alla prova dal destino.'
+            : 'The bonds between adventurers, forged in danger and tested by fate.'
+        }}
+      </p>
+    </header>
+
+    @if (relationships().length === 0) {
+      <div class="empty-state party-relationships__empty">
+        <span class="empty-state__icon" aria-hidden="true">◇</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it' ? 'I legami devono ancora nascere' : 'The bonds are yet to be forged'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'Amicizie, rivalità e promesse appariranno qui quando l’avventura avrà lasciato il segno sulla compagnia.'
+              : 'Friendships, rivalries, and promises will appear here as the adventure leaves its mark on the party.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <app-relationship-graph
+        [nodes]="nodes()"
+        [relationships]="relationships()"
+        (edgeClick)="navigateToRelationship($event)"
+        (nodeProfileNavigate)="navigateToCharacter($event)"
+      />
+    }
+  </article>
+}

@@ -1,0 +1,183 @@
+<!-- Relationship Graph: circular layout with focus mode and keyboard support -->
+<div class="relationship-graph">
+  @if (graphTitle()) {
+    <h2 class="relationship-graph__title">{{ graphTitle() }}</h2>
+  }
+
+  @if (nodes().length === 0 || relationships().length === 0) {
+    <p class="relationship-graph__empty">
+      {{ lang() === 'it' ? 'Nessuna relazione da mostrare.' : 'No relationships to display.' }}
+    </p>
+  } @else {
+    <p class="relationship-graph__instructions">
+      {{
+        lang() === 'it'
+          ? 'Seleziona un ritratto per mettere a fuoco i suoi legami.'
+          : 'Select a portrait to focus on its connections.'
+      }}
+    </p>
+
+    <div class="relationship-graph__container">
+      <svg
+        class="relationship-graph__svg"
+        [attr.viewBox]="viewBox()"
+        [attr.aria-label]="
+          lang() === 'it' ? 'Mappa interattiva delle relazioni' : 'Interactive relationship map'
+        "
+        role="img"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        @for (
+          edge of displayEdges();
+          track edge.relationship.sourceId + '-' + edge.relationship.targetId
+        ) {
+          <g
+            class="graph-edge"
+            [class.graph-edge--dimmed]="!isEdgeActive(edge)"
+            [attr.aria-label]="formatRelationshipType(edge.relationship.type)"
+            tabindex="0"
+            role="button"
+            (mouseenter)="handleEdgeEnter(edge)"
+            (mouseleave)="handleEdgeLeave()"
+            (focus)="handleEdgeEnter(edge)"
+            (blur)="handleEdgeLeave()"
+            (click)="handleEdgeClick(edge)"
+            (keydown.enter)="handleEdgeClick(edge)"
+            (keydown.space)="handleEdgeClick(edge)"
+          >
+            <line
+              class="graph-edge__hitarea"
+              [attr.x1]="edge.x1"
+              [attr.y1]="edge.y1"
+              [attr.x2]="edge.x2"
+              [attr.y2]="edge.y2"
+            />
+            <line
+              class="graph-edge__line"
+              [attr.x1]="edge.x1"
+              [attr.y1]="edge.y1"
+              [attr.x2]="edge.x2"
+              [attr.y2]="edge.y2"
+              [attr.stroke]="getEdgeColor(edge.relationship.type)"
+            />
+            <text
+              class="graph-edge__label"
+              [attr.x]="edge.labelX"
+              [attr.y]="edge.labelY - 8"
+              text-anchor="middle"
+            >
+              {{ getEdgeEmoji(edge.relationship.type) }}
+            </text>
+            @if (edge.relationship.isBidirectional) {
+              <text
+                class="graph-edge__bidi"
+                [attr.x]="edge.labelX"
+                [attr.y]="edge.labelY + 10"
+                text-anchor="middle"
+              >
+                ↔
+              </text>
+            }
+          </g>
+        }
+
+        @for (pos of nodePositions(); track pos.node.id) {
+          <g
+            class="graph-node"
+            [class]="getNodeClass(pos.node)"
+            [class.graph-node--dimmed]="!isNodeActive(pos.node)"
+            [class.graph-node--focused]="focusedNodeId() === pos.node.id"
+            [style.transform]="getNodeTransform(pos)"
+            [attr.aria-label]="pos.node.name"
+            [attr.aria-pressed]="focusedNodeId() === pos.node.id"
+            tabindex="0"
+            role="button"
+            (click)="handleNodeClick(pos.node)"
+            (keydown.enter)="handleNodeClick(pos.node)"
+            (keydown.space)="handleNodeClick(pos.node)"
+          >
+            <circle
+              class="graph-node__circle"
+              [attr.cx]="pos.x"
+              [attr.cy]="pos.y"
+              [attr.r]="nodeRadius"
+            />
+            <clipPath [attr.id]="'clip-' + pos.node.id">
+              <circle [attr.cx]="pos.x" [attr.cy]="pos.y" [attr.r]="nodeRadius - 3" />
+            </clipPath>
+            <image
+              [attr.x]="pos.x - nodeRadius + 3"
+              [attr.y]="pos.y - nodeRadius + 3"
+              [attr.width]="(nodeRadius - 3) * 2"
+              [attr.height]="(nodeRadius - 3) * 2"
+              [attr.href]="pos.node.avatarUrl"
+              [attr.clip-path]="'url(#clip-' + pos.node.id + ')'"
+              preserveAspectRatio="xMidYMid slice"
+            />
+            <circle
+              class="graph-node__ring"
+              [attr.cx]="pos.x"
+              [attr.cy]="pos.y"
+              [attr.r]="nodeRadius"
+            />
+            <text
+              class="graph-node__name"
+              [attr.x]="pos.x"
+              [attr.y]="pos.y + nodeRadius + 18"
+              text-anchor="middle"
+            >
+              {{ pos.node.name }}
+            </text>
+          </g>
+        }
+      </svg>
+
+      @if (focusedNode(); as focused) {
+        @if (focusTooltipVisible()) {
+          <div class="relationship-graph__focus-tooltip">
+            <span class="relationship-graph__focus-tooltip-name">{{ focused.name }}</span>
+            <button
+              class="relationship-graph__focus-tooltip-link"
+              type="button"
+              (click)="handleProfileNavigate(focused)"
+            >
+              {{ lang() === 'it' ? 'Vedi profilo' : 'View profile' }}
+            </button>
+            <button
+              class="relationship-graph__focus-tooltip-close"
+              type="button"
+              [attr.aria-label]="lang() === 'it' ? 'Chiudi dettaglio' : 'Close details'"
+              (click)="dismissFocusTooltip()"
+            >
+              ×
+            </button>
+          </div>
+        }
+      }
+
+      @if (hoveredEdge(); as edge) {
+        <div
+          class="relationship-graph__tooltip"
+          [style.left.%]="(edge.labelX / viewBoxSize()) * 100"
+          [style.top.%]="(edge.labelY / viewBoxSize()) * 100"
+        >
+          <strong>{{ formatRelationshipType(edge.relationship.type) }}</strong>
+          <p class="relationship-graph__tooltip-desc">
+            {{ edge.relationship.description | bilingual }}
+          </p>
+        </div>
+      }
+    </div>
+
+    <div class="relationship-graph__legend">
+      <span class="relationship-graph__legend-title">
+        {{ lang() === 'it' ? 'Legenda' : 'Legend' }}
+      </span>
+      @for (type of uniqueRelationshipTypes(); track type) {
+        <span class="relationship-graph__legend-item" [style.color]="getEdgeColor(type)">
+          {{ getEdgeEmoji(type) }} {{ formatRelationshipType(type) }}
+        </span>
+      }
+    </div>
+  }
+</div>

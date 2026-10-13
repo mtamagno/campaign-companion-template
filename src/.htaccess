@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# If the requested file or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise, redirect all requests to index.html for Angular routing
+RewriteRule ^(.*)$ index.html [L]

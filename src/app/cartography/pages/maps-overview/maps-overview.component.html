@@ -1,0 +1,50 @@
+<!-- Maps Overview — Location Grid -->
+@if (isLoading()) {
+  <div class="maps-overview__loading">
+    <app-dice-loader
+      [label]="lang() === 'it' ? 'Traccio i confini delle terre...' : 'Charting the lands...'"
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <article class="maps-overview">
+    <header class="maps-overview__header">
+      <h1 class="maps-overview__title">
+        🗺️ {{ lang() === 'it' ? 'Luoghi esplorati' : 'Explored Locations' }}
+      </h1>
+      <p class="maps-overview__subtitle">
+        {{
+          lang() === 'it'
+            ? 'Ogni sentiero percorso, ogni rovina esplorata e ogni rifugio trovato sulla mappa della compagnia.'
+            : "Every trail walked, every cave delved, every town visited — marked on the party's map."
+        }}
+      </p>
+    </header>
+
+    @if (maps().length === 0) {
+      <div class="empty-state maps-overview__empty">
+        <span class="empty-state__icon" aria-hidden="true">⌖</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it'
+              ? 'La mappa è ancora avvolta dalla nebbia'
+              : 'The map is still veiled in mist'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'I luoghi scoperti durante l’avventura compariranno qui dopo ogni sessione.'
+              : 'Locations discovered during the adventure will appear here after each session.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <div class="maps-overview__grid">
+        @for (map of maps(); track map.id) {
+          <app-map-card [map]="map" />
+        }
+      </div>
+    }
+  </article>
+}

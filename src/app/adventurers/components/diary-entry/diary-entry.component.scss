@@ -1,0 +1,56 @@
+// ============================================
+// 📝 diary-entry.component.scss
+// Single timeline entry with dot indicator and parchment style.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.diary-entry {
+  position: relative;
+
+  // --- Timeline dot ---
+  &__dot {
+    position: absolute;
+    left: calc(-#{$spacing-lg} - 5px);
+    top: $spacing-xs;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $color-gold;
+    border: $border-width-default solid $color-bg-base;
+  }
+
+  // --- Content ---
+  &__content {
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__meta {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+  }
+
+  &__date {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-style: italic;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    margin: 0;
+  }
+
+  &__text {
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: $line-height-relaxed;
+    margin: 0;
+  }
+}

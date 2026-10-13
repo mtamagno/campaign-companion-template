@@ -1,0 +1,973 @@
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.character-sheet {
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-md;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__eyebrow,
+  &__spellbook-kicker,
+  &__section-heading > div > span {
+    display: block;
+    margin-bottom: $spacing-xs;
+    color: $color-gold;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-gold-light;
+    font-family: $font-family-heading;
+    font-size: clamp($font-size-xl, 3vw, $font-size-2xl);
+    letter-spacing: $letter-spacing-wide;
+  }
+
+  &__pdf-button {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    color: $color-bg-deep;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    letter-spacing: $letter-spacing-wide;
+    cursor: pointer;
+    background: linear-gradient(135deg, $color-gold-light, $color-gold);
+    border: $border-width-thin solid rgba($color-parchment-light, 0.45);
+    border-radius: $border-radius-sm;
+    box-shadow:
+      $shadow-sm,
+      0 0 18px rgba($color-gold, 0.12);
+    @include transition-colors;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+
+    small {
+      padding-left: $spacing-sm;
+      color: rgba($color-bg-deep, 0.68);
+      font-size: 0.62rem;
+      letter-spacing: $letter-spacing-wider;
+      border-left: $border-width-thin solid rgba($color-bg-deep, 0.3);
+    }
+
+    &:hover:not(:disabled) {
+      color: $color-bg-deep;
+      background: linear-gradient(135deg, $color-parchment-light, $color-gold-light);
+      box-shadow: $shadow-md, $shadow-glow-gold;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-gold-light;
+      outline-offset: 3px;
+    }
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+  }
+
+  &__pdf-spinner {
+    width: 17px;
+    height: 17px;
+    border: 2px solid rgba($color-bg-deep, 0.3);
+    border-top-color: $color-bg-deep;
+    border-radius: 50%;
+    animation: pdf-spin 0.8s linear infinite;
+  }
+
+  &__pdf-error {
+    margin: (-$spacing-sm) 0 $spacing-lg;
+    padding: $spacing-sm $spacing-md;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    background: rgba($color-gothic-burgundy, 0.28);
+    border: $border-width-thin solid rgba($color-gothic-burgundy-light, 0.65);
+    border-radius: $border-radius-sm;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    animation: fade-in-up $transition-base;
+  }
+
+  &__identity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+    padding: $spacing-md $spacing-lg;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 12% 50%, rgba($color-gold, 0.12), transparent 34%),
+      linear-gradient(135deg, $color-bg-elevated, $color-bg-surface);
+    border: $border-width-thin solid $color-border-default;
+    border-left: $border-width-thick solid $color-gold-dark;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-md;
+  }
+
+  &__identity-copy {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    min-width: 0;
+  }
+
+  &__level-seal {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    aspect-ratio: 1;
+    color: $color-gold-light;
+    background: $color-bg-deep;
+    border: $border-width-default solid $color-gold-dark;
+    border-radius: 50%;
+    box-shadow: $shadow-inner, $shadow-glow-gold;
+
+    small {
+      font-family: $font-family-heading;
+      font-size: 0.58rem;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+
+    strong {
+      font-family: $font-family-heading;
+      font-size: $font-size-2xl;
+      line-height: 1;
+    }
+  }
+
+  &__classline {
+    margin: 0 0 $spacing-xs;
+    color: $color-text-primary;
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__identity-meta {
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  &__xp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    span {
+      color: $color-text-muted;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-wider;
+    }
+
+    strong {
+      color: $color-parchment-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-lg;
+    }
+  }
+
+  &__dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: $spacing-sm;
+  }
+
+  &__vital {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0 $spacing-sm;
+    min-height: 92px;
+    padding: $spacing-md;
+    overflow: hidden;
+    background: linear-gradient(145deg, $color-bg-elevated, $color-bg-base);
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+
+    &::after {
+      position: absolute;
+      right: -16px;
+      bottom: -22px;
+      width: 58px;
+      height: 58px;
+      content: '';
+      border: $border-width-thin solid rgba($color-gold, 0.12);
+      border-radius: 50%;
+    }
+
+    &--hp {
+      border-color: rgba($color-gothic-burgundy-light, 0.65);
+
+      .character-sheet__vital-icon,
+      strong {
+        color: $color-gothic-burgundy-light;
+      }
+    }
+
+    strong {
+      align-self: end;
+      color: $color-gold-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-2xl;
+      line-height: 1;
+
+      small {
+        margin-left: $spacing-xs;
+        color: $color-text-secondary;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+
+  &__vital-icon {
+    grid-row: 1 / 3;
+    align-self: center;
+    color: $color-gold-dark;
+    font-size: $font-size-xl;
+  }
+
+  &__vital-label {
+    color: $color-text-muted;
+    font-family: $font-family-heading;
+    font-size: 0.65rem;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__purse {
+    display: flex;
+    grid-column: span 2;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-lg;
+    min-height: 92px;
+    padding: $spacing-md $spacing-lg;
+    background:
+      radial-gradient(circle at 85% 50%, rgba($color-gold, 0.15), transparent 42%),
+      linear-gradient(145deg, $color-bg-deep, $color-bg-base);
+    border: $border-width-thin solid $color-gold-dark;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+  }
+
+  &__purse-heading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $color-gold-light;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+
+    > span:first-child {
+      font-size: $font-size-xl;
+    }
+  }
+
+  &__coins {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+  }
+
+  &__coin {
+    display: flex;
+    align-items: baseline;
+    gap: $spacing-xs;
+    min-width: 62px;
+    padding: $spacing-xs $spacing-sm;
+    background: rgba($color-gold-dark, 0.12);
+    border: $border-width-thin solid rgba($color-gold, 0.35);
+    border-radius: $border-radius-pill;
+
+    strong {
+      color: $color-parchment-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-lg;
+    }
+
+    span {
+      color: $color-gold;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+    }
+  }
+
+  &__panel {
+    padding: $spacing-lg;
+    background: linear-gradient(
+      150deg,
+      rgba($color-bg-elevated, 0.78),
+      rgba($color-bg-surface, 0.92)
+    );
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+  }
+
+  &__section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $spacing-md;
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+
+    h3 {
+      margin: 0;
+      color: $color-parchment-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-lg;
+      letter-spacing: $letter-spacing-wide;
+    }
+  }
+
+  &__ability-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: $spacing-sm;
+  }
+
+  &__ability {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    min-height: 90px;
+    padding: $spacing-sm $spacing-md;
+    overflow: hidden;
+    background: $color-bg-base;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-md;
+
+    &::before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 2px;
+      content: '';
+      background: linear-gradient(90deg, transparent, $color-gold-dark, transparent);
+    }
+  }
+
+  &__ability-name {
+    grid-column: 1 / -1;
+    color: $color-text-muted;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    letter-spacing: $letter-spacing-wider;
+  }
+
+  &__ability-mod {
+    color: $color-gold-light;
+    font-family: $font-family-heading;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+  }
+
+  &__ability-score {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    aspect-ratio: 1;
+    color: $color-text-secondary;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    background: $color-bg-deep;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: 50%;
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-lg;
+  }
+
+  &__list-section {
+    & + & {
+      margin-top: $spacing-lg;
+    }
+
+    h4 {
+      margin: 0 0 $spacing-sm;
+      color: $color-gold;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+  }
+
+  &__tag {
+    padding: $spacing-xs $spacing-sm;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    background: $color-bg-base;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-pill;
+
+    &--accent {
+      color: $color-gold-light;
+      border-color: rgba($color-gold, 0.45);
+    }
+  }
+
+  &__prose-list {
+    margin: 0;
+    color: $color-text-secondary;
+    line-height: $line-height-base;
+  }
+
+  &__feature-list,
+  &__inventory-grid {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: $spacing-sm;
+      padding-bottom: $spacing-sm;
+      color: $color-text-primary;
+      border-bottom: $border-width-thin solid $color-border-subtle;
+
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      span {
+        color: $color-gold-dark;
+      }
+    }
+  }
+
+  &__count {
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $spacing-xs $spacing-lg;
+
+    li {
+      display: flex;
+      gap: $spacing-sm;
+      padding: $spacing-sm 0;
+      color: $color-text-primary;
+      border-bottom: $border-width-thin solid $color-border-subtle;
+
+      span {
+        color: $color-gold-dark;
+        font-size: 0.6rem;
+        line-height: 2.2;
+      }
+    }
+  }
+
+  &__spellbook {
+    position: relative;
+    padding: $spacing-xl;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 100% 0, rgba($color-info, 0.22), transparent 38%),
+      radial-gradient(circle at 0 100%, rgba($color-gothic-burgundy, 0.22), transparent 42%),
+      $color-bg-deep;
+    border: $border-width-default solid $color-border-strong;
+    border-radius: $border-radius-lg;
+    box-shadow:
+      $shadow-lg,
+      inset 0 0 40px rgba($color-bg-void, 0.55);
+
+    &::before {
+      position: absolute;
+      inset: $spacing-sm;
+      content: '';
+      pointer-events: none;
+      border: $border-width-thin solid rgba($color-gold, 0.16);
+      border-radius: $border-radius-md;
+    }
+  }
+
+  &__spellbook-heading {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-lg;
+
+    h3 {
+      margin: 0 0 $spacing-xs;
+      color: $color-parchment-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-2xl;
+      letter-spacing: $letter-spacing-wide;
+    }
+
+    p {
+      max-width: 620px;
+      margin: 0;
+      color: $color-text-secondary;
+      line-height: $line-height-base;
+    }
+  }
+
+  &__casting-stats {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: $spacing-xs;
+    margin: 0;
+
+    div {
+      min-width: 92px;
+      padding: $spacing-sm $spacing-md;
+      text-align: center;
+      background: rgba($color-bg-elevated, 0.72);
+      border: $border-width-thin solid $color-border-default;
+      border-radius: $border-radius-md;
+    }
+
+    dt {
+      color: $color-text-muted;
+      font-family: $font-family-heading;
+      font-size: 0.6rem;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin: $spacing-xs 0 0;
+      color: $color-info-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__slots {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+    padding: $spacing-sm $spacing-md;
+    background: rgba($color-info, 0.1);
+    border: $border-width-thin solid rgba($color-info-light, 0.35);
+    border-radius: $border-radius-md;
+  }
+
+  &__slots-label {
+    margin-right: $spacing-sm;
+    color: $color-text-secondary;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__slot {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-sm;
+    color: $color-info-light;
+    background: $color-bg-base;
+    border-radius: $border-radius-pill;
+
+    span {
+      font-size: $font-size-xs;
+    }
+
+    strong {
+      font-family: $font-family-heading;
+    }
+  }
+
+  &__spell-level {
+    position: relative;
+
+    & + & {
+      margin-top: $spacing-xl;
+    }
+  }
+
+  &__spell-level-heading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
+
+    h4 {
+      margin: 0;
+      color: $color-gold-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-md;
+      letter-spacing: $letter-spacing-wide;
+    }
+
+    > span {
+      display: grid;
+      place-items: center;
+      min-width: 24px;
+      height: 24px;
+      color: $color-text-secondary;
+      font-size: $font-size-xs;
+      background: $color-bg-elevated;
+      border-radius: 50%;
+    }
+  }
+
+  &__spell-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-md;
+  }
+
+  &__spell-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
+    padding: $spacing-md;
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(150deg, rgba($color-bg-elevated, 0.96), rgba($color-bg-base, 0.96));
+    border: $border-width-thin solid $color-border-default;
+    border-top-color: rgba($color-info-light, 0.7);
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    @include card-hover-lift(3px, 0 0 18px rgba($color-info, 0.26));
+
+    &:focus-visible {
+      outline: $border-width-default solid $color-gold;
+      outline-offset: 3px;
+    }
+
+    &--unlinked {
+      border-top-color: $color-border-default;
+    }
+
+    h5 {
+      margin: $spacing-xs 0 $spacing-sm;
+      color: $color-parchment-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-lg;
+      line-height: $line-height-tight;
+    }
+
+    > p {
+      margin: 0 0 $spacing-md;
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      line-height: $line-height-base;
+    }
+  }
+
+  &__spell-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 22px;
+    color: $color-info-light;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+  }
+
+  &__spell-badges {
+    display: flex;
+    gap: $spacing-xs;
+
+    span {
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      color: $color-gold-light;
+      background: rgba($color-gold, 0.1);
+      border: $border-width-thin solid rgba($color-gold, 0.35);
+      border-radius: 50%;
+    }
+  }
+
+  &__spell-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $spacing-xs;
+    margin: auto 0 $spacing-md;
+
+    div {
+      min-width: 0;
+      padding: $spacing-xs;
+      background: rgba($color-bg-deep, 0.65);
+      border-radius: $border-radius-sm;
+    }
+
+    dt {
+      color: $color-text-muted;
+      font-size: 0.6rem;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin: 2px 0 0;
+      overflow-wrap: anywhere;
+      color: $color-text-primary;
+      font-size: $font-size-xs;
+      line-height: $line-height-tight;
+    }
+  }
+
+  &__spell-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: $spacing-sm;
+    color: $color-gold;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+    border-top: $border-width-thin solid $color-border-subtle;
+  }
+
+  &__empty,
+  &__locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    padding: $spacing-2xl;
+    color: $color-text-muted;
+    text-align: center;
+  }
+
+  &__empty-icon,
+  &__lock-icon {
+    font-size: $font-size-4xl;
+    opacity: 0.65;
+  }
+
+  &__empty-title {
+    margin: 0;
+    color: $color-text-secondary;
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+  }
+
+  &__empty-text,
+  &__locked p {
+    max-width: 480px;
+    margin: 0;
+    line-height: $line-height-relaxed;
+  }
+
+  &__unlock-btn {
+    padding: $spacing-sm $spacing-lg;
+    color: $color-gold-light;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wide;
+    cursor: pointer;
+    background: $color-bg-elevated;
+    border: $border-width-thin solid $color-gold-dark;
+    border-radius: $border-radius-sm;
+    @include transition-colors;
+    @include interactive-button;
+
+    &:hover {
+      color: $color-text-primary;
+      background: $color-gold-dark;
+      box-shadow: $shadow-glow-gold;
+    }
+  }
+
+  @include respond-below(lg) {
+    &__dashboard {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    &__purse {
+      grid-column: span 3;
+    }
+
+    &__ability-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    &__inventory-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__spellbook-heading {
+      flex-direction: column;
+    }
+  }
+
+  @include respond-below(md) {
+    &__dashboard,
+    &__columns,
+    &__spell-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &__purse {
+      grid-column: 1 / -1;
+    }
+
+    &__spellbook {
+      padding: $spacing-lg;
+    }
+
+    &__casting-stats {
+      align-self: stretch;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
+  }
+
+  @include respond-below(sm) {
+    &__header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+
+    &__pdf-button {
+      justify-content: center;
+      width: 100%;
+    }
+
+    &__identity {
+      align-items: flex-start;
+      padding: $spacing-md;
+    }
+
+    &__level-seal {
+      width: 52px;
+    }
+
+    &__classline {
+      font-size: $font-size-base;
+    }
+
+    &__xp {
+      display: none;
+    }
+
+    &__dashboard,
+    &__columns,
+    &__inventory-grid,
+    &__spell-grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__purse {
+      grid-column: auto;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__coins {
+      justify-content: flex-start;
+    }
+
+    &__ability-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__panel,
+    &__spellbook {
+      padding: $spacing-md;
+    }
+
+    &__casting-stats {
+      gap: $spacing-2xs;
+
+      div {
+        min-width: 0;
+        padding: $spacing-sm $spacing-xs;
+      }
+    }
+
+    &__slots {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    &__spell-meta {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@keyframes pdf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

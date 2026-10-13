@@ -1,0 +1,118 @@
+// ============================================
+// 📚 story-so-far.component.scss
+// Cumulative session recap — compact parchment-styled digest.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.story-so-far {
+  @include flex-column;
+  gap: $spacing-2xl;
+  animation: fade-in-up $transition-base;
+  max-width: 760px;
+  margin: 0 auto;
+
+  &__header {
+    text-align: center;
+  }
+
+  &__heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-lg;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+  }
+
+  &__subtitle {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-style: italic;
+    margin: $spacing-xs 0 0;
+    line-height: $line-height-relaxed;
+  }
+
+  &__loading {
+    text-align: center;
+    color: $color-text-secondary;
+    font-style: italic;
+    padding: $spacing-xl;
+  }
+
+  &__empty {
+    width: 100%;
+  }
+
+  // --- Campaign-wide recap ---
+  &__overview {
+    border: 1px solid $color-gold;
+    border-radius: $border-radius-md;
+    background: rgba(0, 0, 0, 0.25);
+    padding: $spacing-lg $spacing-xl;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.15);
+    @include drop-cap(2.75rem);
+  }
+
+  // --- Ornate divider between recap and per-session sections ---
+  &__divider {
+    @include ornate-divider;
+  }
+
+  &__overview-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    color: $color-gold-light;
+    margin: 0 0 $spacing-sm;
+    @include text-gold-glow;
+  }
+
+  &__overview-text {
+    margin: 0;
+    line-height: $line-height-relaxed;
+    color: $color-text-primary;
+    font-size: $font-size-md;
+  }
+
+  // --- Per-session collapsible recaps ---
+  &__sessions-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    color: $color-gold-light;
+    margin: 0 0 $spacing-md;
+    @include text-gold-glow;
+  }
+
+  // --- Entry list ---
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__entry {
+    // Accordion handles its own framing; no extra border needed here.
+  }
+
+  &__entry-text {
+    margin: 0;
+    line-height: $line-height-relaxed;
+    color: $color-text-primary;
+  }
+}

@@ -1,0 +1,25 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": ["src/**/*.ts", "src/**/*.json"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/app/adventurers/data/**/*",
+    "src/app/adventurers/pages/character-generator/**/*",
+    "src/app/adventurers/services/characterGenerator.service.ts",
+    "src/app/adventurers/services/characterSheetPdf.service.ts",
+    "src/app/adventurers/services/diceEngine.service.ts",
+    "src/app/adventurers/services/nameGenerator.service.ts",
+    "src/app/adventurers/models/generator.model.ts",
+    "src/app/adventurers/constants/equipmentMapping.constants.ts",
+    "src/app/adventurers/providers/characterImageProvider.ts",
+    "src/app/guild/providers/baseHrefInterceptor.ts",
+    "src/app/guild/components/source-badge/**/*",
+    "src/assets/images/placeholders/**/*"
+  ]
+}

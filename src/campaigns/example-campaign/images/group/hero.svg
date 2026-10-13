@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">The Lantern Road</title>
+  <desc id="desc">An original illustrated placeholder showing lanterns along a road at dusk.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#16213a"/><stop offset="1" stop-color="#553b45"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ffe4a1"/><stop offset=".4" stop-color="#d99a3d"/><stop offset="1" stop-color="#d99a3d" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1260" cy="180" r="92" fill="#e8dcc0" opacity=".72"/>
+  <path d="M0 550 Q260 430 520 560 T1050 520 T1600 500 V900 H0Z" fill="#192822"/>
+  <path d="M560 900 Q745 640 830 490 Q930 650 1100 900Z" fill="#75634f" opacity=".8"/>
+  <g stroke="#1a1714" stroke-width="13" fill="none"><path d="M470 650v-170m-48 0h96"/><path d="M1120 675v-210m-50 0h100"/></g>
+  <g><circle cx="470" cy="500" r="100" fill="url(#glow)"/><rect x="446" y="475" width="48" height="70" rx="8" fill="#f1bd5d" stroke="#211a12" stroke-width="8"/><circle cx="1120" cy="490" r="115" fill="url(#glow)"/><rect x="1094" y="460" width="52" height="78" rx="8" fill="#f1bd5d" stroke="#211a12" stroke-width="8"/></g>
+  <text x="80" y="110" fill="#f4e7c7" font-family="Georgia,serif" font-size="58" letter-spacing="8">THE LANTERN ROAD</text>
+  <text x="84" y="158" fill="#d7bd83" font-family="Georgia,serif" font-size="23" letter-spacing="5">ORIGINAL SAMPLE CAMPAIGN</text>
+</svg>

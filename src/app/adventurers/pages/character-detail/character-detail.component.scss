@@ -1,0 +1,371 @@
+// ============================================
+// ⚔️ character-detail.component.scss
+// Full character page: header, public profile, and section containers.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.character-detail {
+  @include flex-column;
+  gap: $spacing-2xl;
+  animation: fade-in-up $transition-base;
+
+  // --- Header ---
+  &__header {
+    @include flex-column;
+    gap: $spacing-sm;
+  }
+
+  // --- Hero banner: profile + info + full-body portrait ---
+  &__hero {
+    display: flex;
+    gap: $spacing-xl;
+    align-items: stretch;
+    @include surface-card;
+    padding: $spacing-lg;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 52% 0%, rgba($color-gold-dark, 0.1), transparent 34%),
+      linear-gradient(135deg, $color-bg-surface, $color-bg-deep);
+
+    @include respond-below(md) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  &__portrait-frame {
+    flex-shrink: 0;
+    width: 350px;
+    border: $border-width-default solid $color-border-accent;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    box-shadow: $shadow-glow-gold;
+    @include image-loading-container;
+
+    @include respond-below(md) {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+
+  &__portrait {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include image-loading-target;
+  }
+
+  &__header-info {
+    @include flex-column;
+    justify-content: center;
+    gap: $spacing-sm;
+    flex: 1;
+    padding: $spacing-md 0;
+  }
+
+  &__quick-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin: $spacing-sm 0 0;
+  }
+
+  &__quick-stat {
+    min-width: 92px;
+    padding: $spacing-sm $spacing-md;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-md;
+    background: rgba($color-bg-void, 0.28);
+
+    dt {
+      color: $color-text-secondary;
+      font-family: $font-family-heading;
+      font-size: $font-size-xs;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+    }
+
+    dd {
+      margin: $spacing-2xs 0 0;
+      color: $color-gold-light;
+      font-family: $font-family-heading;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__pending {
+    align-self: flex-start;
+    margin-top: $spacing-sm;
+    padding: $spacing-xs $spacing-sm;
+    border: $border-width-thin solid $color-border-accent;
+    border-radius: $border-radius-pill;
+    color: $color-parchment-light;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-wide;
+    text-transform: uppercase;
+
+    @include respond-below(md) {
+      align-self: center;
+    }
+  }
+
+  // --- Full-body portrait (right side, desktop only) ---
+  &__fullbody-frame {
+    flex-shrink: 0;
+    width: 250px;
+    border: $border-width-default solid $color-border-accent;
+    border-radius: $border-radius-md;
+    overflow: hidden;
+    box-shadow: $shadow-glow-gold;
+    @include image-loading-container;
+
+    @include respond-below(md) {
+      display: none;
+    }
+  }
+
+  &__fullbody {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include image-loading-target;
+  }
+
+  &__name {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+
+    @include respond-below(md) {
+      font-size: $font-size-2xl;
+    }
+  }
+
+  &__meta {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  &__player {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin: 0;
+
+    strong {
+      color: $color-text-secondary;
+    }
+  }
+
+  // --- Section containers ---
+  &__section {
+    @include surface-card;
+    padding: $spacing-xl;
+
+    @include respond-below(md) {
+      padding: $spacing-md;
+    }
+  }
+
+  &__section-title {
+    font-family: $font-family-heading;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0 0 $spacing-lg;
+    padding-bottom: $spacing-sm;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+  }
+
+  // --- Public profile grid ---
+  &__profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: $spacing-lg;
+  }
+
+  &__profile-empty {
+    margin: 0;
+    padding: $spacing-lg;
+    text-align: center;
+    color: $color-text-secondary;
+    font-style: italic;
+    border: $border-width-thin dashed $color-border-default;
+    border-radius: $border-radius-md;
+    background: rgba($color-bg-void, 0.18);
+  }
+
+  &__profile-item {
+    @include flex-column;
+    gap: $spacing-xs;
+
+    h3 {
+      font-family: $font-family-heading;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $color-gold;
+      letter-spacing: $letter-spacing-wide;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    p {
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      line-height: $line-height-relaxed;
+      margin: 0;
+    }
+  }
+
+  // --- Known History ---
+  // Hosted in its own accordion because the chronicle grows session by session.
+  // Preserve embedded newlines so multi-paragraph histories stay readable.
+  &__known-history {
+    p {
+      font-size: $font-size-base;
+      color: $color-text-primary;
+      line-height: $line-height-relaxed;
+      white-space: pre-line;
+      margin: 0;
+    }
+  }
+
+  // --- Iconic quotes ---
+  &__quotes {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+
+  &__quote {
+    border-left: $border-width-thick solid $color-gold-dark;
+    padding: $spacing-md $spacing-lg;
+    margin: 0;
+    background: rgba($color-bg-elevated, 0.5);
+    border-radius: 0 $border-radius-sm $border-radius-sm 0;
+  }
+
+  &__quote-text {
+    font-family: $font-family-body;
+    font-size: $font-size-lg;
+    font-style: italic;
+    color: $color-parchment-light;
+    line-height: $line-height-relaxed;
+    margin: 0;
+
+    &::before {
+      content: '\201C';
+      color: $color-gold;
+    }
+
+    &::after {
+      content: '\201D';
+      color: $color-gold;
+    }
+  }
+
+  &__quote-context {
+    display: block;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    font-style: normal;
+    margin-top: $spacing-xs;
+  }
+
+  // --- Loading / not found states ---
+  &__loading {
+    @include flex-center;
+    @include flex-column;
+    min-height: 300px;
+    color: $color-text-muted;
+    text-align: center;
+
+    h2 {
+      color: $color-gold-light;
+      margin-bottom: $spacing-sm;
+    }
+  }
+
+  &__not-found {
+    @include flex-center;
+    @include flex-column;
+    min-height: 60vh;
+    color: $color-text-muted;
+    text-align: center;
+    animation: fade-in-up 0.6s ease-out;
+    gap: $spacing-sm;
+    padding: $spacing-2xl $spacing-md;
+
+    h2 {
+      font-family: $font-family-heading;
+      font-size: 2rem;
+      color: $color-gold-light;
+      margin-bottom: $spacing-xs;
+      letter-spacing: 0.05em;
+    }
+
+    p {
+      max-width: 420px;
+      line-height: 1.6;
+      font-size: $font-size-md;
+    }
+  }
+
+  &__not-found-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid $color-gold-dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-family-heading;
+    font-size: 3rem;
+    color: $color-gold-muted;
+    margin-bottom: $spacing-md;
+    background: radial-gradient(circle, rgba($color-gold-dark, 0.1) 0%, transparent 70%);
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  &__not-found-hint {
+    font-style: italic;
+    font-size: $font-size-sm !important;
+    color: $color-text-muted;
+    opacity: 0.7;
+  }
+
+  &__not-found-link {
+    display: inline-block;
+    margin-top: $spacing-lg;
+    padding: $spacing-sm $spacing-lg;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    color: $color-gold-light;
+    text-decoration: none;
+    border: 1px solid $color-gold-dark;
+    border-radius: 4px;
+    transition: all 0.25s ease;
+    letter-spacing: 0.03em;
+
+    &:hover {
+      background: rgba($color-gold-dark, 0.2);
+      border-color: $color-gold;
+      color: $color-gold;
+    }
+  }
+}

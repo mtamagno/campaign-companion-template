@@ -1,0 +1,88 @@
+// ============================================
+// 📜 campaign-overview.component.scss
+// Campaign session list — parchment-styled chronicle.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: block;
+}
+
+.campaign-overview {
+  @include flex-column;
+  gap: $spacing-2xl;
+  animation: fade-in-up $transition-base;
+
+  &__header {
+    text-align: center;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    color: $color-gold-light;
+    letter-spacing: $letter-spacing-wide;
+    margin: 0;
+    @include text-gold-glow;
+  }
+
+  &__subtitle {
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    font-style: italic;
+    margin: $spacing-xs 0 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: $line-height-relaxed;
+  }
+
+  // --- Timeline ---
+  &__timeline {
+    @include flex-column;
+    gap: $spacing-lg;
+    position: relative;
+    padding-left: $spacing-xl;
+
+    // Vertical line
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, $color-gold, $color-gold-dark, transparent);
+    }
+  }
+
+  &__timeline-entry {
+    position: relative;
+  }
+
+  &__dot {
+    position: absolute;
+    left: -($spacing-xl + 6px);
+    top: $spacing-md + 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: $color-gold;
+    border: 2px solid $color-bg-base;
+    box-shadow: 0 0 6px rgba($color-gold, 0.5);
+    z-index: 1;
+  }
+
+  &__empty {
+    width: 100%;
+  }
+
+  &__loading {
+    @include flex-center;
+    min-height: 300px;
+    color: $color-text-muted;
+  }
+}

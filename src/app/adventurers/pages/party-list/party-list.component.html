@@ -1,0 +1,172 @@
+<!-- Party List — Showcase of all player characters -->
+<div class="party-list">
+  <!-- Hero header with group image -->
+  <section class="party-list__hero" [class.party-list__hero--fallback]="!heroImageUrl()">
+    @if (heroImageUrl(); as imgUrl) {
+      <img
+        class="party-list__hero-image"
+        [src]="imgUrl"
+        alt="The adventuring party"
+        loading="eager"
+      />
+    }
+    <div class="party-list__atmosphere" aria-hidden="true"></div>
+    <div class="party-list__hero-overlay">
+      <span class="party-list__eyebrow">{{ campaignTitle() }}</span>
+      <div class="party-list__hero-row">
+        <h1 class="party-list__title">
+          {{ lang() === 'it' ? 'La Compagnia di Avventurieri' : 'The Adventuring Party' }}
+        </h1>
+        <app-language-toggle />
+      </div>
+      <p class="party-list__subtitle">
+        {{
+          lang() === 'it'
+            ? 'Gli eroi che stanno forgiando la loro leggenda'
+            : 'Meet the heroes forging their legend'
+        }}
+      </p>
+    </div>
+  </section>
+
+  <!-- Character showcase grid -->
+  @if (campaignId(); as cId) {
+    <section class="party-list__grid">
+      @for (showcase of showcases(); track showcase.character.id) {
+        <article
+          class="character-card"
+          [class.character-card--pending]="!showcase.isReady"
+          appSfxHover
+        >
+          <!-- Profile image as card hero -->
+          <div class="character-card__image-wrapper">
+            <img
+              class="character-card__image"
+              [src]="showcase.character.profileImageUrl"
+              [alt]="showcase.character.name"
+              loading="lazy"
+            />
+            <div class="character-card__image-overlay"></div>
+          </div>
+
+          <!-- Character info -->
+          <div class="character-card__body">
+            <h2 class="character-card__name">{{ showcase.character.name }}</h2>
+            @if (showcase.isReady) {
+              <p class="character-card__meta">
+                {{ showcase.character.sheet.race }} · {{ showcase.character.sheet.classType }} ·
+                {{ lang() === 'it' ? 'Liv.' : 'Lv.' }} {{ showcase.character.sheet.level }}
+              </p>
+            } @else {
+              <p class="character-card__pending-label">
+                {{ lang() === 'it' ? 'Scheda in preparazione' : 'Character sheet in preparation' }}
+              </p>
+              <p class="character-card__pending-copy">
+                {{
+                  lang() === 'it'
+                    ? 'Razza, classe e statistiche saranno rivelate presto.'
+                    : 'Race, class, and statistics will be revealed soon.'
+                }}
+              </p>
+            }
+            @if (showcase.character.playerName) {
+              <p class="character-card__player">
+                {{ lang() === 'it' ? 'Giocato da' : 'Played by' }}
+                <span class="character-card__player-name">{{ showcase.character.playerName }}</span>
+              </p>
+            }
+
+            <!-- Quick stats -->
+            @if (showcase.isReady) {
+              <div class="character-card__stats">
+                <span class="character-card__stat" title="Hit Points">
+                  <span class="character-card__stat-icon">❤️</span>
+                  <span class="character-card__stat-value"
+                    >{{ showcase.character.sheet.hitPoints }}/{{
+                      showcase.character.sheet.maxHitPoints
+                    }}</span
+                  >
+                  <span class="character-card__stat-label">HP</span>
+                </span>
+                <span class="character-card__stat" title="Armor Class">
+                  <span class="character-card__stat-icon">🛡️</span>
+                  <span class="character-card__stat-value">{{
+                    showcase.character.sheet.armorClass
+                  }}</span>
+                  <span class="character-card__stat-label">AC</span>
+                </span>
+                <span class="character-card__stat" title="Proficiency Bonus">
+                  <span class="character-card__stat-icon">⭐</span>
+                  <span class="character-card__stat-value"
+                    >+{{ showcase.character.sheet.proficiencyBonus }}</span
+                  >
+                  <span class="character-card__stat-label">Prof</span>
+                </span>
+              </div>
+            }
+
+            <!-- Random iconic quote -->
+            @if (showcase.quote) {
+              <blockquote class="character-card__quote">
+                <p class="character-card__quote-text">"{{ showcase.quote.text }}"</p>
+                @if (showcase.quote.context) {
+                  <footer class="character-card__quote-context">
+                    {{ showcase.quote.context }}
+                  </footer>
+                }
+              </blockquote>
+            }
+
+            <!-- Action links -->
+            <nav class="character-card__actions">
+              <a
+                class="character-card__action"
+                [routerLink]="['/', cId, 'party', showcase.character.id]"
+              >
+                <span class="character-card__action-icon">📋</span>
+                {{ lang() === 'it' ? 'Profilo' : 'Profile' }}
+              </a>
+              @if (showcase.isReady) {
+                <a
+                  class="character-card__action"
+                  [routerLink]="['/', cId, 'party', showcase.character.id]"
+                  fragment="diary"
+                >
+                  <span class="character-card__action-icon">📖</span>
+                  {{ lang() === 'it' ? 'Diario' : 'Diary' }}
+                </a>
+                <a
+                  class="character-card__action"
+                  [routerLink]="['/', cId, 'party', 'relationships']"
+                >
+                  <span class="character-card__action-icon">💕</span>
+                  {{ lang() === 'it' ? 'Legami' : 'Bonds' }}
+                </a>
+              }
+            </nav>
+          </div>
+        </article>
+      }
+    </section>
+
+    <!-- Party bonds footer -->
+    <section class="party-list__footer">
+      <a class="party-list__bonds-link" [routerLink]="['/', cId, 'party', 'relationships']">
+        <span class="party-list__bonds-icon">🕸️</span>
+        <span class="party-list__bonds-text">
+          {{ lang() === 'it' ? 'Esplora i legami del gruppo' : 'Explore Party Bonds' }}
+        </span>
+      </a>
+    </section>
+  }
+
+  <!-- Loading state -->
+  @if (isLoading()) {
+    <div class="party-list__loading">
+      <app-dice-loader
+        [label]="lang() === 'it' ? 'Convoco la compagnia...' : 'Summoning the party...'"
+        [playSound]="false"
+      />
+    </div>
+  }
+</div>

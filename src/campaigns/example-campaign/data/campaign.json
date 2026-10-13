@@ -1,0 +1,16 @@
+{
+  "name": { "en": "The Lantern Road", "it": "La Via delle Lanterne" },
+  "description": {
+    "en": "Travellers follow a chain of fading lights through a valley that has forgotten the dawn.",
+    "it": "Un gruppo di viandanti segue una catena di luci morenti attraverso una valle che ha dimenticato l'alba."
+  },
+  "edition": "Your ruleset",
+  "startDate": "2026-01-01",
+  "dungeonMaster": "Game Master",
+  "partyName": "The Wayfarers",
+  "heroImages": ["images/group/hero.svg"],
+  "storySoFar": {
+    "en": "The Wayfarers reached Embercross and learned that the final roadside lantern had gone dark.",
+    "it": "I Viandanti hanno raggiunto Crocebrace e scoperto che l'ultima lanterna lungo la strada si è spenta."
+  }
+}

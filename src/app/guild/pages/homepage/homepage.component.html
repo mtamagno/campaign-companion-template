@@ -1,0 +1,134 @@
+<!-- Homepage — Campaign landing page with hero image, title, quote, and navigation -->
+<div class="homepage">
+  <!-- Hero section with random group image -->
+  <section class="homepage__hero" [class.homepage__hero--fallback]="!heroImageUrl()">
+    @if (heroImageUrl(); as imgUrl) {
+      <img
+        class="homepage__hero-image"
+        [src]="imgUrl"
+        alt="The adventuring party"
+        loading="eager"
+      />
+    }
+    <div class="homepage__atmosphere" aria-hidden="true"></div>
+    <div class="homepage__hero-overlay">
+      <span class="homepage__eyebrow">
+        {{ lang() === 'it' ? 'Cronache della campagna' : 'Campaign chronicles' }}
+      </span>
+      <div class="homepage__hero-row">
+        <h1 class="homepage__title">{{ campaignTitle() }}</h1>
+        <app-language-toggle />
+      </div>
+      @if (campaignSubtitle(); as subtitle) {
+        <p class="homepage__subtitle">{{ subtitle }}</p>
+      }
+    </div>
+  </section>
+
+  <!-- Random character quote -->
+  @if (randomQuote(); as quote) {
+    <section class="homepage__quote-section">
+      <blockquote class="homepage__quote">
+        <p class="homepage__quote-text">"{{ quote.text }}"</p>
+        <footer class="homepage__quote-attribution">
+          <span class="homepage__quote-author">— {{ quote.characterName }}</span>
+          @if (quote.context) {
+            <span class="homepage__quote-context">{{ quote.context }}</span>
+          }
+        </footer>
+      </blockquote>
+    </section>
+  }
+
+  <!-- Campaign pulse: remains useful even before the first session. -->
+  @if (campaignId(); as cId) {
+    <section class="homepage__pulse" aria-labelledby="campaign-pulse-title">
+      <div class="homepage__pulse-copy">
+        <span class="homepage__pulse-kicker">
+          {{
+            sessionCount() === 0
+              ? lang() === 'it'
+                ? 'Il viaggio sta per cominciare'
+                : 'The journey is about to begin'
+              : lang() === 'it'
+                ? 'Il viaggio finora'
+                : 'The journey so far'
+          }}
+        </span>
+        <h2 id="campaign-pulse-title" class="homepage__pulse-title">
+          {{
+            sessionCount() === 0
+              ? lang() === 'it'
+                ? 'Le nebbie attendono gli avventurieri'
+                : 'The mists await the adventurers'
+              : lang() === 'it'
+                ? 'La leggenda continua'
+                : 'The legend continues'
+          }}
+        </h2>
+        <p class="homepage__pulse-text">
+          {{
+            sessionCount() === 0
+              ? lang() === 'it'
+                ? 'La compagnia è riunita. Dopo la prima sessione, qui compariranno cronache, incontri e luoghi scoperti.'
+                : 'The company is assembled. After the first session, chronicles, encounters, and discovered places will appear here.'
+              : lang() === 'it'
+                ? 'Ritrova rapidamente i protagonisti, gli incontri e i luoghi che hanno segnato la campagna.'
+                : 'Quickly return to the heroes, encounters, and places that shaped the campaign.'
+          }}
+        </p>
+        <a class="homepage__pulse-cta" [routerLink]="['/', cId, 'party']">
+          {{ lang() === 'it' ? 'Incontra la compagnia' : 'Meet the party' }}
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <dl class="homepage__metrics">
+        <div class="homepage__metric">
+          <dt>{{ lang() === 'it' ? 'Avventurieri' : 'Adventurers' }}</dt>
+          <dd>{{ partyCount() }}</dd>
+        </div>
+        <div class="homepage__metric">
+          <dt>{{ lang() === 'it' ? 'Sessioni' : 'Sessions' }}</dt>
+          <dd>{{ sessionCount() }}</dd>
+        </div>
+        <div class="homepage__metric">
+          <dt>NPC</dt>
+          <dd>{{ npcCount() }}</dd>
+        </div>
+        <div class="homepage__metric">
+          <dt>{{ lang() === 'it' ? 'Luoghi' : 'Places' }}</dt>
+          <dd>{{ mapCount() }}</dd>
+        </div>
+      </dl>
+    </section>
+  }
+
+  <!-- Quick navigation links -->
+  @if (campaignId(); as cId) {
+    <nav class="homepage__nav">
+      <a class="homepage__nav-card" [routerLink]="['/', cId, 'party']" appSfxHover>
+        <span class="homepage__nav-icon">⚔️</span>
+        <span class="homepage__nav-label">{{
+          lang() === 'it' ? 'La Compagnia' : 'The Party'
+        }}</span>
+      </a>
+      <a class="homepage__nav-card" [routerLink]="['/', cId, 'campaign']" appSfxHover>
+        <span class="homepage__nav-icon">📜</span>
+        <span class="homepage__nav-label">{{ lang() === 'it' ? 'Campagna' : 'Campaign' }}</span>
+      </a>
+      <a class="homepage__nav-card" [routerLink]="['/', cId, 'npcs']" appSfxHover>
+        <span class="homepage__nav-icon">🐉</span>
+        <span class="homepage__nav-label">NPCs</span>
+      </a>
+      <a class="homepage__nav-card" [routerLink]="['/', cId, 'maps']" appSfxHover>
+        <span class="homepage__nav-icon">🗺️</span>
+        <span class="homepage__nav-label">{{ lang() === 'it' ? 'Mappe' : 'Maps' }}</span>
+      </a>
+      <a class="homepage__nav-card" [routerLink]="['/', cId, 'gallery']" appSfxHover>
+        <span class="homepage__nav-icon">🖼️</span>
+        <span class="homepage__nav-label">{{ lang() === 'it' ? 'Galleria' : 'Gallery' }}</span>
+      </a>
+    </nav>
+  }
+</div>

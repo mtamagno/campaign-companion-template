@@ -1,0 +1,118 @@
+// ============================================
+// 🔦 image-lightbox.component.scss
+// Fullscreen image viewer overlay with navigation controls.
+// Dark backdrop with centered image and minimal UI.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: $z-index-lightbox;
+  background: rgba(0, 0, 0, 0.92);
+  @include flex-center;
+  animation: fade-in $transition-fast;
+
+  // --- Close button ---
+  &__close {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    background: none;
+    border: none;
+    color: $color-text-primary;
+    font-size: $font-size-2xl;
+    cursor: pointer;
+    padding: $spacing-sm;
+    line-height: 1;
+    opacity: 0.7;
+    z-index: 1;
+    @include transition-colors;
+
+    &:hover {
+      opacity: 1;
+      color: $color-gold-light;
+    }
+  }
+
+  // --- Image content ---
+  &__content {
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-md;
+    max-width: 90vw;
+    max-height: 85vh;
+    @include image-loading-container;
+    border-radius: $border-radius-sm;
+  }
+
+  &__image {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: $border-radius-sm;
+    box-shadow: $shadow-xl;
+    @include image-loading-target;
+  }
+
+  &__caption {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+    max-width: 600px;
+  }
+
+  // --- Navigation buttons ---
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: $border-width-thin solid $color-border-subtle;
+    border-radius: $border-radius-pill;
+    color: $color-text-primary;
+    font-size: $font-size-3xl;
+    cursor: pointer;
+    padding: $spacing-sm $spacing-md;
+    line-height: 1;
+    @include transition-colors;
+
+    &:hover:not(:disabled) {
+      background: rgba(0, 0, 0, 0.75);
+      border-color: $color-gold-dark;
+      color: $color-gold-light;
+    }
+
+    &:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    &--prev {
+      left: $spacing-md;
+    }
+
+    &--next {
+      right: $spacing-md;
+    }
+  }
+
+  // --- Position indicator ---
+  &__position {
+    position: absolute;
+    bottom: $spacing-lg;
+    left: 50%;
+    transform: translateX(-50%);
+    color: $color-text-secondary;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    letter-spacing: $letter-spacing-wide;
+    background: rgba(0, 0, 0, 0.6);
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-pill;
+  }
+}

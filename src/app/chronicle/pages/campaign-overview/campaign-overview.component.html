@@ -1,0 +1,58 @@
+<!-- Campaign Overview — Session Chronicle -->
+@if (isLoading()) {
+  <div class="campaign-overview__loading">
+    <p>Unrolling the ancient scrolls...</p>
+  </div>
+} @else {
+  <article class="campaign-overview">
+    <header class="campaign-overview__header">
+      <h1 class="campaign-overview__title">
+        📜 {{ lang() === 'it' ? 'Cronache delle sessioni' : 'Session Chronicles' }}
+      </h1>
+      <app-language-toggle />
+      <p class="campaign-overview__subtitle">
+        {{ subtitle | bilingual }}
+      </p>
+    </header>
+
+    @if (sessions().length === 0) {
+      <div class="empty-state campaign-overview__empty">
+        <span class="empty-state__icon" aria-hidden="true">§</span>
+        <h2 class="empty-state__title">
+          {{
+            lang() === 'it'
+              ? 'La prima pagina deve ancora essere scritta'
+              : 'The first page has yet to be written'
+          }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'Dopo la prima sessione, qui troverai il capitolo, gli eventi chiave e i ricordi del gruppo.'
+              : 'After the first session, its chapter, key events, and party memories will appear here.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <div class="campaign-overview__timeline">
+        @for (session of sessions(); track session.id; let i = $index) {
+          <div class="campaign-overview__timeline-entry">
+            <span class="campaign-overview__dot"></span>
+            <app-accordion
+              [title]="
+                (lang() === 'it' ? 'Sessione ' : 'Session ') +
+                session.sessionNumber +
+                ' — ' +
+                (session.title | bilingual)
+              "
+              icon="📜"
+              [startOpen]="i === lastSessionIndex()"
+            >
+              <app-session-summary [session]="session" />
+            </app-accordion>
+          </div>
+        }
+      </div>
+    }
+  </article>
+}

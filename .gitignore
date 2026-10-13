@@ -1,0 +1,96 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/.deploy-delta
+/.deploy-state
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Private manuals and source references (do not commit)
+.github/private-sources/
+
+# Extracted PDF working files (used for AI analysis only, do not commit)
+.tasks/_*.txt
+
+# Sensitive credential files (never commit)
+informationFTP.txt
+/discord-transcriber/.env
+
+# Local Discord transcriber runtime files
+/discord-transcriber/.venv/
+/discord-transcriber/transcripts/
+/discord-transcriber/*.log
+/discord-transcriber/*.pid
+/tools/local-ai/output/
+/tools/local-ai/*.local.json
+__pycache__/
+*.py[cod]
+
+# Private or non-redistributable modules kept only in the source workspace
+/src/app/adventurers/data/
+/src/app/adventurers/pages/character-generator/
+/src/app/adventurers/services/characterGenerator.service.ts
+/src/app/adventurers/services/characterSheetPdf.service.ts
+/src/app/adventurers/services/diceEngine.service.ts
+/src/app/adventurers/services/nameGenerator.service.ts
+/src/app/adventurers/models/generator.model.ts
+/src/app/adventurers/constants/equipmentMapping.constants.ts
+/src/app/adventurers/providers/characterImageProvider.ts
+/src/app/guild/providers/baseHrefInterceptor.ts
+/src/app/guild/components/source-badge/
+/src/assets/images/placeholders/
+/public/favicon.ico
+
+# Private one-off migration/extraction utilities are not part of the template
+/scripts/*
+!/scripts/README.md
+!/scripts/generate-thumbnails.cjs
+!/scripts/generate-display-images.cjs
+
+# Internal module notes from the private project
+/src/app/**/README.md
+/src/styles/README.md
+/src/assets/data/README.md
+/src/assets/images/README.md
+
+# Zip archives
+*.zip
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db

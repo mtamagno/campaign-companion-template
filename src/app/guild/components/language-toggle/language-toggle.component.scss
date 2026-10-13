@@ -1,0 +1,54 @@
+// ============================================
+// 🎨 language-toggle.component.scss
+// IT/EN language switch button with fantasy styling.
+// Active language is highlighted with gold accent.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+:host {
+  display: inline-block;
+  width: fit-content;
+}
+
+.lang-toggle {
+  @include flex-row-gap($spacing-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xs $spacing-md;
+  background-color: $color-bg-elevated;
+  border: $border-width-thin solid $color-border-default;
+  border-radius: $border-radius-pill;
+  cursor: pointer;
+  @include transition-colors;
+
+  &:hover {
+    border-color: $color-border-accent;
+    background-color: $color-bg-surface;
+  }
+
+  &:focus-visible {
+    outline: $border-width-default solid var(--campaign-accent, #{$color-gold});
+    outline-offset: $spacing-2xs;
+  }
+}
+
+.lang-toggle__option {
+  font-family: $font-family-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  letter-spacing: $letter-spacing-wide;
+  color: $color-text-muted;
+  @include transition-colors($transition-fast);
+
+  &--active {
+    @include text-gold-glow;
+  }
+}
+
+.lang-toggle__separator {
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+}

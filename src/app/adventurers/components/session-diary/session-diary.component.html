@@ -1,0 +1,10 @@
+<!-- Session Diary — Timeline of character entries -->
+<div class="session-diary">
+  <h2 class="session-diary__title">📖 Session Diary</h2>
+
+  <div class="session-diary__timeline">
+    @for (entry of entries(); track entry.sessionId) {
+      <app-diary-entry [entry]="entry" />
+    }
+  </div>
+</div>

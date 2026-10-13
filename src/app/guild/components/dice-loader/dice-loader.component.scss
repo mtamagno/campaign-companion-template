@@ -1,0 +1,51 @@
+// ============================================
+// 🎲 dice-loader.component.scss
+// Styles for the shared d20 loading indicator.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+
+.dice-loader {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  color: $color-gold;
+}
+
+.dice-loader__icon {
+  display: block;
+  // currentColor drives the SVG stroke and the "20" fill.
+  color: inherit;
+  animation: dice-roll 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba($color-gold, 0.4));
+
+  @media (prefers-reduced-motion: reduce) {
+    // Skip the rotation; keep a gentle opacity pulse as a static-friendly cue.
+    // pulse-glow keyframe uses box-shadow which does not read well on a
+    // transparent SVG <img>, so we use a local fade instead.
+    animation: dice-loader-fade 2s ease-in-out infinite;
+    filter: none;
+  }
+}
+
+@keyframes dice-loader-fade {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.dice-loader__label {
+  margin: 0;
+  font-family: $font-family-heading;
+  font-size: $font-size-sm;
+  letter-spacing: $letter-spacing-wide;
+  color: $color-text-secondary;
+  text-align: center;
+}

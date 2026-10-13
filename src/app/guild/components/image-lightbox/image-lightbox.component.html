@@ -1,0 +1,60 @@
+<!-- Image Lightbox — Fullscreen overlay with navigation -->
+<div
+  class="lightbox"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Image viewer"
+>
+  <!-- Close button -->
+  <button
+    class="lightbox__close"
+    type="button"
+    (click)="lightboxClose.emit()"
+    aria-label="Close lightbox"
+  >
+    ✕
+  </button>
+
+  @if (currentImage(); as image) {
+    <!-- Main image -->
+    <div class="lightbox__content">
+      <img
+        class="lightbox__image"
+        [src]="image.url"
+        [alt]="image.alt"
+        (load)="$event.target.classList.add('is-loaded')"
+      />
+
+      @if (image.caption) {
+        <p class="lightbox__caption">{{ image.caption }}</p>
+      }
+    </div>
+  }
+
+  <!-- Navigation -->
+  @if (images().length > 1) {
+    <button
+      class="lightbox__nav lightbox__nav--prev"
+      type="button"
+      [disabled]="!hasPrevious()"
+      (click)="goToPrevious(); $event.stopPropagation()"
+      aria-label="Previous image"
+    >
+      ‹
+    </button>
+
+    <button
+      class="lightbox__nav lightbox__nav--next"
+      type="button"
+      [disabled]="!hasNext()"
+      (click)="goToNext(); $event.stopPropagation()"
+      aria-label="Next image"
+    >
+      ›
+    </button>
+
+    <!-- Position indicator -->
+    <span class="lightbox__position">{{ positionLabel() }}</span>
+  }
+</div>

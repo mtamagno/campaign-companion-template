@@ -1,0 +1,323 @@
+// ============================================
+// 🧭 sidebar.component.scss
+// Main navigation sidebar with fantasy MMORPG styling.
+// Dark surface with gold accents, character avatars, section links.
+// Collapsible on mobile with slide-in animation.
+// ============================================
+
+@use '../../../../styles/variables' as *;
+@use '../../../../styles/mixins' as *;
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background-color: $color-bg-deep;
+  background-image: linear-gradient(180deg, rgba($color-bg-surface, 0.22), transparent 28%);
+  border-right: $border-width-thin solid $color-border-subtle;
+  @include flex-column;
+  @include scrollbar-custom;
+  overflow-y: auto;
+  z-index: $z-index-sidebar;
+  @include transition-all($transition-base);
+
+  // --- Mobile: off-screen by default ---
+  @include respond-below(lg) {
+    transform: translateX(-100%);
+    box-shadow: none;
+
+    &--open {
+      transform: translateX(0);
+      box-shadow: $shadow-xl;
+    }
+  }
+
+  // --- Header ---
+  &__header {
+    @include flex-between;
+    padding: $spacing-lg $spacing-md;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-family: $font-family-heading;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+    margin: 0;
+  }
+
+  &__title-link {
+    color: $color-gold-light;
+    text-decoration: none;
+    @include text-gold-glow;
+    @include transition-colors;
+
+    &:hover {
+      color: $color-gold;
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+    cursor: pointer;
+    padding: $spacing-xs;
+    line-height: 1;
+    @include transition-colors;
+
+    &:hover {
+      color: $color-text-primary;
+    }
+
+    // Only visible on mobile
+    @include respond-to(lg) {
+      display: none;
+    }
+  }
+
+  // --- Navigation ---
+  &__nav {
+    @include flex-column;
+    flex: 1;
+    padding: $spacing-sm 0;
+  }
+
+  // --- Footer (global utility controls: audio toggle, etc.) ---
+  &__footer {
+    flex-shrink: 0;
+    padding: $spacing-sm $spacing-md;
+    border-top: $border-width-thin solid $color-border-subtle;
+    @include flex-row-gap($spacing-sm);
+    align-items: center;
+    justify-content: center;
+  }
+  // --- Home link ---
+  &__home-link {
+    display: block;
+    padding: $spacing-sm $spacing-md;
+    font-family: $font-family-heading;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+    text-decoration: none;
+    letter-spacing: $letter-spacing-wide;
+    @include transition-colors;
+    border-bottom: $border-width-thin solid $color-border-subtle;
+
+    &:hover {
+      color: $color-gold-light;
+    }
+
+    &--active {
+      color: $color-gold-light;
+    }
+  }
+
+  // --- Section ---
+  &__section {
+    padding: $spacing-sm 0;
+
+    &:not(:last-child) {
+      border-bottom: $border-width-thin solid $color-border-subtle;
+    }
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: $color-text-muted;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+    padding: $spacing-xs $spacing-md;
+    margin: 0 0 $spacing-xs;
+
+    &--toggle {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      @include transition-colors($transition-fast);
+
+      &:hover {
+        color: $color-text-secondary;
+      }
+    }
+  }
+
+  &__section-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 $spacing-xs;
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-pill;
+    background: rgba($color-bg-void, 0.45);
+    color: $color-text-secondary;
+    font-family: $font-family-body;
+    font-size: $font-size-xs;
+    letter-spacing: normal;
+  }
+
+  // --- NPC category toggle ---
+  &__category-title {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    color: $color-text-secondary;
+    letter-spacing: $letter-spacing-wide;
+    padding: $spacing-xs $spacing-md $spacing-xs $spacing-lg;
+    margin: 0;
+    @include transition-colors($transition-fast);
+
+    &:hover {
+      color: $color-text-primary;
+    }
+  }
+
+  &__toggle-icon {
+    font-size: $font-size-sm;
+    transition: transform $transition-fast;
+
+    &--open {
+      transform: rotate(90deg);
+    }
+  }
+
+  &__submenu {
+    @include flex-column;
+  }
+
+  // --- Character/NPC list ---
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    color: $color-text-primary;
+    text-decoration: none;
+    @include transition-colors;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      background-color: $color-bg-surface;
+      border-left-color: $color-gold-dark;
+    }
+
+    &--active {
+      background-color: $color-bg-surface;
+      border-left-color: $color-gold;
+
+      .sidebar__name {
+        color: $color-gold-light;
+      }
+    }
+
+    // Dead NPCs get a muted appearance
+    &--dead {
+      opacity: 0.5;
+    }
+  }
+
+  // --- Character info ---
+  &__info {
+    @include flex-column;
+    min-width: 0;
+    gap: 1px;
+  }
+
+  &__name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    @include text-truncate;
+  }
+
+  &__detail {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    @include text-truncate;
+
+    &--pending {
+      color: $color-parchment-dark;
+      font-style: italic;
+    }
+  }
+
+  &__dead-marker {
+    font-size: $font-size-xs;
+    margin-left: $spacing-xs;
+  }
+
+  // --- Loading state ---
+  &__loading {
+    padding: $spacing-sm $spacing-md;
+    color: $color-text-muted;
+    font-size: $font-size-sm;
+    font-style: italic;
+  }
+
+  // --- Section links (relationships, campaign, maps) ---
+  &__section-link {
+    display: block;
+    padding: $spacing-sm $spacing-md;
+    color: $color-text-secondary;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    @include transition-colors;
+    border-left: 3px solid transparent;
+
+    &:hover {
+      color: $color-text-primary;
+      background-color: $color-bg-surface;
+      border-left-color: $color-gold-dark;
+    }
+
+    &--active {
+      color: $color-gold-light;
+      background-color: $color-bg-surface;
+      border-left-color: $color-gold;
+    }
+  }
+
+  &--gothic {
+    border-right-color: rgba($color-gothic-burgundy-light, 0.34);
+    background-image:
+      linear-gradient(180deg, rgba($color-gothic-burgundy-dark, 0.2), transparent 32%),
+      linear-gradient(180deg, rgba($color-bg-surface, 0.16), transparent);
+
+    .sidebar__title-link {
+      color: $color-parchment-light;
+      text-shadow: 0 0 14px rgba($color-gothic-burgundy-light, 0.3);
+    }
+
+    .sidebar__link--active,
+    .sidebar__section-link--active {
+      border-left-color: $color-gothic-burgundy-light;
+      background: linear-gradient(90deg, rgba($color-gothic-burgundy, 0.2), $color-bg-surface);
+    }
+  }
+}

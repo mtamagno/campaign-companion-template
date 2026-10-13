@@ -1,0 +1,21 @@
+// ============================================
+// 🔢 _functions.scss
+// SCSS custom functions for calculations and conversions.
+// ============================================
+
+@use 'sass:math';
+
+// Convert pixel value to rem based on 16px root font size.
+@function to-rem($px) {
+  @return math.div($px, 16) * 1rem;
+}
+
+// Darken a color by mixing with black.
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+// Lighten a color by mixing with white.
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}

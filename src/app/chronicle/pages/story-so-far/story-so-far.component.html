@@ -1,0 +1,66 @@
+<!-- Story So Far — cumulative recap -->
+@if (isLoading()) {
+  <div class="story-so-far__loading">
+    <app-dice-loader
+      [label]="
+        lang() === 'it' ? 'Raccolgo i fili della storia...' : 'Gathering the threads of the tale...'
+      "
+      [playSound]="false"
+    />
+  </div>
+} @else {
+  <article class="story-so-far">
+    <header class="story-so-far__header">
+      <div class="story-so-far__heading-row">
+        <h1 class="story-so-far__title">
+          📚 {{ lang() === 'it' ? 'La storia fin qui' : 'The Story So Far' }}
+        </h1>
+        <app-language-toggle />
+      </div>
+      <p class="story-so-far__subtitle">
+        {{ subtitle | bilingual }}
+      </p>
+    </header>
+
+    @if (campaignRecap(); as recap) {
+      <section class="story-so-far__overview">
+        <h2 class="story-so-far__overview-title">
+          🗺️ {{ lang() === 'it' ? 'Riassunto della campagna' : 'Campaign Recap' }}
+        </h2>
+        <p class="story-so-far__overview-text">{{ recap | bilingual }}</p>
+      </section>
+      <hr class="story-so-far__divider" aria-hidden="true" />
+    }
+
+    @if (entries().length === 0) {
+      <div class="empty-state story-so-far__empty">
+        <span class="empty-state__icon" aria-hidden="true">☾</span>
+        <h2 class="empty-state__title">
+          {{ lang() === 'it' ? 'La storia deve ancora cominciare' : 'The story has yet to begin' }}
+        </h2>
+        <p class="empty-state__text">
+          {{
+            lang() === 'it'
+              ? 'Qui verrà raccolto il filo della campagna, sessione dopo sessione.'
+              : 'The campaign thread will be gathered here, one session at a time.'
+          }}
+        </p>
+      </div>
+    } @else {
+      <section class="story-so-far__sessions">
+        <h2 class="story-so-far__sessions-title">
+          📜 {{ lang() === 'it' ? 'Sessione per sessione' : 'Session by Session' }}
+        </h2>
+        <ol class="story-so-far__list">
+          @for (entry of entries(); track entry.id; let i = $index; let isLast = $last) {
+            <li class="story-so-far__entry">
+              <app-accordion [title]="entryAccordionTitle(entry)" icon="📖" [startOpen]="isLast">
+                <p class="story-so-far__entry-text">{{ entry.storySoFar | bilingual }}</p>
+              </app-accordion>
+            </li>
+          }
+        </ol>
+      </section>
+    }
+  </article>
+}

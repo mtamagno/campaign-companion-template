@@ -1,0 +1,167 @@
+// ============================================
+// 🎨 _variables.scss
+// Global design tokens: colors, spacing, typography, breakpoints, borders, shadows.
+// All visual constants must be defined here — never hardcode values
+// in component SCSS files.
+// Inspired by dark fantasy MMORPG aesthetics (WoW, ESO, Dark Souls).
+// ============================================
+
+// --- 🌑 Color palette — Dark Fantasy ---
+// Deep, moody backgrounds with warm golden accents.
+
+// Background layers (darkest to lightest)
+$color-bg-void: #0a0a0f;
+$color-bg-deep: #111118;
+$color-bg-base: #1a1a24;
+$color-bg-surface: #222233;
+$color-bg-elevated: #2a2a3d;
+$color-bg-overlay: rgba(10, 10, 15, 0.85);
+
+// --- 🌟 Accent colors — Gold & Amber ---
+// The warm glow of torchlight and ancient treasure.
+$color-gold: #c9a634;
+$color-gold-light: #e8c84a;
+$color-gold-dark: #8b7020;
+$color-gold-muted: #7a6a30;
+$color-amber: #d4820a;
+$color-amber-light: #f09a1a;
+
+// --- 🌲 Forest Green accent ---
+$color-cw-forest: #3f6b3a;
+$color-cw-forest-soft: rgba(63, 107, 58, 0.12);
+$color-cw-forest-border: rgba(63, 107, 58, 0.4);
+
+// --- 📜 Parchment & Warm tones ---
+// For content areas that mimic aged paper or leather.
+$color-parchment: #d4c5a0;
+$color-parchment-dark: #b3a47a;
+$color-parchment-light: #e8dcc0;
+$color-leather: #5c3d2e;
+$color-leather-light: #8b6b5a;
+
+// --- ⚔️ State colors ---
+$color-danger: #a83232;
+$color-danger-light: #cc4444;
+$color-success: #2d7a3a;
+$color-success-light: #3da34e;
+$color-warning: #b87d1e;
+$color-warning-light: #d99a2a;
+$color-info: #2a5a8a;
+$color-info-light: #3a7ab8;
+
+// --- 🖋️ Text colors ---
+$color-text-primary: #e0dcd0;
+$color-text-secondary: #a09a88;
+$color-text-muted: #8f897b;
+$color-text-accent: $color-gold-light;
+$color-text-inverse: $color-bg-deep;
+$color-text-link: $color-gold;
+$color-text-link-hover: $color-gold-light;
+
+// Campaign accents. The global gold remains the shared fantasy identity, while
+// individual adventures can introduce a restrained secondary palette.
+$color-gothic-burgundy: #7d2838;
+$color-gothic-burgundy-light: #b45a68;
+$color-gothic-burgundy-dark: #421722;
+$color-gothic-fog: #b8b2bd;
+$color-gothic-surface: #211d29;
+
+// --- 🔲 Border colors ---
+$color-border-subtle: #2a2a3d;
+$color-border-default: #3a3a50;
+$color-border-strong: #4a4a60;
+$color-border-accent: $color-gold-dark;
+$color-border-gold: $color-gold;
+
+// --- 📐 Spacing scale ---
+// Based on 4px grid. Use these instead of arbitrary pixel values.
+$spacing-2xs: 2px;
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+$spacing-3xl: 64px;
+$spacing-4xl: 96px;
+
+// --- 📝 Typography ---
+// Fantasy serif for headings, clean sans-serif for body.
+$font-family-heading: 'Cinzel', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+$font-family-body: 'Crimson Text', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+$font-family-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-md: 1.125rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;
+$font-size-2xl: 2rem;
+$font-size-3xl: 2.5rem;
+$font-size-4xl: 3rem;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.2;
+$line-height-base: 1.6;
+$line-height-relaxed: 1.8;
+
+$letter-spacing-tight: -0.02em;
+$letter-spacing-normal: 0;
+$letter-spacing-wide: 0.05em;
+$letter-spacing-wider: 0.1em;
+
+// --- 📱 Breakpoints ---
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: 1440px;
+
+// --- 🎭 Borders & Radii ---
+$border-width-thin: 1px;
+$border-width-default: 2px;
+$border-width-thick: 3px;
+
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-pill: 9999px;
+
+// --- 🌫️ Shadows ---
+// Layered shadows for depth — mimics torchlight glow.
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.5);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+$shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+$shadow-glow-gold: 0 0 12px rgba($color-gold, 0.3);
+$shadow-glow-gold-strong: 0 0 24px rgba($color-gold, 0.5);
+$shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+
+// --- ⏱️ Transitions ---
+$transition-fast: 150ms ease;
+$transition-base: 250ms ease;
+$transition-slow: 400ms ease;
+$transition-very-slow: 600ms ease;
+
+// --- 📏 Layout ---
+$sidebar-width: 280px;
+$sidebar-width-collapsed: 60px;
+$header-height: 64px;
+$content-max-width: 1600px;
+$avatar-size-sm: 36px;
+$avatar-size-md: 64px;
+$avatar-size-lg: 120px;
+$avatar-size-xl: 180px;
+
+// --- 🔢 Z-index scale ---
+$z-index-sidebar: 100;
+$z-index-header: 200;
+$z-index-overlay: 500;
+$z-index-modal: 600;
+$z-index-lightbox: 700;
+$z-index-tooltip: 800;
