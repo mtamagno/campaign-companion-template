@@ -6,6 +6,10 @@ import { type BilingualText } from '@guild/models/language.model';
 
 /** Top-level campaign information. */
 export interface Campaign {
+  /** Content language codes available for this campaign. */
+  readonly languages?: ReadonlyArray<string>;
+  /** Preferred language when a visitor has no compatible saved choice. */
+  readonly defaultLanguage?: string;
   readonly name: BilingualText;
   readonly description: BilingualText;
   readonly edition: string;

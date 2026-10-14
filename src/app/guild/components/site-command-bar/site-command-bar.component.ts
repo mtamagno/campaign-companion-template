@@ -15,6 +15,7 @@ import { filter } from 'rxjs/operators';
 
 import { CampaignService } from '@guild/services/campaign.service';
 import { LanguageService } from '@guild/services/language.service';
+import { localizeText } from '@guild/models/language.model';
 
 interface NavigationCommand {
   readonly icon: string;
@@ -71,7 +72,7 @@ export class SiteCommandBarComponent {
   readonly activeCampaignName = computed((): string | undefined => {
     const campaignId = this.activeCampaignId();
     const lang = this.language.currentLanguage();
-    return this.campaigns.manifest().find(({ id }) => id === campaignId)?.name[lang];
+    return localizeText(this.campaigns.manifest().find(({ id }) => id === campaignId)?.name, lang);
   });
 
   readonly breadcrumbs = computed((): ReadonlyArray<BreadcrumbItem> => {
@@ -89,7 +90,10 @@ export class SiteCommandBarComponent {
         index === 0 ? this.campaigns.manifest().find(({ id }) => id === segment) : undefined;
       const mapped = ROUTE_LABELS[segment];
       items.push({
-        label: campaign?.name[lang] ?? mapped?.[lang] ?? humanizeSegment(segment),
+        label:
+          (campaign === undefined ? undefined : localizeText(campaign.name, lang)) ||
+          mapped?.[lang === 'it' ? 'it' : 'en'] ||
+          humanizeSegment(segment),
         url: path,
       });
     });
@@ -112,10 +116,10 @@ export class SiteCommandBarComponent {
     const lang = this.language.currentLanguage();
     const campaignEntries = this.campaigns.manifest().map((campaign): NavigationCommand => ({
       icon: '\u2691',
-      title: campaign.name[lang],
-      detail: campaign.status?.[lang] ?? (it ? 'Campagna' : 'Campaign'),
+      title: localizeText(campaign.name, lang),
+      detail: localizeText(campaign.status, lang) || (it ? 'Campagna' : 'Campaign'),
       url: `/${campaign.id}`,
-      keywords: `${campaign.id} ${campaign.description.en} ${campaign.description.it}`,
+      keywords: `${campaign.id} ${Object.values(campaign.description).join(' ')}`,
     }));
 
     if (activeId === undefined || activeName === undefined) {

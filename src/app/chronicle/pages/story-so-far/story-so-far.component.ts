@@ -13,7 +13,7 @@ import { LanguageToggleComponent } from '@guild/components/language-toggle/langu
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
 import { BilingualTextPipe } from '@guild/components/bilingual-text/bilingual-text.pipe';
 import { AccordionComponent } from '@guild/components/accordion/accordion.component';
-import { type BilingualText } from '@guild/models/language.model';
+import { localizeText, type BilingualText } from '@guild/models/language.model';
 import { type Session } from '@guild/models/session.model';
 
 /** A session entry that has a populated `storySoFar` snippet. */
@@ -34,7 +34,7 @@ function selectRecapEntries(sessions: ReadonlyArray<Session>): ReadonlyArray<Sto
   const entries: StorySoFarEntry[] = [];
   for (const session of sessions) {
     const recap = session.storySoFar;
-    if (recap !== undefined && (recap.en.trim().length > 0 || recap.it.trim().length > 0)) {
+    if (recap !== undefined && Object.values(recap).some((value) => value.trim().length > 0)) {
       entries.push({
         id: session.id,
         sessionNumber: session.sessionNumber,
@@ -86,7 +86,7 @@ export class StorySoFarComponent {
   readonly entryAccordionTitle = (entry: StorySoFarEntry): string => {
     const lang = this.languageService.currentLanguage();
     const sessionLabel = lang === 'it' ? 'Sessione' : 'Session';
-    const localizedTitle = entry.title[lang];
+    const localizedTitle = localizeText(entry.title, lang);
     return `${sessionLabel} ${entry.sessionNumber} — ${localizedTitle}`;
   };
 }

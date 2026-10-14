@@ -20,7 +20,11 @@ import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.c
 import { ImageLightboxComponent } from '@guild/components/image-lightbox/image-lightbox.component';
 import { AccordionComponent } from '@guild/components/accordion/accordion.component';
 import { BilingualTextPipe } from '@guild/components/bilingual-text/bilingual-text.pipe';
-import { type BilingualText } from '@guild/models/language.model';
+import {
+  localizeText,
+  type BilingualText,
+  type SupportedLanguage,
+} from '@guild/models/language.model';
 import { type ImageRef } from '@guild/models/character.model';
 import { type Npc } from '@guild/models/npc.model';
 import { getNpcDisplayName } from '@guild/utils/npcDisplay';
@@ -155,7 +159,7 @@ export class GalleryComponent {
     const lang = this.languageService.currentLanguage();
     const refs: ReadonlyArray<ImageRef> = items.map((item) => ({
       url: item.url,
-      alt: lang === 'it' ? item.alt.it : item.alt.en,
+      alt: localizeText(item.alt, lang),
       caption: item.label,
     }));
     this.lightboxImages.set(refs);
@@ -278,12 +282,12 @@ export class GalleryComponent {
    * @param lang - Active language code.
    * @returns The localized location string, or a fallback when missing.
    */
-  private resolveNpcLocation(npc: Npc, lang: 'en' | 'it'): string {
+  private resolveNpcLocation(npc: Npc, lang: SupportedLanguage): string {
     const location = npc.profile.location;
     if (location === undefined) {
       return UNKNOWN_LOCATION_LABEL;
     }
-    const localized = lang === 'it' ? location.it : location.en;
+    const localized = localizeText(location, lang);
     const trimmed = localized.trim();
     return trimmed.length > 0 ? trimmed : UNKNOWN_LOCATION_LABEL;
   }

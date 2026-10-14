@@ -17,6 +17,7 @@ import { LanguageToggleComponent } from '@guild/components/language-toggle/langu
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
 import { BilingualTextPipe } from '@guild/components/bilingual-text/bilingual-text.pipe';
 import { type Session, type SessionImage } from '@guild/models/session.model';
+import { localizeText } from '@guild/models/language.model';
 
 /** Regex to split prose HTML at &lt;hr&gt; scene breaks. */
 const PROSE_SECTION_SEPARATOR = /<hr\s*\/?>/gi;
@@ -115,7 +116,7 @@ export class StoryChapterComponent {
       return [];
     }
     const lang = this.languageService.currentLanguage();
-    const sections = session.prose[lang].split(PROSE_SECTION_SEPARATOR);
+    const sections = localizeText(session.prose, lang).split(PROSE_SECTION_SEPARATOR);
     const displayImages = (session.images ?? []).map(toDisplaySessionImage);
     const imagesBySection = groupImagesBySection(displayImages);
 

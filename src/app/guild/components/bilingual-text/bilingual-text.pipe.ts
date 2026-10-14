@@ -6,7 +6,7 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 
 import { LanguageService } from '@guild/services/language.service';
-import { type BilingualText } from '@guild/models/language.model';
+import { localizeText, type BilingualText } from '@guild/models/language.model';
 
 /**
  * Transforms a BilingualText into the active language string.
@@ -30,6 +30,6 @@ export class BilingualTextPipe implements PipeTransform {
    * @returns The string in the active language.
    */
   transform(value: BilingualText): string {
-    return value[this.languageService.currentLanguage()];
+    return localizeText(value, this.languageService.currentLanguage());
   }
 }

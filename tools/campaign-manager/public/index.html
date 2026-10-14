@@ -1,54 +1,54 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="manager-token" content="__MANAGER_TOKEN__" />
-    <title>Campaign Companion · Gestione</title>
+    <title>Campaign Companion · Manager</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <a class="skip-link" href="#workspace">Vai al contenuto</a>
+    <a class="skip-link" href="#workspace">Skip to main content</a>
     <div class="shell">
       <aside class="sidebar">
         <header class="brand">
           <span class="brand__mark" aria-hidden="true">✦</span>
           <div>
             <strong>Campaign Companion</strong>
-            <span>Studio locale</span>
+            <span>Local campaign studio</span>
           </div>
         </header>
 
-        <div class="local-badge"><span></span> Solo sul tuo computer</div>
+        <div class="local-badge"><span></span> Private on your computer</div>
 
         <div class="sidebar__heading">
-          <span>Le tue campagne</span>
+          <span>Your campaigns</span>
           <button
             class="icon-button"
             id="new-campaign"
-            title="Nuova campagna"
-            aria-label="Nuova campagna"
+            title="New campaign"
+            aria-label="New campaign"
           >
             +
           </button>
         </div>
         <label class="search">
           <span aria-hidden="true">⌕</span>
-          <input id="campaign-search" type="search" placeholder="Cerca una campagna" />
+          <input id="campaign-search" type="search" placeholder="Search campaigns" />
         </label>
-        <nav id="campaign-list" class="campaign-list" aria-label="Campagne"></nav>
+        <nav id="campaign-list" class="campaign-list" aria-label="Campaigns"></nav>
 
         <div class="sidebar__actions">
-          <button class="secondary-button" id="import-campaign">Importa backup</button>
+          <button class="secondary-button" id="import-campaign">Import backup</button>
           <input id="import-file" type="file" accept="application/json,.json" hidden />
-          <button class="secondary-button" id="show-project">Avvio e pubblicazione</button>
+          <button class="secondary-button" id="show-project">Preview & publish</button>
         </div>
       </aside>
       <button
         class="menu-backdrop"
         id="menu-backdrop"
         type="button"
-        aria-label="Chiudi elenco campagne"
+        aria-label="Close campaign list"
       ></button>
 
       <main id="workspace" class="workspace" tabindex="-1">
@@ -56,17 +56,17 @@
           <button
             class="mobile-menu"
             id="mobile-menu"
-            aria-label="Apri elenco campagne"
+            aria-label="Open campaign list"
             aria-controls="campaign-list"
             aria-expanded="false"
           >
             ☰
           </button>
           <div>
-            <span class="eyebrow">Pannello di gestione</span>
-            <h1 id="page-title">Il tuo archivio d’avventura</h1>
+            <span class="eyebrow">Campaign manager</span>
+            <h1 id="page-title">Your adventure archive</h1>
           </div>
-          <button class="primary-button" id="open-companion">Apri il Companion</button>
+          <button class="primary-button" id="open-companion">Open Companion</button>
         </header>
 
         <section id="content" class="content" aria-live="polite"></section>
@@ -77,15 +77,15 @@
       <form id="editor-form" method="dialog">
         <header class="dialog__header">
           <div>
-            <span class="eyebrow" id="dialog-eyebrow">Modifica</span>
-            <h2 id="dialog-title">Elemento</h2>
+            <span class="eyebrow" id="dialog-eyebrow">Edit</span>
+            <h2 id="dialog-title">Entry</h2>
           </div>
-          <button class="icon-button" id="dialog-close" type="button" aria-label="Chiudi">×</button>
+          <button class="icon-button" id="dialog-close" type="button" aria-label="Close">×</button>
         </header>
         <div id="dialog-fields" class="dialog__body"></div>
         <footer class="dialog__footer">
-          <button class="secondary-button" id="dialog-cancel" type="button">Annulla</button>
-          <button class="primary-button" id="dialog-save" type="submit">Salva</button>
+          <button class="secondary-button" id="dialog-cancel" type="button">Cancel</button>
+          <button class="primary-button" id="dialog-save" type="submit">Save</button>
         </footer>
       </form>
     </dialog>

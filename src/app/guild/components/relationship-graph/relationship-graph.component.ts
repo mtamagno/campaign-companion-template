@@ -29,6 +29,7 @@ import {
 } from '@guild/models/relationship.model';
 import { BilingualTextPipe } from '@guild/components/bilingual-text/bilingual-text.pipe';
 import { LanguageService } from '@guild/services/language.service';
+import { localizeText } from '@guild/models/language.model';
 
 /** Layout position for a graph node. */
 interface NodePosition {
@@ -357,7 +358,7 @@ export class RelationshipGraphComponent {
    */
   formatRelationshipType(type: RelationshipType): string {
     const label = RELATIONSHIP_TYPE_LABELS[type];
-    return label[this.languageService.currentLanguage()];
+    return localizeText(label, this.languageService.currentLanguage());
   }
 
   /**

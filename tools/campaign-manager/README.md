@@ -24,13 +24,16 @@ automatically tries the next available port up to 4183.
 1. Select **+** or **Create your first campaign** and fill in the campaign
    details. The ID becomes part of the URL, so use lowercase letters, numbers
    and hyphens.
-2. Open the Characters, NPCs, Sessions or Locations tab and add entries with
+2. Choose a primary language and any additional language codes (`es`, `de`,
+   `ja`, `pt-BR`, and so on). Reopen the campaign editor whenever you add a
+   language to fill its translation fields.
+3. Open the Characters, NPCs, Sessions or Locations tab and add entries with
    the forms. Uploaded PNG, JPEG and WebP images are copied into the correct
    campaign folder automatically.
-3. Open **Startup and publishing** and choose **Prepare automatically** on the
+4. Open **Setup and publishing** and choose **Prepare automatically** on the
    first run. This installs the project's locked dependencies.
-4. Choose **Validate and build the site**. Fix any problem shown in the log.
-5. Choose **Start the site**, then **Open now** to view the real Companion at
+5. Choose **Check and build site**. Fix any problem shown in the log.
+6. Choose **Launch site**, then **Open now** to view the real Companion at
    `http://127.0.0.1:4200`.
 
 All edits are ordinary files under `src/campaigns/`, so they remain portable

@@ -13,6 +13,7 @@ import { LanguageService } from '@guild/services/language.service';
 import { type Character, type CharacterQuote } from '@guild/models/character.model';
 import { LanguageToggleComponent } from '@guild/components/language-toggle/language-toggle.component';
 import { SfxHoverDirective } from '@guild/directives/sfxHover.directive';
+import { localizeText } from '@guild/models/language.model';
 
 /** Resolved quote with its speaker's name for display. */
 interface DisplayQuote {
@@ -81,7 +82,7 @@ export class HomepageComponent {
     if (campaign === undefined) {
       return '';
     }
-    return campaign.name[this.languageService.currentLanguage()];
+    return localizeText(campaign.name, this.languageService.currentLanguage());
   });
 
   /** Campaign subtitle/tagline. */
@@ -90,7 +91,7 @@ export class HomepageComponent {
     if (campaign === undefined) {
       return '';
     }
-    return campaign.description[this.languageService.currentLanguage()];
+    return localizeText(campaign.description, this.languageService.currentLanguage());
   });
 
   /** A random character quote — picked once on load. */
@@ -111,8 +112,8 @@ export class HomepageComponent {
     }
 
     return {
-      text: quote.text[lang],
-      context: quote.context ? quote.context[lang] : '',
+      text: localizeText(quote.text, lang),
+      context: localizeText(quote.context, lang),
       characterName: character.name,
     };
   });

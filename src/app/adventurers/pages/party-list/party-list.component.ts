@@ -14,6 +14,7 @@ import { type Character, type CharacterQuote } from '@guild/models/character.mod
 import { LanguageToggleComponent } from '@guild/components/language-toggle/language-toggle.component';
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
 import { SfxHoverDirective } from '@guild/directives/sfxHover.directive';
+import { localizeText, type SupportedLanguage } from '@guild/models/language.model';
 
 /** Character card display data with a pre-picked random quote. */
 interface CharacterShowcase {
@@ -43,18 +44,21 @@ function pickRandom<T>(items: ReadonlyArray<T>): T | undefined {
 /**
  * Builds showcase data for each character, including a random quote.
  * @param characters - All player characters.
- * @param lang - Current language key ('en' or 'it').
+ * @param lang - Current campaign language code.
  * @returns Array of character showcase objects.
  */
 function buildShowcases(
   characters: ReadonlyArray<Character>,
-  lang: 'en' | 'it',
+  lang: SupportedLanguage,
 ): ReadonlyArray<CharacterShowcase> {
   return characters.map((character): CharacterShowcase => {
     const rawQuote: CharacterQuote | undefined = pickRandom(character.quotes);
     const quote: ResolvedQuote | undefined =
       rawQuote !== undefined
-        ? { text: rawQuote.text[lang], context: rawQuote.context ? rawQuote.context[lang] : '' }
+        ? {
+            text: localizeText(rawQuote.text, lang),
+            context: localizeText(rawQuote.context, lang),
+          }
         : undefined;
 
     const isReady =
@@ -107,7 +111,7 @@ export class PartyListComponent {
   /** Localized campaign title used by the fallback hero. */
   readonly campaignTitle: Signal<string> = computed(() => {
     const campaign = this.dataService.campaign();
-    return campaign?.name[this.lang()] ?? '';
+    return localizeText(campaign?.name, this.lang());
   });
 
   /** Character showcase cards with pre-resolved quotes. */

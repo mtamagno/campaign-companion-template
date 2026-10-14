@@ -1,4 +1,6 @@
 {
+  "languages": ["en", "it"],
+  "defaultLanguage": "en",
   "name": { "en": "The Lantern Road", "it": "La Via delle Lanterne" },
   "description": {
     "en": "Travellers follow a chain of fading lights through a valley that has forgotten the dawn.",

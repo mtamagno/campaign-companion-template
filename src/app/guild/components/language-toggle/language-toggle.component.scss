@@ -1,7 +1,6 @@
 // ============================================
 // 🎨 language-toggle.component.scss
-// IT/EN language switch button with fantasy styling.
-// Active language is highlighted with gold accent.
+// Campaign-configured language selector with fantasy styling.
 // ============================================
 
 @use '../../../../styles/variables' as *;
@@ -10,6 +9,18 @@
 :host {
   display: inline-block;
   width: fit-content;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .lang-toggle {
@@ -35,20 +46,22 @@
   }
 }
 
-.lang-toggle__option {
+.lang-toggle__sigil {
   font-family: $font-family-heading;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  letter-spacing: $letter-spacing-wide;
-  color: $color-text-muted;
-  @include transition-colors($transition-fast);
-
-  &--active {
-    @include text-gold-glow;
-  }
+  color: var(--campaign-accent, #{$color-gold});
 }
 
-.lang-toggle__separator {
-  font-size: $font-size-xs;
-  color: $color-text-muted;
+.lang-toggle select {
+  max-width: 11rem;
+  border: 0;
+  background: transparent;
+  color: $color-text-primary;
+  font: inherit;
+  cursor: pointer;
+  outline: 0;
+}
+
+.lang-toggle option {
+  color: $color-text-primary;
+  background: $color-bg-elevated;
 }

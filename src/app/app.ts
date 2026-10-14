@@ -21,6 +21,7 @@ import { SFX } from '@guild/constants/sfx.constant';
 import { AudioService } from '@guild/services/audio.service';
 import { CampaignService } from '@guild/services/campaign.service';
 import { LanguageService } from '@guild/services/language.service';
+import { localizeText } from '@guild/models/language.model';
 
 /**
  * CSS selectors for elements that should automatically play the default
@@ -122,9 +123,9 @@ export class App implements OnInit {
       const campaignId = this.activeCampaignId();
       const language = this.languageService.currentLanguage();
       const campaign = this.campaignService.manifest().find(({ id }) => id === campaignId);
-      const campaignName = campaign?.name[language];
+      const campaignName = localizeText(campaign?.name, language);
       this.documentTitle.setTitle(
-        campaignName === undefined ? 'Campaign Companion' : `${campaignName} · Campaign Companion`,
+        campaignName.length === 0 ? 'Campaign Companion' : `${campaignName} · Campaign Companion`,
       );
     });
   }

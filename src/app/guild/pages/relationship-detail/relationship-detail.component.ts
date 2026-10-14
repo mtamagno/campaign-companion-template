@@ -25,6 +25,7 @@ import { getNpcDisplayName } from '@guild/utils/npcDisplay';
 import { BilingualTextPipe } from '@guild/components/bilingual-text/bilingual-text.pipe';
 import { LanguageToggleComponent } from '@guild/components/language-toggle/language-toggle.component';
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
+import { localizeText } from '@guild/models/language.model';
 
 /** Resolved entity info for display in the header. */
 interface EntityInfo {
@@ -82,7 +83,7 @@ export class RelationshipDetailComponent {
       return '';
     }
     const label = RELATIONSHIP_TYPE_LABELS[rel.type];
-    return label[this.languageService.currentLanguage()];
+    return localizeText(label, this.languageService.currentLanguage());
   });
 
   /** Source entity info (character or NPC). */
@@ -142,7 +143,7 @@ export class RelationshipDetailComponent {
     if (label === undefined) {
       return type;
     }
-    return label[this.languageService.currentLanguage()];
+    return localizeText(label, this.languageService.currentLanguage());
   }
 
   /**
@@ -166,7 +167,7 @@ export class RelationshipDetailComponent {
     if (npc !== undefined) {
       return {
         id: npc.id,
-        name: getNpcDisplayName(npc),
+        name: getNpcDisplayName(npc, this.languageService.currentLanguage()),
         avatar: npc.avatar,
         profileImageUrl: npc.profileImageUrl,
       };

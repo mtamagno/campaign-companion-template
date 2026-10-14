@@ -23,6 +23,7 @@ import { LanguageToggleComponent } from '@guild/components/language-toggle/langu
 import { SfxHoverDirective } from '@guild/directives/sfxHover.directive';
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
 import { type CampaignManifestEntry } from '@guild/models/campaignConfig.model';
+import { localizeText } from '@guild/models/language.model';
 
 /**
  * Root landing page that lists all available campaigns.
@@ -86,7 +87,7 @@ export class CampaignSelectorComponent {
     if (campaign === undefined) {
       return '';
     }
-    const name = campaign.name[this.lang()];
+    const name = localizeText(campaign.name, this.lang());
     return this.lang() === 'it'
       ? `Stai per accedere alla campagna "${name}". Se non sei un giocatore di questa campagna, rischi di leggere spoiler!`
       : `You are about to enter the campaign "${name}". If you are not a player in this campaign, you risk reading spoilers!`;

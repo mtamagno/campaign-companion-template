@@ -15,6 +15,7 @@ import { SfxHoverDirective } from '@guild/directives/sfxHover.directive';
 import { DiceLoaderComponent } from '@guild/components/dice-loader/dice-loader.component';
 import { toThumbUrl } from '@guild/services/imageUrl.service';
 import { getNpcDisplayName } from '@guild/utils/npcDisplay';
+import { type SupportedLanguage } from '@guild/models/language.model';
 
 /** Placeholder portrait shown when an NPC has no profile image. */
 const PLACEHOLDER_PORTRAIT_URL = 'assets/images/placeholders/placeholder-portrait.svg';
@@ -51,7 +52,7 @@ const ALLEGIANCE_ORDER: ReadonlyArray<{
  */
 function groupNpcsByAllegianceAndCategory(
   npcs: ReadonlyArray<Npc>,
-  lang: 'en' | 'it',
+  lang: SupportedLanguage,
 ): ReadonlyArray<NpcAllegianceGroup> {
   return ALLEGIANCE_ORDER.map(({ allegiance, label, icon }) => {
     const matching = npcs.filter((npc) => npc.allegiance === allegiance);
@@ -71,10 +72,12 @@ function groupNpcsByAllegianceAndCategory(
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([category, categoryNpcs]) => ({
         category,
-        npcs: categoryNpcs.sort((a, b) => getNpcDisplayName(a).localeCompare(getNpcDisplayName(b))),
+        npcs: categoryNpcs.sort((a, b) =>
+          getNpcDisplayName(a, lang).localeCompare(getNpcDisplayName(b, lang)),
+        ),
       }));
 
-    return { allegiance, label: label[lang], icon, categories };
+    return { allegiance, label: label[lang === 'it' ? 'it' : 'en'], icon, categories };
   }).filter((group) => group.categories.length > 0);
 }
 

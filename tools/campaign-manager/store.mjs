@@ -3,6 +3,7 @@ import { dirname, join, relative, resolve } from 'node:path';
 
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ENTITY_TYPES = new Set(['characters', 'npcs', 'sessions', 'maps']);
+const LANGUAGE_PATTERN = /^[a-z]{2,3}(?:-[A-Z]{2})?$/;
 
 function nowStamp() {
   return new Date().toISOString().replace(/[:.]/g, '-');
@@ -13,6 +14,16 @@ export function validateId(value, label = 'ID') {
     throw new Error(`${label} must contain only lowercase letters, numbers and hyphens.`);
   }
   return value;
+}
+
+function normalizeLanguages(values) {
+  const languages = [
+    ...new Set((values ?? ['en']).map((value) => String(value).trim()).filter(Boolean)),
+  ];
+  if (languages.length === 0 || languages.some((code) => !LANGUAGE_PATTERN.test(code))) {
+    throw new Error('Use language codes such as en, es, de or fr-CA.');
+  }
+  return languages;
 }
 
 function assertInside(base, target) {
@@ -129,9 +140,12 @@ export async function createCampaign(projectRoot, input) {
   const id = validateId(input.id, 'Campaign ID');
   const root = campaignRoot(projectRoot, id);
   if (await exists(root)) throw new Error(`Campaign "${id}" already exists.`);
-  if (!input.name?.en?.trim() || !input.name?.it?.trim()) {
-    throw new Error('Campaign names are required in both languages.');
-  }
+  const languages = normalizeLanguages(input.languages);
+  const defaultLanguage = languages.includes(input.defaultLanguage)
+    ? input.defaultLanguage
+    : languages[0];
+  if (!Object.values(input.name ?? {}).some((value) => String(value).trim()))
+    throw new Error('A campaign name is required.');
 
   const manifestPath = join(campaignsRoot(projectRoot), 'campaigns.json');
   const manifest = await readJson(manifestPath, []);
@@ -152,20 +166,24 @@ export async function createCampaign(projectRoot, input) {
 
   const entry = {
     id,
+    languages,
+    defaultLanguage,
     name: input.name,
-    description: input.description ?? { en: '', it: '' },
+    description: input.description ?? { [defaultLanguage]: '' },
     thumbnail: '',
-    status: input.status ?? { en: 'In progress', it: 'In corso' },
+    status: input.status ?? { [defaultLanguage]: 'In progress' },
   };
   const campaign = {
     name: input.name,
-    description: input.description ?? { en: '', it: '' },
+    description: input.description ?? { [defaultLanguage]: '' },
+    languages,
+    defaultLanguage,
     edition: input.edition?.trim() || 'Your ruleset',
     startDate: input.startDate || new Date().toISOString().slice(0, 10),
     dungeonMaster: input.dungeonMaster?.trim() || 'Game Master',
     partyName: input.partyName?.trim() || 'The Party',
     heroImages: [],
-    storySoFar: { en: '', it: '' },
+    storySoFar: Object.fromEntries(languages.map((language) => [language, ''])),
   };
 
   await Promise.all([
@@ -185,8 +203,19 @@ export async function updateCampaign(projectRoot, campaignId, input) {
   const current = await getCampaign(projectRoot, campaignId);
   const manifestPath = join(campaignsRoot(projectRoot), 'campaigns.json');
   const manifest = await readJson(manifestPath, []);
+  const languages = normalizeLanguages(
+    input.languages ?? current.manifestEntry.languages ?? current.campaign.languages ?? ['en'],
+  );
+  const requestedDefault =
+    input.defaultLanguage ??
+    current.manifestEntry.defaultLanguage ??
+    current.campaign.defaultLanguage ??
+    languages[0];
+  const defaultLanguage = languages.includes(requestedDefault) ? requestedDefault : languages[0];
   const nextEntry = {
     ...current.manifestEntry,
+    languages,
+    defaultLanguage,
     name: input.name ?? current.manifestEntry.name,
     description: input.description ?? current.manifestEntry.description,
     status: input.status ?? current.manifestEntry.status,
@@ -195,6 +224,8 @@ export async function updateCampaign(projectRoot, campaignId, input) {
   const nextCampaign = {
     ...current.campaign,
     ...(input.campaign ?? {}),
+    languages,
+    defaultLanguage,
     name: nextEntry.name,
     description: nextEntry.description,
   };
@@ -347,6 +378,8 @@ export async function importCampaign(projectRoot, bundle) {
   const id = validateId(bundle.manifestEntry?.id, 'Campaign ID');
   await createCampaign(projectRoot, {
     id,
+    languages: bundle.manifestEntry.languages,
+    defaultLanguage: bundle.manifestEntry.defaultLanguage,
     name: bundle.manifestEntry.name,
     description: bundle.manifestEntry.description,
     status: bundle.manifestEntry.status,

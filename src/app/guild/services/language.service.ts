@@ -8,7 +8,8 @@ import { Injectable, computed, signal, type Signal, type WritableSignal } from '
 import { type SupportedLanguage } from '@guild/models/language.model';
 
 const STORAGE_KEY = 'campaign_companion_language';
-const DEFAULT_LANGUAGE: SupportedLanguage = 'it';
+const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
+const LANGUAGE_PATTERN = /^[a-z]{2,3}(?:-[A-Z]{2})?$/;
 
 /**
  * Singleton service that exposes the current display language as a signal.
@@ -41,7 +42,7 @@ export class LanguageService {
   }
 
   /**
-   * Toggles the language between 'en' and 'it'.
+   * Legacy convenience toggle between English and Italian.
    */
   toggle(): void {
     const next: SupportedLanguage = this._currentLanguage() === 'en' ? 'it' : 'en';
@@ -53,8 +54,10 @@ export class LanguageService {
    * @param language - The language to activate.
    */
   setLanguage(language: SupportedLanguage): void {
-    this._currentLanguage.set(language);
-    this.saveToStorage(language);
+    const normalized = this.normalize(language);
+    if (normalized === undefined) return;
+    this._currentLanguage.set(normalized);
+    this.saveToStorage(normalized);
   }
 
   /**
@@ -64,9 +67,8 @@ export class LanguageService {
   private loadFromStorage(): SupportedLanguage {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === 'en' || stored === 'it') {
-        return stored;
-      }
+      const normalized = stored === null ? undefined : this.normalize(stored);
+      if (normalized !== undefined) return normalized;
       return DEFAULT_LANGUAGE;
     } catch {
       return DEFAULT_LANGUAGE;
@@ -83,5 +85,14 @@ export class LanguageService {
     } catch {
       // localStorage may be unavailable — fail silently
     }
+  }
+
+  /** Normalizes a user-provided language code without limiting the language list. */
+  private normalize(language: string): SupportedLanguage | undefined {
+    const [base = '', region] = language.trim().replace('_', '-').split('-');
+    const normalized = region
+      ? `${base.toLowerCase()}-${region.toUpperCase()}`
+      : base.toLowerCase();
+    return LANGUAGE_PATTERN.test(normalized) ? normalized : undefined;
   }
 }

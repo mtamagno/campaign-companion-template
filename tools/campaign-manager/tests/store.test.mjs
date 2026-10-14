@@ -13,6 +13,7 @@ import {
   getState,
   importCampaign,
   saveEntity,
+  updateCampaign,
 } from '../store.mjs';
 
 async function fixture(t) {
@@ -90,4 +91,31 @@ test('exports, imports and recoverably deletes a campaign', async (t) => {
   await assert.rejects(deleteCampaign(target, campaignInput.id, 'sbagliato'));
   await deleteCampaign(target, campaignInput.id, campaignInput.id);
   assert.equal((await getState(target)).campaigns.length, 0);
+});
+
+test('supports arbitrary campaign languages and regional codes', async (t) => {
+  const root = await fixture(t);
+  const campaign = await createCampaign(root, {
+    ...campaignInput,
+    id: 'cronicas-del-mar',
+    languages: ['es', 'ja', 'pt-BR'],
+    defaultLanguage: 'es',
+    name: { en: 'Chronicles of the Sea', es: 'Crónicas del Mar', ja: '海の年代記' },
+  });
+
+  assert.deepEqual(campaign.manifestEntry.languages, ['es', 'ja', 'pt-BR']);
+  assert.equal(campaign.manifestEntry.defaultLanguage, 'es');
+  assert.equal(campaign.manifestEntry.name.ja, '海の年代記');
+
+  const updated = await updateCampaign(root, campaign.manifestEntry.id, {
+    languages: ['de', 'fr-CA'],
+    defaultLanguage: 'fr-CA',
+  });
+  assert.deepEqual(updated.campaign.languages, ['de', 'fr-CA']);
+  assert.equal(updated.campaign.defaultLanguage, 'fr-CA');
+
+  await assert.rejects(
+    updateCampaign(root, campaign.manifestEntry.id, { languages: ['not a language'] }),
+    /language codes/,
+  );
 });

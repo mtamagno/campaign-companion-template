@@ -1,15 +1,15 @@
-<!-- Language Toggle — IT/EN switch button -->
-<button
-  class="lang-toggle"
-  type="button"
-  [attr.aria-label]="'Switch language to ' + (currentLanguage() === 'it' ? 'English' : 'Italiano')"
-  (click)="toggle()"
->
-  <span class="lang-toggle__option" [class.lang-toggle__option--active]="currentLanguage() === 'it'"
-    >IT</span
+<label class="lang-toggle">
+  <span class="sr-only">Language</span>
+  <span class="lang-toggle__sigil" aria-hidden="true">文</span>
+  <select
+    [value]="currentLanguage()"
+    aria-label="Choose language"
+    (change)="selectLanguage($event)"
   >
-  <span class="lang-toggle__separator">/</span>
-  <span class="lang-toggle__option" [class.lang-toggle__option--active]="currentLanguage() === 'en'"
-    >EN</span
-  >
-</button>
+    @for (language of languages(); track language) {
+      <option [value]="language">
+        {{ languageName(language) }} · {{ language.toUpperCase() }}
+      </option>
+    }
+  </select>
+</label>

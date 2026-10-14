@@ -31,9 +31,21 @@ src/campaigns/
     └── images/
 ```
 
-Use lowercase URL-safe IDs. Every localized value has the shape
-`{"en": "...", "it": "..."}`. If you only write one language, duplicate the
-text so the language toggle never produces a blank field.
+Use lowercase URL-safe IDs. Declare the campaign's language codes and default
+language in both `campaigns.json` and `data/campaign.json`:
+
+```json
+{
+  "languages": ["en", "es", "pt-BR"],
+  "defaultLanguage": "es"
+}
+```
+
+Every localized value is a map keyed by those codes, for example
+`{"en": "The Lantern Road", "es": "El Camino de las Linternas"}`. Use normal
+BCP-47-style codes such as `de`, `ja`, `fr-CA` or `pt-BR`. English is the
+technical fallback; if it is omitted, the manager safely copies the first
+available translation into `en` while keeping the chosen default language.
 
 ## Campaign manifest
 
@@ -101,5 +113,5 @@ npm ci
 npm run build
 ```
 
-Then browse every route, test both languages, export a PDF and verify direct
-page reloads on your hosting provider.
+Then browse every route, test each configured language, export a PDF and verify
+direct page reloads on your hosting provider.
