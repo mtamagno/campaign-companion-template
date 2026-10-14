@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 210" role="img" aria-labelledby="title description">
+  <title id="title">QuestKeeper</title>
+  <desc id="description">The self-hosted RPG campaign companion</desc>
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0" stop-color="#8b6732" />
+      <stop offset="0.28" stop-color="#e7c578" />
+      <stop offset="0.52" stop-color="#fff0b8" />
+      <stop offset="0.76" stop-color="#d4aa56" />
+      <stop offset="1" stop-color="#765326" />
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#gold)" stroke-width="2">
+    <path d="M92 104h250m516 0h250" />
+    <path d="M52 104l24-14 16 14-16 14-24-14zm1096 0l-24-14-16 14 16 14 24-14z" />
+    <path d="M342 104l14-8 14 8-14 8-14-8zm516 0l-14-8-14 8 14 8 14-8z" />
+  </g>
+  <text x="600" y="106" text-anchor="middle" fill="url(#gold)" font-family="Palatino Linotype, Book Antiqua, Georgia, serif" font-size="88" font-weight="700" letter-spacing="10">QUESTKEEPER</text>
+  <text x="600" y="156" text-anchor="middle" fill="#9aa8a2" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="7">THE SELF-HOSTED RPG CAMPAIGN COMPANION</text>
+  <path d="M515 180h170" stroke="#5f786f" stroke-width="2" />
+  <path d="M600 169l11 11-11 11-11-11 11-11z" fill="#5f786f" />
+</svg>

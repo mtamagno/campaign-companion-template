@@ -1,4 +1,4 @@
-"""Discord bot for local, speaker-labelled Italian transcription."""
+"""Discord bot for local, speaker-labelled session transcription."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def _env_float(name: str, default: float) -> float:
     try:
         return float(os.getenv(name, default))
     except ValueError as exc:
-        raise SystemExit(f"{name} deve essere un numero") from exc
+        raise SystemExit(f"{name} must be a number") from exc
 
 
 def _safe_filename(value: str) -> str:
@@ -41,7 +41,7 @@ def _safe_filename(value: str) -> str:
         for character in value
         if character.isalnum() or character in "-_ "
     )
-    return safe.strip().replace(" ", "-")[:60] or "canale"
+    return safe.strip().replace(" ", "-")[:60] or "channel"
 
 
 @dataclass(frozen=True)
@@ -59,13 +59,13 @@ class Settings:
     def from_env(cls) -> "Settings":
         token = os.getenv("DISCORD_TOKEN", "").strip()
         if not token or token == "replace-me":
-            raise SystemExit("DISCORD_TOKEN non configurato: copia .env.example in .env")
+            raise SystemExit("DISCORD_TOKEN is not configured: copy .env.example to .env")
         return cls(
             token=token,
             model=os.getenv("WHISPER_MODEL", "small"),
             device=os.getenv("WHISPER_DEVICE", "cpu"),
             compute_type=os.getenv("WHISPER_COMPUTE_TYPE", "int8"),
-            language=os.getenv("WHISPER_LANGUAGE", "it"),
+            language=os.getenv("WHISPER_LANGUAGE", "en"),
             silence_seconds=_env_float("SILENCE_MS", 900) / 1000,
             min_seconds=_env_float("MIN_UTTERANCE_MS", 450) / 1000,
             max_seconds=_env_float("MAX_UTTERANCE_SECONDS", 25),
@@ -91,7 +91,7 @@ class DiscordAudioSink(Sink):
             getattr(user, "display_name", None)
             or self.participant_names.get(user_id)
             or getattr(user, "name", None)
-            or f"Utente Discord {user_id}"
+            or f"Discord user {user_id}"
         )
         self.participant_names[user_id] = display_name
         self.buffer.push(user_id, display_name, pcm)
@@ -135,7 +135,7 @@ class ActiveSession:
             BOT_DIR / "transcripts" / f"{stamp}_{channel_slug}_{guild_id}.md"
         )
         self.transcript_path.parent.mkdir(parents=True, exist_ok=True)
-        participants = ", ".join(sorted(self.names, key=str.casefold)) or "nessuno"
+        participants = ", ".join(sorted(self.names, key=str.casefold)) or "none"
         self.transcript_path.write_text(
             "# Appunti della sessione Discord\n\n"
             f"- **Inizio:** {started.strftime('%d/%m/%Y %H:%M:%S')}\n"
@@ -143,7 +143,7 @@ class ActiveSession:
             f"- **Canale vocale:** {voice_channel_name}\n"
             f"- **Partecipanti iniziali:** {participants}\n"
             f"- **Modello:** {settings.model}\n\n"
-            "## Trascrizione\n\n",
+            "## Session transcript\n\n",
             encoding="utf-8",
         )
 
@@ -217,7 +217,7 @@ async def _voice_participant_names(
             try:
                 member = await guild.fetch_member(user_id)
             except discord.HTTPException:
-                LOGGER.warning("Impossibile risolvere il nome Discord per %s", user_id)
+                LOGGER.warning("Could not resolve the Discord name for %s", user_id)
                 continue
         if not member.bot:
             names[user_id] = member.display_name
@@ -234,7 +234,7 @@ def _forget_partial_voice_client(guild: discord.Guild) -> None:
         voice_client.stop()
         voice_client.cleanup()
     except Exception:
-        LOGGER.exception("Pulizia della connessione vocale parziale fallita")
+        LOGGER.exception("Partial voice connection cleanup failed")
 
 
 def _consume_cancelled_task(task: asyncio.Task) -> None:
@@ -246,37 +246,37 @@ def _consume_cancelled_task(task: asyncio.Task) -> None:
 
 @bot.event
 async def on_ready() -> None:
-    LOGGER.info("Connesso come %s", bot.user)
+    LOGGER.info("Connected as %s", bot.user)
 
 
-@bot.slash_command(description="Avvia gli appunti vocali salvati solo sul PC locale")
+@bot.slash_command(description="Start voice notes saved only on the local computer")
 async def trascrivi(ctx: discord.ApplicationContext) -> None:
     if ctx.guild is None or not isinstance(ctx.author, discord.Member):
-        return await _reply(ctx, "Questo comando funziona solo dentro un server.")
+        return await _reply(ctx, "This command works only inside a server.")
     if ctx.author.voice is None or ctx.author.voice.channel is None:
-        return await _reply(ctx, "Entra prima in un canale vocale.")
+        return await _reply(ctx, "Join a voice channel first.")
     if ctx.guild.id in sessions:
-        return await _reply(ctx, "Sto già prendendo appunti in questo server. Usa `/ferma`.")
+        return await _reply(ctx, "I am already taking notes in this server. Use `/ferma`.")
 
     voice_channel = ctx.author.voice.channel
     permissions = voice_channel.permissions_for(ctx.guild.me)
     required_permissions = (
-        ("Visualizza canale", permissions.view_channel),
-        ("Connetti", permissions.connect),
-        ("Parla", permissions.speak),
-        ("Usa attività vocale", permissions.use_voice_activation),
+        ("View Channel", permissions.view_channel),
+        ("Connect", permissions.connect),
+        ("Speak", permissions.speak),
+        ("Use Voice Activity", permissions.use_voice_activation),
     )
     missing_permissions = [name for name, enabled in required_permissions if not enabled]
     if missing_permissions:
         return await _reply(
             ctx,
-            "Mi mancano questi permessi nel canale vocale: "
+            "I am missing these permissions in the voice channel: "
             + ", ".join(missing_permissions)
-            + ". Abilitali per il ruolo `Campaign Scribe` nelle impostazioni del canale.",
+            + ". Enable them for the bot role in the channel settings.",
         )
 
     await ctx.respond(
-        f"Connessione al canale vocale `{voice_channel.name}` in corso…",
+        f"Connecting to voice channel `{voice_channel.name}`…",
         ephemeral=True,
     )
     participant_names = await _voice_participant_names(ctx.guild, voice_channel)
@@ -290,11 +290,11 @@ async def trascrivi(ctx: discord.ApplicationContext) -> None:
             connect_task.cancel()
             connect_task.add_done_callback(_consume_cancelled_task)
             _forget_partial_voice_client(ctx.guild)
-            LOGGER.error("Timeout rigido durante la connessione al canale %s", voice_channel.id)
+            LOGGER.error("Hard timeout while connecting to channel %s", voice_channel.id)
             return await _reply(
                 ctx,
-                "Discord non ha completato la connessione vocale entro 15 secondi. "
-                "Controlla gli override dei permessi del canale e riprova.",
+                "Discord did not complete the voice connection within 15 seconds. "
+                "Check the channel permission overrides and try again.",
             )
 
         voice_client = connect_task.result()
@@ -303,7 +303,7 @@ async def trascrivi(ctx: discord.ApplicationContext) -> None:
             await voice_client.disconnect(force=True)
             return await _reply(
                 ctx,
-                "Connessione DAVE non attiva: reinstalla le dipendenze dal file "
+                "DAVE connection is not active: reinstall dependencies from "
                 "`requirements.txt`.",
             )
 
@@ -320,25 +320,25 @@ async def trascrivi(ctx: discord.ApplicationContext) -> None:
         voice_client.start_recording(session.sink)
         session.start()
     except asyncio.TimeoutError:
-        LOGGER.exception("Timeout durante la connessione vocale")
+        LOGGER.exception("Voice connection timed out")
         _forget_partial_voice_client(ctx.guild)
         return await _reply(
             ctx,
-            "Discord non ha completato la connessione vocale. "
-            "Controlla i permessi del canale e riprova.",
+            "Discord did not complete the voice connection. "
+            "Check the channel permissions and try again.",
         )
     except Exception:
-        LOGGER.exception("Avvio della sessione fallito")
+        LOGGER.exception("Session startup failed")
         if voice_client is not None and voice_client.is_connected():
             await voice_client.disconnect(force=True)
         else:
             _forget_partial_voice_client(ctx.guild)
-        return await _reply(ctx, "Non riesco a entrare o ascoltare il canale vocale.")
+        return await _reply(ctx, "I could not join or listen to the voice channel.")
 
     await _reply(
         ctx,
-        "Trascrizione locale avviata. Nessun testo verrà pubblicato nella chat: "
-        f"gli appunti finiscono in `{session.transcript_path.name}`. Usa `/ferma` per terminare.",
+        "Local transcription started. No text will be posted in chat: "
+        f"notes are saved to `{session.transcript_path.name}`. Use `/ferma` to finish.",
     )
 
 
@@ -352,14 +352,14 @@ async def on_voice_state_update(member, before, after) -> None:
         session.add_participant(member.id, member.display_name)
 
 
-@bot.slash_command(description="Ferma gli appunti e fa uscire il bot")
+@bot.slash_command(description="Stop taking notes and leave the voice channel")
 async def ferma(ctx: discord.ApplicationContext) -> None:
     if ctx.guild is None:
-        return await _reply(ctx, "Questo comando funziona solo dentro un server.")
+        return await _reply(ctx, "This command works only inside a server.")
     session = sessions.pop(ctx.guild.id, None)
     voice_client = ctx.guild.voice_client
     if session is None or voice_client is None:
-        return await _reply(ctx, "Non c'è una trascrizione attiva.")
+        return await _reply(ctx, "There is no active transcription.")
 
     if voice_client.is_recording():
         voice_client.stop_recording()
@@ -367,25 +367,25 @@ async def ferma(ctx: discord.ApplicationContext) -> None:
     await voice_client.disconnect()
     await _reply(
         ctx,
-        f"Trascrizione fermata. Appunti locali: `{session.transcript_path.name}`.",
+        f"Transcription stopped. Local notes: `{session.transcript_path.name}`.",
     )
 
 
-@bot.slash_command(description="Mostra lo stato della trascrizione locale")
+@bot.slash_command(description="Show local transcription status")
 async def stato(ctx: discord.ApplicationContext) -> None:
     session = sessions.get(ctx.guild.id) if ctx.guild else None
     active = (
-        f"attiva nel canale `{session.voice_channel_name}`; file `{session.transcript_path.name}`"
+        f"active in `{session.voice_channel_name}`; file `{session.transcript_path.name}`"
         if session
-        else "non attiva"
+        else "inactive"
     )
-    await _reply(ctx, f"Trascrizione: {active}. Whisper `{settings.model}`: {worker.status}.")
+    await _reply(ctx, f"Transcription: {active}. Whisper `{settings.model}`: {worker.status}.")
 
 
-@bot.slash_command(description="Mostra gli utenti Discord riconosciuti come parlanti")
+@bot.slash_command(description="Show Discord users recognized as speakers")
 async def partecipanti(ctx: discord.ApplicationContext) -> None:
     if ctx.guild is None or not isinstance(ctx.author, discord.Member):
-        return await _reply(ctx, "Questo comando funziona solo dentro un server.")
+        return await _reply(ctx, "This command works only inside a server.")
     session = sessions.get(ctx.guild.id)
     if session:
         names = sorted(session.names, key=str.casefold)
@@ -400,7 +400,7 @@ async def partecipanti(ctx: discord.ApplicationContext) -> None:
         )
     else:
         names = []
-    await _reply(ctx, "Partecipanti: " + (", ".join(names) if names else "nessuno"))
+    await _reply(ctx, "Participants: " + (", ".join(names) if names else "none"))
 
 
 if __name__ == "__main__":

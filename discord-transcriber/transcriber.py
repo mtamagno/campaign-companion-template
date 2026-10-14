@@ -19,6 +19,10 @@ LOGGER = logging.getLogger(__name__)
 ResultCallback = Callable[[str, str], None]
 _CUDA_DLL_HANDLES: list[object] = []
 _LOW_VALUE_HALLUCINATIONS = {
+    "thank you",
+    "thanks",
+    "thanks everyone",
+    "thank you for watching",
     "grazie",
     "grazie mille",
     "grazie a tutti",
@@ -26,6 +30,8 @@ _LOW_VALUE_HALLUCINATIONS = {
     "alla prossima",
 }
 _PROMPT_LEAK_PREFIXES = (
+    "possible proper names are",
+    "faithful transcription in english",
     "i nomi propri possibili sono",
     "trascrizione fedele in italiano",
 )
@@ -121,10 +127,10 @@ class WhisperWorker:
     @property
     def status(self) -> str:
         if self._load_error:
-            return f"errore: {self._load_error}"
+            return f"error: {self._load_error}"
         if self._ready.is_set():
-            return "pronto"
-        return "caricamento modello"
+            return "ready"
+        return "loading model"
 
     def start(self) -> None:
         self._thread.start()
@@ -164,10 +170,10 @@ class WhisperWorker:
             )
             list(warmup_segments)
             self._ready.set()
-            LOGGER.info("Modello Whisper pronto")
+            LOGGER.info("Whisper model ready")
         except Exception as exc:  # the error is surfaced via /stato and logs
             self._load_error = str(exc)
-            LOGGER.exception("Impossibile caricare Whisper")
+            LOGGER.exception("Could not load Whisper")
             return
 
         while True:
@@ -198,4 +204,4 @@ class WhisperWorker:
                 if text:
                     job.callback(job.utterance.speaker, text)
             except Exception:
-                LOGGER.exception("Trascrizione fallita per %s", job.utterance.speaker)
+                LOGGER.exception("Transcription failed for %s", job.utterance.speaker)

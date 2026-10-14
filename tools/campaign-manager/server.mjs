@@ -21,6 +21,7 @@ import {
 const MANAGER_ROOT = dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = resolve(MANAGER_ROOT, '..', '..');
 const PUBLIC_ROOT = join(MANAGER_ROOT, 'public');
+const TRANSCRIBER_ROOT = join(PROJECT_ROOT, 'discord-transcriber');
 const TOKEN = randomBytes(24).toString('hex');
 const MAX_BODY_BYTES = 12 * 1024 * 1024;
 const jobs = new Map();
@@ -71,27 +72,83 @@ function appendLog(job, text) {
   job.updatedAt = new Date().toISOString();
 }
 
-function startJob(kind) {
-  const current = jobs.get(kind);
-  if (current?.status === 'running') return current;
+function commandForJob(kind) {
   const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-  const argsByKind = {
-    install: ['ci'],
-    build: ['run', 'build'],
-    preview: ['run', 'start', '--', '--host', '127.0.0.1', '--port', '4200'],
+  if (kind === 'install') return { command: npm, args: ['ci'], cwd: PROJECT_ROOT };
+  if (kind === 'build') return { command: npm, args: ['run', 'build'], cwd: PROJECT_ROOT };
+  if (kind === 'preview') {
+    return {
+      command: npm,
+      args: ['run', 'start', '--', '--host', '127.0.0.1', '--port', '4200'],
+      cwd: PROJECT_ROOT,
+      url: 'http://127.0.0.1:4200',
+    };
+  }
+  if (kind === 'transcriber') {
+    return process.platform === 'win32'
+      ? {
+          command: process.env.ComSpec || 'cmd.exe',
+          args: ['/d', '/c', join(TRANSCRIBER_ROOT, 'start.bat')],
+          cwd: TRANSCRIBER_ROOT,
+          display: 'start Discord Scribe',
+        }
+      : {
+          command: 'bash',
+          args: [join(TRANSCRIBER_ROOT, 'start.sh')],
+          cwd: TRANSCRIBER_ROOT,
+          display: 'start Discord Scribe',
+        };
+  }
+  throw new Error('Unknown project action.');
+}
+
+async function transcriberStatus() {
+  let configFilePresent = false;
+  let configured = false;
+  let environmentReady = false;
+  try {
+    const config = await readFile(join(TRANSCRIBER_ROOT, '.env'), 'utf8');
+    configFilePresent = true;
+    const token = config.match(/^DISCORD_TOKEN\s*=\s*(.+)$/m)?.[1]?.trim();
+    configured = Boolean(token && token !== 'replace-me');
+  } catch {
+    // A fresh public template intentionally has no secret configuration file.
+  }
+  try {
+    const python =
+      process.platform === 'win32'
+        ? join(TRANSCRIBER_ROOT, '.venv', 'Scripts', 'python.exe')
+        : join(TRANSCRIBER_ROOT, '.venv', 'bin', 'python');
+    await stat(python);
+    environmentReady = true;
+  } catch {
+    // The launch script creates the environment on first use.
+  }
+  return {
+    configFilePresent,
+    configured,
+    environmentReady,
+    transcriptDirectory: 'discord-transcriber/transcripts/',
   };
-  const args = argsByKind[kind];
-  if (!args) throw new Error('Unknown project action.');
+}
+
+async function startJob(kind) {
+  const current = jobs.get(kind);
+  if (current && ['running', 'stopping'].includes(current.status)) return current;
+  if (kind === 'transcriber' && !(await transcriberStatus()).configured) {
+    throw new Error('Configure discord-transcriber/.env before starting Discord Scribe.');
+  }
+  const command = commandForJob(kind);
   const job = {
     kind,
     status: 'running',
-    logs: `$ npm ${args.join(' ')}\n`,
+    logs: `$ ${command.display ?? `${command.command} ${command.args.join(' ')}`}\n`,
     startedAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    url: kind === 'preview' ? 'http://127.0.0.1:4200' : undefined,
+    url: command.url,
   };
-  const child = spawn(npm, args, {
-    cwd: PROJECT_ROOT,
+  const child = spawn(command.command, command.args, {
+    cwd: command.cwd,
     windowsHide: true,
     env: { ...process.env, BROWSER: 'none' },
   });
@@ -106,12 +163,39 @@ function startJob(kind) {
   });
   child.on('close', (code) => {
     children.delete(child);
-    if (kind === 'preview' && code === 0) job.status = 'stopped';
-    else if (kind === 'preview' && job.status === 'running') job.status = 'failed';
+    if (job.stopRequested) job.status = 'stopped';
+    else if (['preview', 'transcriber'].includes(kind) && code === 0) job.status = 'stopped';
+    else if (['preview', 'transcriber'].includes(kind) && job.status === 'running')
+      job.status = 'failed';
     else job.status = code === 0 ? 'success' : 'failed';
     job.exitCode = code;
     job.updatedAt = new Date().toISOString();
   });
+  return job;
+}
+
+async function stopJob(kind) {
+  const job = jobs.get(kind);
+  if (!job?.process || !['running', 'stopping'].includes(job.status)) {
+    return job ?? { kind, status: 'stopped', logs: '', updatedAt: new Date().toISOString() };
+  }
+  job.stopRequested = true;
+  job.status = 'stopping';
+  appendLog(job, '\nStopping…\n');
+  if (process.platform === 'win32' && job.process.pid) {
+    await new Promise((resolveStop) => {
+      const killer = spawn('taskkill.exe', ['/pid', String(job.process.pid), '/T', '/F'], {
+        windowsHide: true,
+      });
+      killer.once('close', resolveStop);
+      killer.once('error', () => {
+        job.process.kill();
+        resolveStop();
+      });
+    });
+  } else {
+    job.process.kill('SIGTERM');
+  }
   return job;
 }
 
@@ -123,7 +207,7 @@ async function projectStatus() {
   } catch {
     // Expected on a fresh clone.
   }
-  return { dependenciesReady, jobs: jobSnapshot() };
+  return { dependenciesReady, transcriber: await transcriberStatus(), jobs: jobSnapshot() };
 }
 
 async function serveStatic(response, pathname) {
@@ -197,7 +281,9 @@ async function routeApi(request, response, url) {
     return;
   }
   if (request.method === 'POST' && parts[1] === 'actions' && parts.length === 3) {
-    sendJson(response, 202, { job: { ...startJob(parts[2]), process: undefined } });
+    const job =
+      parts[2] === 'transcriber-stop' ? await stopJob('transcriber') : await startJob(parts[2]);
+    sendJson(response, 202, { job: { ...job, process: undefined } });
     return;
   }
   if (parts[1] !== 'campaigns' || parts.length < 3) {
@@ -307,9 +393,13 @@ export function startServer({ port = 4173, open = false } = {}) {
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) startServer({ open: process.argv.includes('--open') });
 
-function shutdown() {
+let shuttingDown = false;
+async function shutdown() {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  await Promise.all([...jobs.keys()].map((kind) => stopJob(kind)));
   for (const child of children) child.kill();
   process.exit(0);
 }
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+process.on('SIGINT', () => void shutdown());
+process.on('SIGTERM', () => void shutdown());

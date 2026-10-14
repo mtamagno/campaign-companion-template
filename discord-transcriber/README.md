@@ -1,208 +1,173 @@
-# Campaign Scribe — trascrizioni Discord locali
+# Discord Session Scribe
 
-Campaign Scribe entra nel canale vocale dell'utente che esegue `/trascrivi`,
-separa l'audio per account Discord, trascrive il parlato italiano con
-faster-whisper e aggiunge gli interventi a un file Markdown locale.
-
-```text
-- **21:34:08 — Alice:** Andiamo a parlare con la custode prima di entrare nella torre.
-- **21:34:19 — Bruno:** Controllo se abbiamo ancora pozioni di cura.
-```
-
-Il nome del parlante è il nome visualizzato su Discord: non viene effettuato
-riconoscimento biometrico della voce. I nomi dei partecipanti vengono passati
-a Whisper come parole prioritarie per migliorare la resa dei nomi propri.
-Decorazioni ed emoji Discord sono rimosse e la lista viene deduplicata.
-
-## Privacy e dati locali
-
-- Le trascrizioni vengono scritte esclusivamente in `transcripts/` sul computer
-  che esegue il bot.
-- Il testo trascritto non viene pubblicato nei canali Discord.
-- Le risposte ai comandi sono messaggi Discord privati/effimeri.
-- L'audio PCM viene mantenuto in memoria solo per il tempo necessario alla
-  segmentazione e non viene salvato su disco.
-- `.env`, ambiente virtuale, trascrizioni, log e PID sono esclusi da Git.
-
-Avvisa sempre i partecipanti prima di iniziare e rispetta le regole del server
-e la normativa applicabile.
-
-## Funzionamento
+Discord Session Scribe is an optional, local note-taking bot for groups that
+play in a Discord voice channel. It joins the channel of the person who runs
+`/trascrivi`, keeps each Discord user's audio separate, transcribes speech with
+faster-whisper and appends timestamped lines to a local Markdown file.
 
 ```text
-Discord voice
-    └─ flusso PCM separato per utente
-        └─ segmentazione per silenzio o durata massima
-            └─ coda faster-whisper large-v3 / CUDA FP16
-                └─ transcripts/<data>_<canale>_<server>.md
+- **21:34:08 — Alice:** We should speak to the keeper before entering the tower.
+- **21:34:19 — Bruno:** I check whether we still have healing potions.
 ```
 
-Quando due persone parlano contemporaneamente, Discord invia due flussi
-distinti. Il bot li trascrive separatamente e conserva il nome corretto; le
-righe possono comparire in un ordine leggermente diverso da quello temporale
-se una delle due elaborazioni termina prima.
+Speaker labels come from Discord display names; the bot performs no biometric
+voice identification. Names are also supplied to Whisper as hints to improve
+proper-noun accuracy.
 
-## Requisiti
+> The Scribe is never required by QuestKeeper. Handwritten notes or any notes
+> app work just as well: enter the recap and key events in the Campaign
+> Manager's **Sessions** tab after the game.
 
-- Python 3.11 o successivo su Windows o Linux;
-- facoltativo: GPU NVIDIA con circa 10 GB di VRAM o più per `large-v3` FP16;
-- Internet al primo avvio per dipendenze e modello Whisper;
-- circa 4 GB di spazio iniziale per ambiente virtuale e cache del modello.
+## Privacy first
 
-La configurazione GPU predefinita è adatta a una scheda NVIDIA da circa 12 GB.
-cuBLAS e cuDNN per CUDA 12 vengono installati nella `.venv` e resi disponibili
-automaticamente al processo, senza modificare il `PATH` globale di Windows.
+- Transcripts stay in `discord-transcriber/transcripts/` on the computer
+  running the bot.
+- Transcribed text is not posted into Discord channels.
+- Command replies are private/ephemeral.
+- PCM audio exists in memory only while a short utterance is segmented and is
+  not saved as an audio recording.
+- `.env`, virtual environments, transcripts, logs and PID files are ignored by
+  Git.
 
-## Creazione e invito del bot Discord
+Tell every participant before listening begins, obtain informed consent and
+follow your server rules and local law.
 
-1. Apri il [Discord Developer Portal](https://discord.com/developers/applications)
-   e crea una nuova applicazione.
-2. Apri **Bot**, genera il token e trattalo come una password.
-3. Non sono necessari Message Content Intent o altri privileged intents.
-4. Apri **OAuth2 > URL Generator**.
-5. Seleziona gli scope `bot` e `applications.commands`.
-6. Assegna i permessi **View Channels**, **Send Messages**, **Connect**,
-   **Speak** e **Use Voice Activity**.
-7. Apri l'URL generato, seleziona il server e autorizza l'applicazione.
+## Start it from Campaign Manager
 
-L'URL può anche essere costruito sostituendo `APPLICATION_ID`:
+After completing the one-time setup below, open Campaign Manager and choose
+**Discord Session Scribe** in the sidebar. The panel can prepare dependencies,
+start the bot, show its live status and log, and stop it at the end of play.
 
-```text
-https://discord.com/oauth2/authorize?client_id=APPLICATION_ID&permissions=36703232&scope=bot%20applications.commands
-```
+You may also run the platform launcher directly:
 
-Il bot non si invita manualmente in un singolo canale vocale: entra
-automaticamente nel canale dell'utente che lancia `/trascrivi`. Nei canali
-privati, il ruolo del bot deve avere gli stessi permessi anche negli override
-del canale o della categoria.
+- Windows: `discord-transcriber/start.bat`
+- macOS or Linux: `discord-transcriber/start.sh`
 
-Discord richiede DAVE/E2EE per le chiamate. `requirements.txt` usa quindi una
-revisione precisa di Pycord con ricezione DAVE. Non installare `discord.py`
-nella stessa `.venv`, perché entrambi espongono il pacchetto Python `discord`.
+The first launch creates `.venv`, installs the pinned dependencies and
+downloads the selected Whisper model. Later launches reuse the local
+environment and model cache.
 
-## Installazione e avvio
+## Requirements
 
-Apri PowerShell nella cartella `discord-transcriber`:
+- Python 3.11 or newer on Windows, macOS or Linux;
+- internet access for the first dependency/model download;
+- roughly 4 GB of initial free space for the environment and model cache;
+- optional NVIDIA GPU with about 10 GB VRAM for the default `large-v3` CUDA
+  profile.
+
+CPU-only use is supported. Choose a smaller model and the `cpu`/`int8` profile
+in `.env` when necessary.
+
+## Create and invite the Discord bot
+
+1. Open the [Discord Developer Portal](https://discord.com/developers/applications)
+   and create an application.
+2. Open **Bot**, generate a token and treat it like a password.
+3. Copy `.env.example` to `.env`, then place the token in `DISCORD_TOKEN`.
+4. In **OAuth2 → URL Generator**, select `bot` and `applications.commands`.
+5. Grant **View Channels**, **Send Messages**, **Connect**, **Speak** and
+   **Use Voice Activity**.
+6. Open the generated URL and authorize the application for your server.
+
+No Message Content Intent or other privileged intent is required. For private
+voice channels, the bot role needs the same permissions in the channel or
+category overrides.
+
+Discord voice calls require DAVE/E2EE support. `requirements.txt` therefore
+pins a precise Pycord revision that supports DAVE receiving. Do not install
+`discord.py` in the same virtual environment because both projects expose the
+same `discord` Python package.
+
+## Configure transcription
+
+Copy the example file:
 
 ```powershell
-Copy-Item .env.example .env
-notepad .env
+Copy-Item discord-transcriber/.env.example discord-transcriber/.env
 ```
 
-Inserisci il token in `DISCORD_TOKEN`, salva e avvia:
-
-```powershell
-.\start.ps1
-```
-
-Lo script crea `.venv`, installa le dipendenze e avvia il bot. Al primo avvio
-scarica `large-v3`; gli avvii successivi usano la cache locale. Lascia il
-processo in esecuzione durante tutta la sessione Discord.
-
-Su Linux:
+Linux/macOS equivalent:
 
 ```bash
-cp .env.example .env
-# Per un server senza GPU: WHISPER_MODEL=small, WHISPER_DEVICE=cpu,
-# WHISPER_COMPUTE_TYPE=int8
-./start.sh
+cp discord-transcriber/.env.example discord-transcriber/.env
 ```
 
-Per eseguirlo come servizio, crea un utente dedicato e una unit systemd con
-`WorkingDirectory` impostata su questa cartella e
-`ExecStart=/percorso/discord-transcriber/.venv/bin/python bot.py`. Proteggi
-`.env` con permessi leggibili solo da quell'utente. Il bot e il sito possono
-vivere su macchine diverse: il trascrittore produce semplici file Markdown.
+Available values:
 
-## Configurazione
+| Variable                |      Default | Purpose                                                |
+| ----------------------- | -----------: | ------------------------------------------------------ |
+| `DISCORD_TOKEN`         | `replace-me` | Secret bot token                                       |
+| `WHISPER_MODEL`         |   `large-v3` | faster-whisper model                                   |
+| `WHISPER_DEVICE`        |       `cuda` | `cuda` or `cpu`                                        |
+| `WHISPER_COMPUTE_TYPE`  |    `float16` | GPU/CPU precision                                      |
+| `WHISPER_LANGUAGE`      |         `en` | Spoken-language code, such as `en`, `it`, `es` or `de` |
+| `SILENCE_MS`            |        `900` | Silence that closes one utterance                      |
+| `MIN_UTTERANCE_MS`      |        `450` | Minimum accepted speech duration                       |
+| `MAX_UTTERANCE_SECONDS` |         `25` | Maximum size of one buffered segment                   |
 
-Il file `.env.example` contiene tutti i valori disponibili:
+For CPU use, a practical starting point is:
 
-| Variabile               |  Predefinito | Significato                          |
-| ----------------------- | -----------: | ------------------------------------ |
-| `DISCORD_TOKEN`         | `replace-me` | Token segreto del bot                |
-| `WHISPER_MODEL`         |   `large-v3` | Modello faster-whisper               |
-| `WHISPER_DEVICE`        |       `cuda` | Dispositivo di inferenza             |
-| `WHISPER_COMPUTE_TYPE`  |    `float16` | Precisione GPU                       |
-| `WHISPER_LANGUAGE`      |         `it` | Lingua forzata della trascrizione    |
-| `SILENCE_MS`            |        `900` | Silenzio che chiude un intervento    |
-| `MIN_UTTERANCE_MS`      |        `450` | Durata minima accettata              |
-| `MAX_UTTERANCE_SECONDS` |         `25` | Taglio massimo del singolo frammento |
-
-Il limite di 450 ms mantiene le frasi brevi utili e riduce i falsi positivi
-prodotti da respiri, rumori e frammenti audio troppo corti. Il filtro vocale
-scarta inoltre le formule isolate che Whisper tende a inventare sul silenzio.
-
-## Utilizzo
-
-1. Entra nel canale vocale con gli altri partecipanti.
-2. In un canale testuale dello stesso server esegui `/trascrivi`.
-3. Attendi la conferma privata con il nome del file locale.
-4. A fine sessione esegui `/ferma` e attendi l'elaborazione dell'ultima frase.
-
-Comandi:
-
-- `/trascrivi` — crea un nuovo file e avvia l'ascolto;
-- `/ferma` — invia gli ultimi frammenti, ferma la sessione e fa uscire il bot;
-- `/stato` — mostra modello, canale e file corrente;
-- `/partecipanti` — mostra i nomi Discord usati come parlanti e contesto.
-
-Un file tipico è:
-
-```text
-transcripts/2026-10-11_21-30-00-sessione-lanterne_123456789.md
+```dotenv
+WHISPER_MODEL=small
+WHISPER_DEVICE=cpu
+WHISPER_COMPUTE_TYPE=int8
 ```
 
-Può essere aperto mentre la sessione è in corso: ogni trascrizione riconosciuta
-viene aggiunta immediatamente in coda al documento.
+## During a session
 
-## Sessioni lunghe e risorse
+1. Start the Scribe from Campaign Manager or a launcher.
+2. Join the Discord voice channel with the other participants.
+3. In a text channel on the same server, run `/trascrivi`.
+4. Wait for the private confirmation containing the local transcript filename.
+5. At the end, run `/ferma` and wait for the last buffered phrase to finish.
 
-Una sessione di quattro ore è compatibile con la configurazione RTX 5070:
+Commands currently keep their original short Italian names:
 
-- il modello rimane caricato una sola volta nella GPU;
-- l'audio non viene accumulato per l'intera sessione;
-- ogni buffer attivo è limitato a 25 secondi, circa 4,8 MB per parlante;
-- il Markdown finale occupa normalmente pochi megabyte;
-- più persone che parlano insieme aumentano il lavoro in proporzione al numero
-  di flussi, ma non mescolano le rispettive voci.
+- `/trascrivi` — start a new local transcript and join voice;
+- `/ferma` — flush pending phrases, stop and leave voice;
+- `/stato` — show model, channel and current file;
+- `/partecipanti` — show the Discord names used for speaker attribution.
 
-La coda di trascrizione è attualmente in memoria. In condizioni normali una GPU
-compatibile elabora più velocemente del tempo reale; un arresto del driver o un
-errore persistente di inferenza può però creare arretrato. Per sessioni
-importanti conviene controllare periodicamente `/stato` e il log locale. Evita
-la sospensione automatica del PC durante la partita.
+The Markdown file can be opened while play continues; recognized phrases are
+appended immediately. Simultaneous speakers remain separate because Discord
+delivers one stream per user, although their lines can arrive slightly out of
+chronological order when one transcription finishes first.
 
-## Risoluzione dei problemi
+## Long sessions
 
-### Il comando rimane su “thinking”
+The model is loaded once. Audio is not accumulated for the whole game: every
+active per-speaker buffer is capped at 25 seconds (about 4.8 MB), and the final
+Markdown usually occupies only a few megabytes. More simultaneous speakers
+increase inference work but do not merge their voices.
 
-Il bot risponde subito con “Connessione in corso” e applica un timeout rigido di
-15 secondi. Se Discord non completa l'handshake, controlla gli override del
-canale e riprova. Un tentativo fallito viene rimosso dalla cache vocale per non
-bloccare i tentativi successivi.
+For important games, occasionally check `/stato` and the local log, and prevent
+the host computer from sleeping.
 
-### Il bot non entra nel canale
+## Troubleshooting
 
-Controlla per il ruolo del bot, sia sul server sia sul canale:
+### The command stays on “thinking”
 
-- Visualizza canale;
-- Connetti;
-- Parla;
-- Usa attività vocale.
+The bot applies a strict 15-second voice connection timeout. Check channel and
+category permission overrides, then try again.
 
-### Il file contiene solo l'intestazione
+### The bot does not join voice
 
-Il collegamento può essere attivo anche senza testo. Whisper aggiunge una riga
-solo quando il VAD rileva parlato; silenzio, respiri e rumori vengono ignorati.
+Verify **View Channel**, **Connect**, **Speak** and **Use Voice Activity** for
+the bot role at both server and channel level.
 
-### CUDA non viene caricata
+### The transcript contains only its heading
 
-Aggiorna il driver NVIDIA, ricrea `.venv` e rilancia `start.ps1`. Le dipendenze
-Windows `nvidia-cublas-cu12` e `nvidia-cudnn-cu12` sono dichiarate in
-`requirements.txt`.
+The connection can be healthy without text. Whisper writes a line only when
+voice activity detection finds speech; silence, breaths and short noise are
+ignored.
 
-## Test
+### CUDA cannot be loaded
+
+Update the NVIDIA driver, remove and recreate `.venv`, then relaunch. Windows
+CUDA 12 runtime packages are installed inside the virtual environment and do
+not modify the global `PATH`.
+
+## Tests
 
 ```powershell
 $env:PYTHONPATH = $PWD
@@ -210,5 +175,5 @@ $env:PYTHONPATH = $PWD
 .\.venv\Scripts\python.exe -m pip check
 ```
 
-I test coprono segmentazione, attribuzione dei nomi, filtri anti-allucinazione
-e conversione PCM/WAV usata da Whisper.
+The tests cover segmentation, speaker attribution, silence-hallucination
+filters and PCM/WAV conversion.

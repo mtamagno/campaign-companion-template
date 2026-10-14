@@ -40,6 +40,23 @@ All edits are ordinary files under `src/campaigns/`, so they remain portable
 and versionable. The manager itself works before project dependencies are
 installed because it uses only Node.js built-ins.
 
+## Session notes and Discord Scribe
+
+Choose **Discord Session Scribe** in the sidebar when your group plays in a
+Discord voice channel. After the one-time token configuration, the manager can
+prepare, launch, monitor and stop the local transcription bot. Its live log and
+output folder are shown on the same screen.
+
+The bot is entirely optional. For an in-person table—or whenever the group
+prefers not to transcribe voice—take handwritten notes or use any notes app,
+then enter the summary and key events in the **Sessions** tab. Both workflows
+produce the same campaign archive.
+
+The Scribe writes a local Markdown transcript and does not retain an audio
+recording. Read the [Discord Scribe guide](../../discord-transcriber/README.md)
+before first use, obtain informed consent from every participant and follow
+local law.
+
 ## Backups and deletion
 
 The **Backup** button downloads campaign text and structured data as a JSON

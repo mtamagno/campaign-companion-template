@@ -12,7 +12,12 @@ const state = {
   selectedId: null,
   tab: 'overview',
   projectMode: false,
-  project: { dependenciesReady: false, jobs: {} },
+  scribeMode: false,
+  project: {
+    dependenciesReady: false,
+    transcriber: { configured: false, environmentReady: false },
+    jobs: {},
+  },
   editor: null,
 };
 
@@ -70,7 +75,11 @@ function setMenuOpen(open) {
 async function loadState({ selectFirst = false } = {}) {
   const result = await api('/api/state');
   state.campaigns = result.campaigns;
-  state.project = { dependenciesReady: result.dependenciesReady, jobs: result.jobs };
+  state.project = {
+    dependenciesReady: result.dependenciesReady,
+    transcriber: result.transcriber,
+    jobs: result.jobs,
+  };
   if (selectFirst && !state.selectedId && result.campaigns.length) {
     await selectCampaign(result.campaigns[0].id);
     return;
@@ -82,6 +91,7 @@ async function loadState({ selectFirst = false } = {}) {
 async function selectCampaign(id) {
   state.selectedId = id;
   state.projectMode = false;
+  state.scribeMode = false;
   state.campaign = await api(`/api/campaigns/${encodeURIComponent(id)}`);
   state.tab = 'overview';
   setMenuOpen(false);
@@ -109,6 +119,10 @@ function renderSidebar() {
 }
 
 function render() {
+  if (state.scribeMode) {
+    renderScribe();
+    return;
+  }
   if (state.projectMode) {
     renderProject();
     return;
@@ -866,8 +880,37 @@ function renderProject() {
       <section class="project-panel"><span class="eyebrow">1 · Preparation</span><h2>Prepare the project</h2><p>${state.project.dependenciesReady ? 'Dependencies are installed. You can preview or validate your Companion.' : 'On first use, install everything the project needs. An internet connection is required.'}</p><div class="action-row"><button class="primary-button" data-project-action="install" ${install?.status === 'running' ? 'disabled' : ''}>${state.project.dependenciesReady ? 'Reinstall dependencies' : 'Prepare automatically'}</button><span class="job-status ${install?.status || ''}">${install ? escapeHtml(install.status) : state.project.dependenciesReady ? 'Ready' : 'Not prepared'}</span></div></section>
       <section class="project-panel"><span class="eyebrow">2 · Preview</span><h2>Open your Companion</h2><p>Launch the local site with the campaign data you just entered.</p><div class="action-row"><button class="primary-button" data-project-action="preview" ${!state.project.dependenciesReady || preview?.status === 'running' ? 'disabled' : ''}>Launch site</button>${preview?.status === 'running' ? '<a class="secondary-button" href="http://127.0.0.1:4200" target="_blank" rel="noreferrer">Open now</a>' : ''}<span class="job-status ${preview?.status || ''}">${preview ? escapeHtml(preview.status) : 'Not started'}</span></div></section>
       <section class="project-panel"><span class="eyebrow">3 · Validation</span><h2>Check before publishing</h2><p>The production build catches invalid data or components before you push to GitHub.</p><div class="action-row"><button class="secondary-button" data-project-action="build" ${!state.project.dependenciesReady || build?.status === 'running' ? 'disabled' : ''}>Check and build site</button><span class="job-status ${build?.status || ''}">${build ? escapeHtml(build.status) : 'Not run'}</span></div></section>
-      <section class="project-panel"><span class="eyebrow">4 · Publishing</span><h2>Send it to the realm</h2><p>After a successful check, commit and push. The included workflow deploys the site to GitHub Pages automatically.</p><a class="secondary-button" href="https://github.com/mtamagno/campaign-companion-template#publish" target="_blank" rel="noreferrer">Open the guide</a></section>
+      <section class="project-panel"><span class="eyebrow">4 · Publishing</span><h2>Send it to the realm</h2><p>After a successful check, commit and push. The included workflow deploys the site to GitHub Pages automatically.</p><a class="secondary-button" href="https://github.com/mtamagno/questkeeper-rpg-campaign-manager#publish" target="_blank" rel="noreferrer">Open the guide</a></section>
       ${activeLog ? `<pre class="job-log">${escapeHtml(activeLog.logs)}</pre>` : ''}
+    </div>`;
+}
+
+function renderScribe() {
+  document.querySelector('#page-title').textContent = 'Discord Session Scribe';
+  const transcriber = state.project.transcriber ?? {};
+  const job = state.project.jobs.transcriber;
+  const isRunning = job?.status === 'running' || job?.status === 'stopping';
+  const status = isRunning
+    ? job.status === 'stopping'
+      ? 'Stopping'
+      : 'Listening for Discord commands'
+    : job?.status === 'failed'
+      ? 'Needs attention'
+      : transcriber.configured
+        ? 'Ready to launch'
+        : 'Configuration needed';
+  content.innerHTML = `
+    <div class="scribe-stack">
+      <section class="scribe-hero">
+        <div class="scribe-hero__sigil" aria-hidden="true">✎</div>
+        <div><span class="eyebrow">Optional session helper</span><h2>Let the table play. Let the scribe remember.</h2><p>If your group plays on Discord, the local bot can turn each speaker's voice into timestamped notes. Prefer pen and paper? That works just as well—type the recap into the session editor afterward.</p></div>
+      </section>
+      <div class="choice-grid">
+        <section class="project-panel"><span class="eyebrow">Discord table</span><h3>Use the local Scribe</h3><p>The bot joins only after someone runs <code>/trascrivi</code>. It labels speakers, keeps temporary audio in memory and writes Markdown notes on this computer.</p><div class="action-row"><button class="primary-button" data-scribe-action="${isRunning ? 'stop' : 'start'}" ${!isRunning && !transcriber.configured ? 'disabled' : ''}>${isRunning ? 'Stop Discord Scribe' : transcriber.environmentReady ? 'Start Discord Scribe' : 'Prepare & start Scribe'}</button><span class="job-status ${escapeHtml(job?.status ?? '')}">${escapeHtml(status)}</span></div></section>
+        <section class="project-panel"><span class="eyebrow">Around a physical table</span><h3>Bring your own notes</h3><p>Write by hand, use your favorite notes app or appoint a heroic volunteer. After the session, add the summary and key events from the <strong>Sessions</strong> tab.</p><button class="secondary-button" data-action="show-sessions" ${state.campaign ? '' : 'disabled'}>Open session archive</button></section>
+      </div>
+      <section class="project-panel scribe-steps"><span class="eyebrow">First-time ritual</span><h3>Four steps, zero cloud transcription</h3><ol><li>Copy <code>discord-transcriber/.env.example</code> to <code>.env</code> and add your Discord bot token.</li><li>Return here and choose <strong>Prepare & start Scribe</strong>.</li><li>In Discord, join voice and run <code>/trascrivi</code>.</li><li>Run <code>/ferma</code> when the session ends. Notes appear in <code>${escapeHtml(transcriber.transcriptDirectory ?? 'discord-transcriber/transcripts/')}</code>.</li></ol><a class="secondary-button" href="https://github.com/mtamagno/questkeeper-rpg-campaign-manager/blob/main/discord-transcriber/README.md" target="_blank" rel="noreferrer">Open the complete setup guide</a></section>
+      ${job?.logs ? `<pre class="job-log">${escapeHtml(job.logs)}</pre>` : ''}
     </div>`;
 }
 
@@ -875,14 +918,16 @@ async function refreshJobs() {
   const result = await api('/api/jobs');
   state.project = result;
   if (state.projectMode) renderProject();
-  if (Object.values(result.jobs).some((job) => job.status === 'running')) {
+  if (state.scribeMode) renderScribe();
+  if (Object.values(result.jobs).some((job) => ['running', 'stopping'].includes(job.status))) {
     setTimeout(() => refreshJobs().catch((error) => toast(error.message, true)), 1200);
   } else await loadState();
 }
 
-async function runProjectAction(kind) {
+async function runProjectAction(kind, view = 'project') {
   await api(`/api/actions/${kind}`, { method: 'POST', body: '{}' });
-  state.projectMode = true;
+  state.projectMode = view === 'project';
+  state.scribeMode = view === 'scribe';
   renderSidebar();
   void refreshJobs();
 }
@@ -921,6 +966,14 @@ document.addEventListener('keydown', (event) => {
 });
 document.querySelector('#show-project').addEventListener('click', () => {
   state.projectMode = true;
+  state.scribeMode = false;
+  setMenuOpen(false);
+  renderSidebar();
+  render();
+});
+document.querySelector('#show-scribe').addEventListener('click', () => {
+  state.scribeMode = true;
+  state.projectMode = false;
   setMenuOpen(false);
   renderSidebar();
   render();
@@ -971,6 +1024,16 @@ content.addEventListener('click', async (event) => {
         await loadState({ selectFirst: true });
         toast('Campaign moved to the local recycle bin.');
       }
+      if (action.dataset.action === 'show-sessions') {
+        if (!state.campaign) {
+          toast('Create or select a campaign first.', true);
+          return;
+        }
+        state.scribeMode = false;
+        state.projectMode = false;
+        state.tab = 'sessions';
+        renderCampaign();
+      }
       if (action.dataset.action === 'add-entity') openEntityEditor(action.dataset.type);
       if (action.dataset.action === 'edit-entity')
         openEntityEditor(
@@ -998,6 +1061,11 @@ content.addEventListener('click', async (event) => {
     runProjectAction(projectAction.dataset.projectAction).catch((error) =>
       toast(error.message, true),
     );
+  const scribeAction = event.target.closest('[data-scribe-action]');
+  if (scribeAction) {
+    const kind = scribeAction.dataset.scribeAction === 'stop' ? 'transcriber-stop' : 'transcriber';
+    runProjectAction(kind, 'scribe').catch((error) => toast(error.message, true));
+  }
 });
 
 editorForm.addEventListener('submit', (event) => {

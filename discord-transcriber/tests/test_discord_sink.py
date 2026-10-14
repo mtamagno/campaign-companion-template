@@ -32,7 +32,7 @@ class DiscordAudioSinkTests(unittest.TestCase):
 
         sink.write(SimpleNamespace(pcm=b"audio"), SimpleNamespace(id=99))
 
-        self.assertEqual(buffer.calls, [(99, "Utente Discord 99", b"audio")])
+        self.assertEqual(buffer.calls, [(99, "Discord user 99", b"audio")])
 
 
 class ParticipantNameTests(unittest.IsolatedAsyncioTestCase):

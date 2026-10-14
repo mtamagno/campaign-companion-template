@@ -41,6 +41,8 @@ class UtteranceBufferTests(unittest.TestCase):
     def test_filters_short_whisper_hallucinations(self) -> None:
         self.assertEqual(clean_transcription(" Grazie mille. "), "")
         self.assertEqual(clean_transcription("Grazie dallo spazio."), "")
+        self.assertEqual(clean_transcription("Thank you for watching."), "")
+        self.assertEqual(clean_transcription("Thanks everyone."), "")
         self.assertEqual(
             clean_transcription("Grazie, adesso possiamo entrare nel castello."),
             "Grazie, adesso possiamo entrare nel castello.",
