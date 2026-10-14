@@ -5,9 +5,9 @@
 <p align="center"><strong>Roll initiative against scattered campaign notes.</strong></p>
 
 <p align="center">
-  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/"><strong>⚔️ LIVE DEMO</strong></a>
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/"><strong>⚔️ LIVE COMPANION</strong></a>
   &nbsp;•&nbsp;
-  <a href="#the-campaign-manager"><strong>🗺️ MANAGER TOUR</strong></a>
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/manager-demo/"><strong>🗺️ MANAGER DEMO</strong></a>
   &nbsp;•&nbsp;
   <a href="#quick-start"><strong>🕯️ QUICK START</strong></a>
   &nbsp;•&nbsp;
@@ -42,6 +42,41 @@ installer.
 
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 
+## See the Companion in action
+
+The published Companion is the party-facing archive: choose a chronicle, revisit
+the campaign and open a character without digging through chat history. Click
+any screenshot to enter the live sample.
+
+<a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/">
+  <img src="docs/images/companion-campaigns.jpg" alt="QuestKeeper campaign selector showing The Lantern Road sample campaign" width="100%">
+</a>
+
+<table>
+  <tr>
+    <td width="50%">
+      <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign">
+        <img src="docs/images/companion-overview.jpg" alt="The Lantern Road campaign overview in QuestKeeper" width="100%">
+      </a>
+    </td>
+    <td width="50%">
+      <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/party/aria-vale">
+        <img src="docs/images/companion-character.jpg" alt="Aria Vale public character profile in QuestKeeper" width="100%">
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><em>Campaign overview</em></td>
+    <td align="center"><em>Character profile</em></td>
+  </tr>
+</table>
+
+<p align="center">
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/"><strong>Enter the live Companion →</strong></a>
+</p>
+
+<p align="center">◆ ───────────── ✦ ───────────── ◆</p>
+
 ## Why your party will want it
 
 <table>
@@ -71,6 +106,10 @@ defeating the same modal every session is not a heroic quest.
 
 The manager is your local GM screen. It writes portable campaign files behind
 the scenes while you work through a visual interface.
+
+<p align="center">
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/manager-demo/"><strong>🗺️ Open the interactive Campaign Manager demo →</strong></a>
+</p>
 
 ### 1 · Gather the party
 

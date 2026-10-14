@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A guided visual tour of the QuestKeeper local campaign manager."
+    />
+    <title>QuestKeeper Campaign Manager · Guided Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #efe5cd;
+        --muted: #aaa28f;
+        --night: #0d0d14;
+        --panel: #171722;
+        --panel-light: #222235;
+        --gold: #d5ad3d;
+        --gold-soft: #f0d77c;
+        --line: rgba(213, 173, 61, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 18% 0%, rgba(93, 74, 141, 0.2), transparent 30rem),
+          radial-gradient(circle at 92% 12%, rgba(213, 173, 61, 0.12), transparent 28rem),
+          var(--night);
+        font:
+          1.08rem/1.55 'Crimson Text',
+          Georgia,
+          serif;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1240px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 42px 0 64px;
+      }
+
+      .topbar,
+      .hero,
+      .demo-frame,
+      .footer {
+        border: 1px solid var(--line);
+        background: rgba(18, 18, 29, 0.86);
+        box-shadow: 0 24px 72px rgba(0, 0, 0, 0.38);
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 12px 18px;
+        border-radius: 14px 14px 0 0;
+      }
+
+      .brand,
+      h1,
+      h2,
+      h3,
+      .eyebrow,
+      .step-number,
+      .button {
+        font-family: Cinzel, 'Palatino Linotype', serif;
+      }
+
+      .brand {
+        color: var(--gold-soft);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 8px 14px;
+        border: 1px solid rgba(213, 173, 61, 0.4);
+        border-radius: 8px;
+        color: var(--ink);
+        background: rgba(213, 173, 61, 0.08);
+        font-size: 0.74rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-decoration: none;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        border-color: var(--gold);
+        background: rgba(213, 173, 61, 0.15);
+        outline: none;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 210px;
+        gap: 36px;
+        align-items: center;
+        padding: clamp(32px, 7vw, 76px);
+        border-top: 0;
+        border-radius: 0 0 18px 18px;
+        overflow: hidden;
+      }
+
+      .eyebrow {
+        color: var(--gold);
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 18ch;
+        margin: 10px 0 14px;
+        color: var(--gold-soft);
+        font-size: clamp(2.2rem, 6vw, 4.6rem);
+        line-height: 1.03;
+        text-wrap: balance;
+      }
+
+      .hero p {
+        max-width: 62ch;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.2rem;
+      }
+
+      .hero img {
+        width: 100%;
+        filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.45));
+      }
+
+      .separator {
+        margin: 34px 0;
+        color: var(--gold);
+        text-align: center;
+        letter-spacing: 0.25em;
+      }
+
+      .demo-frame {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        min-height: 680px;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      .steps {
+        padding: 22px;
+        border-right: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(213, 173, 61, 0.05), transparent 42%);
+      }
+
+      .steps h2 {
+        margin: 4px 0 20px;
+        color: var(--gold-soft);
+        font-size: 1.25rem;
+      }
+
+      .step {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding: 13px 10px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        color: var(--muted);
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .step:hover,
+      .step[aria-selected='true'] {
+        color: var(--ink);
+        border-color: var(--line);
+        background: rgba(213, 173, 61, 0.08);
+      }
+
+      .step-number {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid rgba(213, 173, 61, 0.42);
+        border-radius: 50%;
+        color: var(--gold-soft);
+        font-size: 0.72rem;
+      }
+
+      .stage {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        padding: clamp(20px, 4vw, 38px);
+      }
+
+      .stage-copy {
+        min-height: 128px;
+      }
+
+      .stage h2 {
+        margin: 6px 0;
+        color: var(--ink);
+        font-size: clamp(1.45rem, 3vw, 2.15rem);
+      }
+
+      .stage p {
+        max-width: 72ch;
+        margin: 0 0 20px;
+        color: var(--muted);
+      }
+
+      .screen {
+        position: relative;
+        margin-top: auto;
+        overflow: hidden;
+        border: 1px solid rgba(213, 173, 61, 0.32);
+        border-radius: 14px;
+        background: #090910;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+      }
+
+      .screen::before {
+        content: '';
+        display: block;
+        height: 32px;
+        border-bottom: 1px solid #333343;
+        background:
+          radial-gradient(circle at 16px 16px, #9b4b50 0 4px, transparent 5px),
+          radial-gradient(circle at 32px 16px, #b88c3e 0 4px, transparent 5px),
+          radial-gradient(circle at 48px 16px, #4f8067 0 4px, transparent 5px), #171722;
+      }
+
+      .screen img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      .screen img.swap {
+        animation: reveal 0.28s ease both;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .footer {
+        margin-top: 34px;
+        padding: 24px;
+        border-radius: 14px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .footer strong {
+        color: var(--gold-soft);
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+      }
+
+      @media (max-width: 800px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .hero img {
+          width: 150px;
+          margin: 0 auto;
+        }
+
+        .demo-frame {
+          grid-template-columns: 1fr;
+        }
+
+        .steps {
+          display: flex;
+          gap: 6px;
+          overflow-x: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .steps .eyebrow,
+        .steps h2 {
+          display: none;
+        }
+
+        .step {
+          min-width: 160px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .shell {
+          width: min(100% - 18px, 1240px);
+          padding-top: 9px;
+        }
+
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .stage-copy {
+          min-height: 170px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .screen img.swap {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="topbar">
+        <span class="brand">QuestKeeper</span>
+        <nav aria-label="Demo links">
+          <a class="button" href="../">Open live Companion</a>
+          <a class="button" href="https://github.com/mtamagno/questkeeper-rpg-campaign-manager"
+            >View on GitHub</a
+          >
+        </nav>
+      </div>
+
+      <section class="hero">
+        <div>
+          <span class="eyebrow">Interactive manager tour</span>
+          <h1>Your campaign, without the file-wrangling quest.</h1>
+          <p>
+            Explore the local Game Master interface one screen at a time. This guided demo is
+            read-only; the real manager writes portable files on your own computer.
+          </p>
+        </div>
+        <img src="images/quill-guide.webp" alt="Quill the dragon archivist holding a lantern" />
+      </section>
+
+      <div class="separator" aria-hidden="true">◆ ───────── ✦ ───────── ◆</div>
+
+      <section class="demo-frame" aria-label="Campaign Manager guided tour">
+        <div class="steps" role="tablist" aria-label="Tour steps">
+          <span class="eyebrow">Five-minute tour</span>
+          <h2>Choose a chapter</h2>
+          <button class="step" role="tab" aria-selected="true" data-step="0">
+            <span class="step-number">I</span><span>Campaign dashboard</span>
+          </button>
+          <button class="step" role="tab" aria-selected="false" data-step="1">
+            <span class="step-number">II</span><span>World & languages</span>
+          </button>
+          <button class="step" role="tab" aria-selected="false" data-step="2">
+            <span class="step-number">III</span><span>Characters & lore</span>
+          </button>
+          <button class="step" role="tab" aria-selected="false" data-step="3">
+            <span class="step-number">IV</span><span>Discord Scribe</span>
+          </button>
+          <button class="step" role="tab" aria-selected="false" data-step="4">
+            <span class="step-number">V</span><span>Preview & publish</span>
+          </button>
+        </div>
+
+        <div class="stage">
+          <div class="stage-copy" aria-live="polite">
+            <span class="eyebrow" id="chapter">Chapter I</span>
+            <h2 id="title">Gather the party</h2>
+            <p id="description">
+              Create a campaign, restore a backup and see the whole archive at a glance—without
+              opening a JSON file.
+            </p>
+          </div>
+          <div class="screen">
+            <img
+              id="screen"
+              src="images/campaign-manager-dashboard.webp"
+              alt="QuestKeeper Campaign Manager dashboard"
+            />
+          </div>
+          <div class="controls">
+            <button class="button" id="previous" type="button">← Previous</button>
+            <button class="button" id="next" type="button">Next chapter →</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <strong>No account and no cloud database required.</strong><br />
+        Double-click the setup file, open the local manager and begin your chronicle.
+      </footer>
+    </main>
+
+    <script>
+      const chapters = [
+        {
+          eyebrow: 'Chapter I',
+          title: 'Gather the party',
+          description:
+            'Create a campaign, restore a backup and see the whole archive at a glance—without opening a JSON file.',
+          image: 'images/campaign-manager-dashboard.webp',
+          alt: 'QuestKeeper Campaign Manager dashboard',
+        },
+        {
+          eyebrow: 'Chapter II',
+          title: 'Write in every tongue',
+          description:
+            'Choose any campaign languages and edit the title, premise, system and table details from friendly forms.',
+          image: 'images/campaign-manager-editor.webp',
+          alt: 'QuestKeeper campaign editor with language settings',
+        },
+        {
+          eyebrow: 'Chapter III',
+          title: 'Chronicle the world',
+          description:
+            'Add characters, NPCs, sessions, maps and original artwork. QuestKeeper keeps IDs and indexes synchronized.',
+          image: 'images/campaign-manager-content.webp',
+          alt: 'QuestKeeper character and campaign content archive',
+        },
+        {
+          eyebrow: 'Chapter IV',
+          title: 'Let the Scribe remember',
+          description:
+            'Launch the optional local Discord transcription bot—or skip it entirely and bring your handwritten notes.',
+          image: 'images/campaign-manager-scribe.webp',
+          alt: 'QuestKeeper Discord Session Scribe controls',
+        },
+        {
+          eyebrow: 'Chapter V',
+          title: 'Scout ahead, then publish',
+          description:
+            'Prepare dependencies, preview the real Companion and validate a production build before GitHub Pages deploys it.',
+          image: 'images/campaign-manager-publish.webp',
+          alt: 'QuestKeeper preview and publishing screen',
+        },
+      ];
+
+      let active = 0;
+      const tabs = [...document.querySelectorAll('[data-step]')];
+      const image = document.querySelector('#screen');
+      const chapter = document.querySelector('#chapter');
+      const title = document.querySelector('#title');
+      const description = document.querySelector('#description');
+
+      function show(index) {
+        active = (index + chapters.length) % chapters.length;
+        const item = chapters[active];
+        chapter.textContent = item.eyebrow;
+        title.textContent = item.title;
+        description.textContent = item.description;
+        image.src = item.image;
+        image.alt = item.alt;
+        image.classList.remove('swap');
+        requestAnimationFrame(() => image.classList.add('swap'));
+        tabs.forEach((tab, tabIndex) => tab.setAttribute('aria-selected', tabIndex === active));
+      }
+
+      tabs.forEach((tab) => tab.addEventListener('click', () => show(Number(tab.dataset.step))));
+      document.querySelector('#previous').addEventListener('click', () => show(active - 1));
+      document.querySelector('#next').addEventListener('click', () => show(active + 1));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') show(active - 1);
+        if (event.key === 'ArrowRight') show(active + 1);
+      });
+    </script>
+  </body>
+</html>
