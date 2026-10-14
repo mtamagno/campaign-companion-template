@@ -4,10 +4,12 @@
   "description": "A self-hosted, data-driven campaign companion for tabletop role-playing games.",
   "scripts": {
     "ng": "ng",
+    "manage": "node tools/campaign-manager/server.mjs",
     "start": "ng serve",
     "build": "node scripts/generate-thumbnails.cjs && node scripts/generate-display-images.cjs && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:manager": "node --test tools/campaign-manager/tests/*.test.mjs",
     "generate:thumbs": "node scripts/generate-thumbnails.cjs",
     "generate:display": "node scripts/generate-display-images.cjs"
   },

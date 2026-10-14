@@ -24,41 +24,40 @@ third-party artwork is included.
 - optional local-AI helpers for original campaign drafts and image prompts;
 - automated GitHub Pages publishing.
 
-## Run locally
+## Quick start: no JSON required
 
-Requirements: [Node.js 24](https://nodejs.org/) and npm.
+Install [Node.js 24](https://nodejs.org/), then download this repository as a
+ZIP (or clone it). Open the extracted folder and launch:
 
-```bash
-git clone https://github.com/mtamagno/campaign-companion-template.git
-cd campaign-companion-template
-npm ci
-npm start
-```
+- **Windows:** double-click `setup.bat`;
+- **macOS:** double-click `setup.command` (the first time, Control-click it and
+  choose **Open** if macOS asks for confirmation);
+- **Linux:** run `./setup.sh`.
 
-Open `http://localhost:4200`. The protected example character uses the
-temporary password `cambiami`. Change or remove it before publishing real
-private notes; this is a client-side convenience lock, not strong security.
+The local Campaign Manager opens in your browser. From there you can:
 
-## Add your campaign
+- create, edit, back up and remove campaigns;
+- add characters, NPCs, session recaps, locations and original images;
+- prepare dependencies, validate the data and launch the Companion;
+- see immediately what is already present in each campaign.
 
-1. Copy `src/campaigns/example-campaign` to
-   `src/campaigns/your-campaign-id`.
-2. Add an entry to `src/campaigns/campaigns.json`.
-3. Edit `data/campaign.json`.
-4. Add characters, NPCs and sessions as separate JSON files and list each
-   filename in its folder's `manifest.json`.
-5. Update `maps.json`, `party-relationships.json` and
-   `npc-relationships.json`.
-6. Put your licensed/original images under the campaign's `images/` folder
-   and use paths relative to the campaign root, such as
-   `images/characters/aria.webp`.
-7. Run `npm run build`; schema or template errors will surface during the
-   build.
+The manager only listens on your computer (`127.0.0.1`), requires no account
+and writes the correct files and manifests for you. Removed content is moved
+to `.campaign-manager/trash/` so accidental deletions are recoverable.
 
-The full field guide and examples are in
-[docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md). Spell descriptions and rulebook
-compendia are intentionally absent. Add only data you wrote or are legally
-allowed to redistribute.
+See the [Campaign Manager guide](tools/campaign-manager/README.md) for backup,
+troubleshooting and command-line alternatives. The protected example
+character uses the temporary password `cambiami`: change or remove it before
+publishing real private notes. This is a client-side convenience lock, not
+strong security.
+
+### Advanced: manual editing
+
+The data remains plain JSON, so experienced users can still edit it directly.
+The complete schema, folder layout and examples are documented in
+[docs/CONTENT-GUIDE.md](docs/CONTENT-GUIDE.md). Run `npm run build` after manual
+changes. Spell descriptions and rulebook compendia are intentionally absent;
+add only material you wrote or are legally allowed to redistribute.
 
 ## Publish
 
@@ -116,8 +115,11 @@ same license. Third-party credits are documented beside the relevant assets.
 
 ## Italiano
 
-Per partire: `npm ci`, poi `npm start`. Duplica
-`src/campaigns/example-campaign`, rinomina l'ID, aggiorna
-`campaigns.json` e sostituisci tutti i JSON e le immagini di esempio.
-Le guide dettagliate coprono popolamento, server proprio, GitHub Pages,
-trascrizione Discord e AI locale.
+Installa Node.js 24, scarica e decomprimi il progetto, poi fai doppio clic su
+`setup.bat` in Windows oppure su `setup.command` in macOS. Su Linux esegui
+`./setup.sh`. Si aprirà un pannello locale dal quale puoi creare e gestire
+campagne, personaggi, PNG, sessioni, luoghi e immagini senza modificare JSON o
+manifest a mano. Dal pannello puoi anche preparare il progetto, controllarlo e
+aprire l'anteprima del sito. La [guida del Campaign
+Manager](tools/campaign-manager/README.md) spiega backup e risoluzione dei
+problemi; le altre guide coprono GitHub Pages, trascrizione Discord e AI locale.

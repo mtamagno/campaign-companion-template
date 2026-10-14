@@ -1,5 +1,10 @@
 # Campaign content guide
 
+> **Recommended:** launch `setup.bat` on Windows, `setup.command` on macOS or
+> `./setup.sh` on Linux and use the local Campaign Manager. It creates these
+> files, updates manifests and validates IDs for you. The details below are for
+> advanced users who want to edit or generate campaign JSON directly.
+
 Campaign data lives in `src/campaigns/`. The included
 `example-campaign` is both a working demo and the canonical schema example.
 

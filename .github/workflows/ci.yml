@@ -21,6 +21,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci
+      - run: npm run test:manager
       - run: npm run build
       - name: Install transcriber test dependencies
         run: python -m pip install -r discord-transcriber/requirements-test.txt
