@@ -24,6 +24,43 @@ third-party artwork is included.
 - optional local-AI helpers for original campaign drafts and image prompts;
 - automated GitHub Pages publishing.
 
+## See the Campaign Manager in action
+
+The included Campaign Manager is a local control panel: it turns the campaign
+forms into the JSON files and manifests used by the public Companion. You never
+have to copy folders or remember which index file to update.
+
+### 1. Open your campaign dashboard
+
+Double-click the setup launcher and choose an existing campaign, create a new
+one with **+**, or restore a backup. The overview immediately shows how many
+characters, NPCs, sessions and locations are present.
+
+![Campaign Manager dashboard showing the campaign overview, content counters and navigation](docs/images/campaign-manager-dashboard.webp)
+
+### 2. Edit through guided forms
+
+Campaign details, bilingual descriptions, table information, summaries and
+images are edited in a normal form. IDs and file placement are validated by the
+manager.
+
+![Guided campaign editor with bilingual fields, table details and cover upload](docs/images/campaign-manager-editor.webp)
+
+### 3. Populate the archive
+
+Use the tabs to add or update characters, NPCs, session recaps and locations.
+The manager creates the individual files and keeps every manifest synchronized.
+
+![Character archive with controls to add, edit and remove a character](docs/images/campaign-manager-content.webp)
+
+### 4. Preview and validate
+
+The **Startup and publishing** page installs locked dependencies on the first
+run, opens a local preview and validates the complete site before it is pushed
+to GitHub Pages.
+
+![Startup and publishing page with preparation, preview and validation actions](docs/images/campaign-manager-publish.webp)
+
 ## Quick start: no JSON required
 
 Install [Node.js 24](https://nodejs.org/), then download this repository as a
