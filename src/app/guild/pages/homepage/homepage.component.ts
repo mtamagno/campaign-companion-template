@@ -76,6 +76,12 @@ export class HomepageComponent {
   readonly sessionCount: Signal<number> = computed(() => this.dataService.sessions().length);
   readonly mapCount: Signal<number> = computed(() => this.dataService.maps().length);
 
+  /** Most recent session, used by the player catch-up shortcut. */
+  readonly latestSessionId: Signal<string | undefined> = computed(() => {
+    const sessions = this.dataService.sortedSessions();
+    return sessions.length > 0 ? sessions[sessions.length - 1].id : undefined;
+  });
+
   /** Campaign title from the data service. */
   readonly campaignTitle: Signal<string> = computed(() => {
     const campaign = this.dataService.campaign();

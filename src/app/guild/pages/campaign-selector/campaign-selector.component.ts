@@ -58,12 +58,14 @@ export class CampaignSelectorComponent {
 
   /** Page title based on current language. */
   readonly pageTitle: Signal<string> = computed(() =>
-    this.lang() === 'it' ? 'Seleziona una Campagna' : 'Select a Campaign',
+    this.lang() === 'it' ? 'Il tuo party. La tua storia.' : 'Your party. Your story.',
   );
 
   /** Subtitle based on current language. */
   readonly pageSubtitle: Signal<string> = computed(() =>
-    this.lang() === 'it' ? "Scegli un'avventura da esplorare" : 'Choose an adventure to explore',
+    this.lang() === 'it'
+      ? 'Ritrova il tuo personaggio e riprendi il viaggio.'
+      : 'Find your character and return to the adventure.',
   );
 
   /** At-a-glance lifecycle totals for the campaign ledger. */

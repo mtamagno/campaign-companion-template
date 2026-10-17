@@ -104,6 +104,57 @@
     </section>
   }
 
+  <!-- Player-first shortcuts for getting back into character before game night. -->
+  @if (campaignId(); as cId) {
+    <section class="homepage__player-hub" aria-labelledby="player-hub-title">
+      <header class="homepage__player-hub-heading">
+        <span class="homepage__player-hub-kicker">
+          {{ lang() === 'it' ? 'Pronti per la sessione' : 'Ready for game night' }}
+        </span>
+        <h2 id="player-hub-title">
+          {{ lang() === 'it' ? 'Torna in personaggio' : 'Step back into character' }}
+        </h2>
+        <p>
+          {{
+            lang() === 'it'
+              ? 'Tutto ciò che serve per ricordare chi sei, cosa è successo e di chi fidarti.'
+              : 'Everything you need to remember who you are, what happened and whom you trust.'
+          }}
+        </p>
+      </header>
+      <div class="homepage__player-actions">
+        <a [routerLink]="['/', cId, 'party']" appSfxHover>
+          <span aria-hidden="true">⚔</span>
+          <strong>{{ lang() === 'it' ? 'La tua scheda' : 'Your character' }}</strong>
+          <small>{{
+            lang() === 'it' ? 'Profilo, segreti e progressione' : 'Profile, secrets and progression'
+          }}</small>
+        </a>
+        <a
+          [routerLink]="
+            latestSessionId()
+              ? ['/', cId, 'campaign', 'story', latestSessionId()]
+              : ['/', cId, 'campaign', 'story-so-far']
+          "
+          appSfxHover
+        >
+          <span aria-hidden="true">✦</span>
+          <strong>{{ lang() === 'it' ? 'Ultimo capitolo' : 'Latest chapter' }}</strong>
+          <small>{{
+            lang() === 'it' ? 'Rientra nella storia in pochi minuti' : 'Catch up in a few minutes'
+          }}</small>
+        </a>
+        <a [routerLink]="['/', cId, 'party', 'relationships']" appSfxHover>
+          <span aria-hidden="true">◇</span>
+          <strong>{{ lang() === 'it' ? 'Legami del party' : 'Party bonds' }}</strong>
+          <small>{{
+            lang() === 'it' ? 'Affetti, tensioni e promesse' : 'Trust, tension and promises'
+          }}</small>
+        </a>
+      </div>
+    </section>
+  }
+
   <!-- Quick navigation links -->
   @if (campaignId(); as cId) {
     <nav class="homepage__nav">

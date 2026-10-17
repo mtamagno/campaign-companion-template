@@ -2,7 +2,7 @@
   <img src="docs/images/questkeeper-wordmark.svg" alt="QuestKeeper — The self-hosted RPG Campaign Companion" width="860">
 </p>
 
-<p align="center"><strong>Roll initiative against scattered campaign notes.</strong></p>
+<p align="center"><strong>Your character. Your party. Every legendary session.</strong></p>
 
 <p align="center">
   <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/"><strong>⚔️ LIVE COMPANION</strong></a>
@@ -15,30 +15,54 @@
 </p>
 
 <p align="center">
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/party/mira-thorn"><strong>⚔️ TRY A CHARACTER</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/campaign/story/session-2"><strong>📖 READ A SESSION</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/party/relationships"><strong>✨ EXPLORE PARTY BONDS</strong></a>
+</p>
+
+<p align="center">
   <img alt="MIT licensed" src="https://img.shields.io/badge/license-MIT-c9a35b?style=flat-square">
   <img alt="Local first" src="https://img.shields.io/badge/data-local--first-486b63?style=flat-square">
   <img alt="Any campaign language" src="https://img.shields.io/badge/languages-any-805d93?style=flat-square">
   <img alt="GitHub Pages ready" src="https://img.shields.io/badge/deploy-GitHub%20Pages-333?style=flat-square&logo=github">
+  <img alt="Made for D&D parties" src="https://img.shields.io/badge/made%20for-D%26D%20parties-7f1d1d?style=flat-square">
 </p>
 
 <p align="center">
   <img src="docs/images/campaign-companion-hero.webp" alt="A lantern-lit game master's table with dice, maps, a compass and an open campaign journal" width="100%">
 </p>
 
-QuestKeeper is a beautiful, self-hosted campaign manager for tabletop RPGs.
-It turns characters, secret notes, NPCs, relationships, session chronicles,
-locations and artwork into a responsive website your whole party can revisit
-between games.
+QuestKeeper gives your **D&D party a home between sessions**. It turns
+characters, private notes, NPCs, relationships, session chronicles, locations
+and artwork into a beautiful website the whole table can revisit—on desktop or
+on the phone someone inevitably checks five minutes before initiative.
 
 The included local Campaign Manager handles the files behind the screen. You
 write through friendly forms; it handles JSON, folders, indexes, images,
-validation and backups. No subscription. No account. No mimic hiding in the
-installer.
+validation and backups. No subscription. No player account. No mimic hiding in
+the installer.
 
 > **System-friendly by design.** The optional sheet uses a familiar
 > six-ability fantasy-RPG structure, while the campaign archive works for any
 > tabletop system. No commercial rules, published adventures or third-party
 > artwork are bundled.
+
+<p align="center">◆ ───────────── ✦ ───────────── ◆</p>
+
+## Take the 90-second player tour
+
+You do not need to install anything to see the finished experience:
+
+1. **[Meet Mira Thorn](https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/party/mira-thorn)** — open a public profile, then unlock the sample sheet with `cambiami` to see progression and PDF export.
+2. **[Read the latest chapter](https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/campaign/story/session-2)** — see how raw table notes become a readable campaign memory.
+3. **[Inspect the party bonds](https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/party/relationships)** — remember who trusts whom, and why.
+4. **[Return to the map](https://mtamagno.github.io/questkeeper-rpg-campaign-manager/example-campaign/maps)** — revisit discovered places without searching last month’s chat.
+
+> **Player promise:** QuestKeeper helps you remember your character, your
+> choices and your companions. It never asks every player to learn another
+> campaign-management tool.
 
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 
@@ -106,6 +130,16 @@ other.
 
 And yes, the site remembers when a visitor accepts the spoiler warning—because
 defeating the same modal every session is not a heroic quest.
+
+### Built for the questions every party asks
+
+| Right before the session…          | QuestKeeper opens…                                   |
+| ---------------------------------- | ---------------------------------------------------- |
+| “What did we do last time?”        | A short catch-up and the complete session chronicle  |
+| “What changed when I levelled up?” | Every saved version of the character sheet           |
+| “Why do we distrust that NPC?”     | Relationship history and private notes               |
+| “Can you send me your sheet?”      | A styled, printable PDF with profile artwork         |
+| “Where did we find that clue?”     | Searchable places, maps, galleries and session links |
 
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 

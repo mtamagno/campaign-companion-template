@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A guided visual tour of the QuestKeeper local campaign manager."
+      content="Try QuestKeeper: the self-hosted D&amp;D campaign manager that gives players beautiful character profiles, recaps, party bonds and maps."
     />
-    <title>QuestKeeper Campaign Manager · Guided Demo</title>
+    <meta name="theme-color" content="#0d0d14" />
+    <title>QuestKeeper · Interactive D&amp;D Campaign Manager Demo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -523,6 +524,82 @@
         font-size: 0.85rem;
       }
 
+      .player-payoff {
+        margin-top: 34px;
+        padding: clamp(28px, 5vw, 54px);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 90% 0%, rgba(213, 173, 61, 0.13), transparent 24rem),
+          rgba(18, 18, 29, 0.9);
+        box-shadow: 0 24px 72px rgba(0, 0, 0, 0.38);
+      }
+
+      .player-payoff h2 {
+        margin: 6px 0 8px;
+        color: var(--gold-soft);
+        font-size: clamp(1.7rem, 4vw, 2.7rem);
+      }
+
+      .player-payoff > p {
+        max-width: 68ch;
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .player-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin: 24px 0;
+      }
+
+      .player-card {
+        display: grid;
+        gap: 6px;
+        min-height: 150px;
+        padding: 20px;
+        border: 1px solid rgba(213, 173, 61, 0.2);
+        border-radius: 12px;
+        text-decoration: none;
+        background: rgba(13, 13, 20, 0.55);
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease,
+          background 160ms ease;
+      }
+
+      .player-card:hover,
+      .player-card:focus-visible {
+        transform: translateY(-3px);
+        border-color: var(--gold);
+        background: rgba(213, 173, 61, 0.08);
+        outline: none;
+      }
+
+      .player-card span {
+        color: var(--gold);
+        font-size: 1.5rem;
+      }
+
+      .player-card strong {
+        color: var(--gold-soft);
+        font:
+          600 1rem Cinzel,
+          serif;
+      }
+
+      .player-card small {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .player-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
       .lightbox {
         width: min(1180px, calc(100% - 30px));
         padding: 0;
@@ -599,6 +676,10 @@
           grid-template-columns: 1fr;
         }
 
+        .player-grid {
+          grid-template-columns: 1fr;
+        }
+
         .sandbox-heading {
           align-items: flex-start;
           flex-direction: column;
@@ -646,6 +727,7 @@
       <div class="topbar">
         <span class="brand">QuestKeeper</span>
         <nav aria-label="Demo links">
+          <a class="button" href="../example-campaign/party/mira-thorn">Try the player view</a>
           <a class="button" href="../">Open live Companion</a>
           <a class="button" href="https://github.com/mtamagno/questkeeper-rpg-campaign-manager"
             >View on GitHub</a
@@ -655,11 +737,11 @@
 
       <section class="hero">
         <div>
-          <span class="eyebrow">Interactive manager tour</span>
-          <h1>Your campaign, without the file-wrangling quest.</h1>
+          <span class="eyebrow">From GM prep to player memories</span>
+          <h1>Give your party a home between adventures.</h1>
           <p>
-            Explore the local Game Master interface one screen at a time. This guided demo is
-            read-only; the real manager writes portable files on your own computer.
+            Build the campaign locally through friendly forms, then give every player a beautiful
+            place for their character, recaps, relationships and hard-won discoveries.
           </p>
         </div>
         <img src="images/quill-guide.webp" alt="Quill the dragon archivist holding a lantern" />
@@ -806,6 +888,41 @@
             <h3>Latest session beat</h3>
             <div class="preview-card" id="preview-note"></div>
           </div>
+        </div>
+      </section>
+
+      <section class="player-payoff" aria-labelledby="player-payoff-title">
+        <span class="eyebrow">The reward waiting beyond the GM screen</span>
+        <h2 id="player-payoff-title">What your players actually get</h2>
+        <p>
+          QuestKeeper is not only a prep tool. It becomes the party’s shared memory: useful five
+          minutes before game night, satisfying after a level-up and fun to revisit months later.
+        </p>
+        <div class="player-grid">
+          <a class="player-card" href="../example-campaign/party/mira-thorn">
+            <span aria-hidden="true">⚔</span>
+            <strong>A character worth revisiting</strong>
+            <small
+              >Public portrait, biography, private sheet, PDF export and level-by-level
+              growth.</small
+            >
+          </a>
+          <a class="player-card" href="../example-campaign/campaign/story/session-2">
+            <span aria-hidden="true">✦</span>
+            <strong>Catch up before initiative</strong>
+            <small>Readable session chapters keep important choices out of forgotten chats.</small>
+          </a>
+          <a class="player-card" href="../example-campaign/party/relationships">
+            <span aria-hidden="true">◇</span>
+            <strong>Remember every bond</strong>
+            <small
+              >See loyalties, tensions and promises evolve alongside the adventuring party.</small
+            >
+          </a>
+        </div>
+        <div class="player-actions">
+          <a class="button" href="../example-campaign/party/mira-thorn">Open Mira’s profile →</a>
+          <a class="button" href="../example-campaign/campaign/story/session-2">Read a session →</a>
         </div>
       </section>
 

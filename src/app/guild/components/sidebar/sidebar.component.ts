@@ -78,7 +78,7 @@ export class SidebarComponent {
   readonly campaignTitle: Signal<string> = computed(() => {
     const campaign = this.dataService.campaign();
     if (campaign === undefined) {
-      return 'Campaign Companion';
+      return 'QuestKeeper';
     }
     return localizeText(campaign.name, this.languageService.currentLanguage());
   });

@@ -136,8 +136,8 @@ export async function generateCampaignCharacterSheetPdf(
   doc.setProperties({
     title: `${characterName} - Character Sheet`,
     subject: 'Fantasy RPG Character Sheet',
-    author: 'Campaign Companion',
-    creator: 'Campaign Companion',
+    author: 'QuestKeeper',
+    creator: 'QuestKeeper',
   });
 
   drawProfilePage(doc, characterName, sheet, language, options, artwork);

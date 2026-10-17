@@ -3,14 +3,14 @@
   <header class="campaign-selector__hero">
     <div class="campaign-selector__language"><app-language-toggle /></div>
     <div class="campaign-selector__hero-copy">
-      <span class="campaign-selector__eyebrow">Tabletop Campaign Companion</span>
+      <span class="campaign-selector__eyebrow">QuestKeeper · Party Companion</span>
       <h1 class="campaign-selector__title">{{ pageTitle() }}</h1>
       <p class="campaign-selector__subtitle">{{ pageSubtitle() }}</p>
       <p class="campaign-selector__intro">
         {{
           lang() === 'it'
-            ? 'Cronache, personaggi, legami e strumenti di gioco raccolti in un unico archivio vivente.'
-            : 'Chronicles, characters, bonds and game tools gathered in one living archive.'
+            ? 'Schede, ricordi, legami e luoghi della compagnia raccolti in un unico archivio vivente.'
+            : 'Character sheets, memories, bonds and places gathered in one living party archive.'
         }}
       </p>
     </div>
@@ -34,13 +34,11 @@
         <dd>{{ completedCampaignCount() }}</dd>
       </div>
       <div class="campaign-selector__overview-note">
-        <strong>{{
-          lang() === 'it' ? 'Il tuo tavolo, sempre con te' : 'Your table, always with you'
-        }}</strong>
+        <strong>{{ lang() === 'it' ? 'Prima del prossimo tiro' : 'Before the next roll' }}</strong>
         <span>{{
           lang() === 'it'
-            ? 'Scegli una cronaca per riprendere il viaggio.'
-            : 'Choose a chronicle to resume the journey.'
+            ? 'Ripassa l’ultima sessione, riapri la scheda e torna subito in personaggio.'
+            : 'Catch up, reopen your sheet and step straight back into character.'
         }}</span>
       </div>
     </dl>
@@ -116,7 +114,7 @@
             <h2 class="campaign-selector__card-title">{{ campaign.name[lang()] }}</h2>
             <p class="campaign-selector__card-description">{{ campaign.description[lang()] }}</p>
             <span class="campaign-selector__card-cta">
-              {{ lang() === 'it' ? 'Entra nella campagna' : 'Enter campaign' }}
+              {{ lang() === 'it' ? 'Apri la cronaca' : 'Open the chronicle' }}
               <span aria-hidden="true">&rarr;</span>
             </span>
           </div>

@@ -100,7 +100,7 @@ export class App implements OnInit {
   private readonly languageService = inject(LanguageService);
   private readonly documentTitle = inject(Title);
 
-  protected readonly title = 'Campaign Companion';
+  protected readonly title = 'QuestKeeper';
 
   /** Controls mobile sidebar visibility. */
   readonly isSidebarOpen: WritableSignal<boolean> = signal(false);
@@ -125,7 +125,9 @@ export class App implements OnInit {
       const campaign = this.campaignService.manifest().find(({ id }) => id === campaignId);
       const campaignName = localizeText(campaign?.name, language);
       this.documentTitle.setTitle(
-        campaignName.length === 0 ? 'Campaign Companion' : `${campaignName} · Campaign Companion`,
+        campaignName.length === 0
+          ? 'QuestKeeper · D&D Party Companion'
+          : `${campaignName} · QuestKeeper`,
       );
     });
   }

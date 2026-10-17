@@ -214,6 +214,91 @@
     }
   }
 
+  // --- Player return point / game-night shortcuts ---
+  &__player-hub {
+    padding: clamp(#{$spacing-lg}, 4vw, #{$spacing-2xl});
+    border: $border-width-thin solid $color-border-default;
+    border-radius: $border-radius-lg;
+    background:
+      radial-gradient(circle at 92% 0%, rgba($color-gold, 0.11), transparent 24rem),
+      linear-gradient(145deg, rgba($color-bg-surface, 0.96), rgba($color-bg-deep, 0.98));
+    box-shadow: $shadow-md;
+  }
+
+  &__player-hub-heading {
+    max-width: 720px;
+    margin-bottom: $spacing-lg;
+
+    h2 {
+      margin: $spacing-xs 0;
+      color: $color-parchment-light;
+      font-size: $font-size-2xl;
+    }
+
+    p {
+      margin: 0;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__player-hub-kicker {
+    color: var(--campaign-accent-light, #{$color-gold-light});
+    font-family: $font-family-heading;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    letter-spacing: $letter-spacing-wider;
+    text-transform: uppercase;
+  }
+
+  &__player-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $spacing-md;
+
+    @include respond-below(md) {
+      grid-template-columns: 1fr;
+    }
+
+    a {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: $spacing-xs $spacing-md;
+      align-items: center;
+      min-height: 112px;
+      padding: $spacing-md;
+      border: $border-width-thin solid $color-border-subtle;
+      border-radius: $border-radius-md;
+      color: $color-text-primary;
+      text-decoration: none;
+      background: rgba($color-bg-void, 0.24);
+      transition:
+        transform $transition-fast,
+        border-color $transition-fast,
+        background-color $transition-fast;
+
+      &:hover {
+        transform: translateY(-2px);
+        border-color: var(--campaign-accent, #{$color-gold});
+        background: rgba($color-gold, 0.07);
+      }
+
+      > span {
+        grid-row: 1 / span 2;
+        color: var(--campaign-accent-light, #{$color-gold-light});
+        font-size: $font-size-xl;
+      }
+
+      strong {
+        font-family: $font-family-heading;
+        letter-spacing: $letter-spacing-wide;
+      }
+
+      small {
+        color: $color-text-muted;
+      }
+    }
+  }
+
   // --- Quote section ---
   &__quote-section {
     max-width: 700px;
@@ -260,7 +345,7 @@
   // --- Navigation cards ---
   &__nav {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: $spacing-sm;
     padding: 0 $spacing-md;
     max-width: 960px;

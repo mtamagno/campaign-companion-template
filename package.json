@@ -1,7 +1,7 @@
 {
   "name": "questkeeper-rpg-campaign-manager",
-  "version": "1.2.0",
-  "description": "A self-hosted, data-driven campaign companion for tabletop role-playing games.",
+  "version": "1.3.0",
+  "description": "A self-hosted D&D and tabletop RPG companion for character sheets, session journals, party bonds, maps and campaign lore.",
   "scripts": {
     "ng": "ng",
     "manage": "node tools/campaign-manager/server.mjs",
