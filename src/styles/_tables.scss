@@ -92,7 +92,10 @@
   font-size: $font-size-md;
   color: $color-gold-dark;
   opacity: 0.4;
-  transition: opacity $transition-fast, color $transition-fast, transform $transition-fast;
+  transition:
+    opacity $transition-fast,
+    color $transition-fast,
+    transform $transition-fast;
 }
 
 // --- Empty state ---

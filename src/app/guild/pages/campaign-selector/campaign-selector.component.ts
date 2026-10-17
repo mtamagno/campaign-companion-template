@@ -124,6 +124,13 @@ export class CampaignSelectorComponent {
     this.pendingCampaign.set(undefined);
   }
 
+  /** Dismisses the warning only when the backdrop itself is activated. */
+  onWarningBackdropClick(event: Event): void {
+    if (event.target === event.currentTarget) {
+      this.cancelEntry();
+    }
+  }
+
   /** Closes the warning without changing consent when Escape is pressed. */
   @HostListener('document:keydown.escape')
   closeWarningOnEscape(): void {

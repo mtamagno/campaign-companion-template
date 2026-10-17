@@ -16,6 +16,7 @@ import {
   ChangeDetectionStrategy,
   input,
   signal,
+  type OnInit,
   type WritableSignal,
 } from '@angular/core';
 
@@ -27,7 +28,7 @@ import {
   styleUrl: './accordion.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccordionComponent {
+export class AccordionComponent implements OnInit {
   /** Title displayed in the accordion header. */
   readonly title = input.required<string>();
 

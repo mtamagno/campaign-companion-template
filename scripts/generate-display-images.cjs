@@ -141,10 +141,11 @@ async function generateDisplayImage(sourcePath, displayPath) {
 }
 
 async function main() {
-  const campaignDirs = fs.readdirSync(CAMPAIGNS_ROOT, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => path.join(CAMPAIGNS_ROOT, d.name, 'images'))
-    .filter(p => fs.existsSync(p));
+  const campaignDirs = fs
+    .readdirSync(CAMPAIGNS_ROOT, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => path.join(CAMPAIGNS_ROOT, d.name, 'images'))
+    .filter((p) => fs.existsSync(p));
 
   let totalGenerated = 0;
   let totalSkipped = 0;

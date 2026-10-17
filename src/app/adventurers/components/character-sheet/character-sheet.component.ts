@@ -100,6 +100,9 @@ export class CharacterSheetComponent {
   readonly characterName = input.required<string>();
 
   /** The latest character sheet, exposed to templates through the selected snapshot. */
+  // The alias keeps the public template binding concise while distinguishing
+  // the input from the selected historical sheet exposed below.
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   readonly currentSheet = input.required<CharacterSheetModel>({ alias: 'sheet' });
 
   /** Immutable sheets preserved from earlier levels. */

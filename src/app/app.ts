@@ -6,8 +6,8 @@ import {
   effect,
   HostListener,
   inject,
-  OnInit,
   signal,
+  type OnInit,
   type WritableSignal,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';

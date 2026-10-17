@@ -1,0 +1,10 @@
+.angular/
+.campaign-manager/
+dist/
+node_modules/
+coverage/
+discord-transcriber/.venv/
+discord-transcriber/output/
+src/campaigns/**/images/
+src/assets/images/
+*.min.*

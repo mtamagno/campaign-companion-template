@@ -58,6 +58,12 @@ checkpoints cover the **Game Night Edition**, living characters, connected
 worlds, the Session Scribe, player contributions, a visual GM studio, local
 creative AI, portable campaigns and the road to **QuestKeeper 2.0**.
 
+Want to help build it? Start with [Contributing](CONTRIBUTING.md), then use the
+[working agreement](docs/WORKING-AGREEMENT.md) and
+[design and art guide](docs/DESIGN-AND-ART-GUIDE.md). The team reviews plans
+weekly with a reusable [weekly review template](docs/templates/WEEKLY-REVIEW.md),
+so fast iteration stays deliberate, testable and player-focused.
+
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 
 ## Take the 90-second player tour

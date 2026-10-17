@@ -126,14 +126,18 @@
 
 <!-- Spoiler warning modal -->
 @if (pendingCampaign() !== undefined) {
-  <div class="spoiler-modal" (click)="cancelEntry()">
+  <div
+    class="spoiler-modal"
+    tabindex="-1"
+    (click)="onWarningBackdropClick($event)"
+    (keydown.escape)="cancelEntry()"
+  >
     <div
       class="spoiler-modal__dialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="spoiler-warning-title"
       aria-describedby="spoiler-warning-message spoiler-warning-remember"
-      (click)="$event.stopPropagation()"
     >
       <h2 id="spoiler-warning-title" class="spoiler-modal__title">
         ⚠️ {{ lang() === 'it' ? 'Attenzione — Spoiler' : 'Warning — Spoilers' }}
@@ -150,7 +154,7 @@
         <button type="button" class="spoiler-modal__cancel" (click)="cancelEntry()">
           {{ lang() === 'it' ? 'Annulla' : 'Cancel' }}
         </button>
-        <button type="button" class="spoiler-modal__confirm" autofocus (click)="confirmEntry()">
+        <button type="button" class="spoiler-modal__confirm" (click)="confirmEntry()">
           {{ lang() === 'it' ? 'Entra' : 'Enter' }}
         </button>
       </div>

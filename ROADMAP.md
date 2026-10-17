@@ -18,6 +18,10 @@ The milestones describe what players and Game Masters should experience—not th
 technology hidden behind the screen. Their order may change in response to real
 campaigns and community feedback.
 
+Delivery is governed by the [working agreement](docs/WORKING-AGREEMENT.md) and
+a documented [weekly review](docs/templates/WEEKLY-REVIEW.md), so the roadmap
+can evolve without losing decisions, quality or accountability.
+
 ---
 
 ## October 2026 · The party finds a home

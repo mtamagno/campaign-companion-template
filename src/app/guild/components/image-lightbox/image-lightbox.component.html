@@ -1,7 +1,9 @@
 <!-- Image Lightbox — Fullscreen overlay with navigation -->
 <div
   class="lightbox"
+  tabindex="-1"
   (click)="onBackdropClick($event)"
+  (keydown.escape)="lightboxClose.emit()"
   role="dialog"
   aria-modal="true"
   aria-label="Image viewer"

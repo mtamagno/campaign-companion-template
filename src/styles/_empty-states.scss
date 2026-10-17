@@ -18,7 +18,11 @@
   border: $border-width-thin solid $color-border-default;
   border-radius: $border-radius-lg;
   background:
-    radial-gradient(circle at 50% 0%, var(--campaign-glow, rgba(201, 166, 52, 0.09)), transparent 55%),
+    radial-gradient(
+      circle at 50% 0%,
+      var(--campaign-glow, rgba(201, 166, 52, 0.09)),
+      transparent 55%
+    ),
     linear-gradient(145deg, rgba($color-bg-elevated, 0.9), rgba($color-bg-deep, 0.94));
   box-shadow: $shadow-md, $shadow-inner;
 

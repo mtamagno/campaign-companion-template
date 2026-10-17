@@ -15,14 +15,7 @@ import {
 } from '@angular/core';
 
 /** Available avatar size presets. */
-const AVATAR_SIZES = {
-  sm: 'sm',
-  md: 'md',
-  lg: 'lg',
-  xl: 'xl',
-} as const;
-
-type AvatarSize = (typeof AVATAR_SIZES)[keyof typeof AVATAR_SIZES];
+type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 
 /**
  * Square avatar with fantasy ornamental border.

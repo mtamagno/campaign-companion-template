@@ -10,6 +10,12 @@ not to remove review or quality checks. Every commit must keep the build usable,
 include the tests appropriate to its risk and avoid private or copyrighted
 campaign content.
 
+Delivery follows the [QuestKeeper working agreement](WORKING-AGREEMENT.md).
+Every week begins with one player/GM outcome and closes with the reusable
+[weekly review](templates/WEEKLY-REVIEW.md): shipped evidence, product health,
+decisions, risks and deliberate re-planning. The two-commit cadence is a target,
+never a reason to split broken work or bypass `npm run verify`.
+
 ## Week 1 — A compelling first experience
 
 | Day         | Commit 1                                                       | Commit 2                                                             |

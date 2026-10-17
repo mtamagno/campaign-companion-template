@@ -37,13 +37,17 @@
 </div>
 
 @if (isOpen()) {
-  <div class="command-palette" (click)="close()">
+  <div
+    class="command-palette"
+    tabindex="-1"
+    (click)="onBackdropClick($event)"
+    (keydown.escape)="close()"
+  >
     <section
       class="command-palette__dialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="command-palette-title"
-      (click)="$event.stopPropagation()"
     >
       <header class="command-palette__header">
         <span class="command-palette__mark" aria-hidden="true">&#10022;</span>
@@ -93,14 +97,9 @@
         <kbd>Esc</kbd>
       </label>
 
-      <div class="command-palette__results" role="listbox">
+      <div class="command-palette__results">
         @for (command of filteredCommands(); track command.url) {
-          <button
-            class="command-palette__result"
-            type="button"
-            role="option"
-            (click)="navigate(command.url)"
-          >
+          <button class="command-palette__result" type="button" (click)="navigate(command.url)">
             <span class="command-palette__result-icon" aria-hidden="true">{{ command.icon }}</span>
             <span class="command-palette__result-copy">
               <strong>{{ command.title }}</strong>

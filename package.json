@@ -10,6 +10,12 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:manager": "node --test tools/campaign-manager/tests/*.test.mjs",
+    "test:transcriber": "cd discord-transcriber && python -m unittest discover -s tests",
+    "lint": "eslint .",
+    "format": "prettier --write . --ignore-unknown",
+    "format:check": "prettier --check . --ignore-unknown",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "verify": "npm run lint && npm run format:check && npm run typecheck && npm run test:manager && npm run test:transcriber && npm run build",
     "generate:thumbs": "node scripts/generate-thumbnails.cjs",
     "generate:display": "node scripts/generate-display-images.cjs"
   },
@@ -29,11 +35,15 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@angular/build": "^21.2.26",
     "@angular/cli": "^21.2.26",
     "@angular/compiler-cli": "^21.2.25",
+    "angular-eslint": "^21.4.0",
+    "eslint": "^10.13.0",
     "prettier": "^3.8.1",
     "sharp": "^0.35.5",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.71.2"
   }
 }

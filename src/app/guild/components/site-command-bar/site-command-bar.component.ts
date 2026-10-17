@@ -2,11 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
   HostListener,
   computed,
   inject,
   signal,
+  type ElementRef,
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -223,11 +223,22 @@ export class SiteCommandBarComponent {
     void this.router.navigateByUrl(url);
   }
 
+  /** Closes the palette only when the backdrop itself is activated. */
+  onBackdropClick(event: Event): void {
+    if (event.target === event.currentTarget) {
+      this.close();
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardShortcut(event: KeyboardEvent): void {
     if ((event.ctrlKey || event.metaKey) && event.key.toLocaleLowerCase() === 'k') {
       event.preventDefault();
-      this.isOpen() ? this.close() : this.open();
+      if (this.isOpen()) {
+        this.close();
+      } else {
+        this.open();
+      }
     } else if (event.key === 'Escape' && this.isOpen()) {
       event.preventDefault();
       this.close();

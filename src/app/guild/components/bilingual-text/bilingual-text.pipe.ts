@@ -3,7 +3,7 @@
  * Reacts to the current language signal from LanguageService.
  */
 
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { Pipe, inject, type PipeTransform } from '@angular/core';
 
 import { LanguageService } from '@guild/services/language.service';
 import { localizeText, type BilingualText } from '@guild/models/language.model';
