@@ -11,6 +11,8 @@
   &nbsp;•&nbsp;
   <a href="#quick-start"><strong>🕯️ QUICK START</strong></a>
   &nbsp;•&nbsp;
+  <a href="ROADMAP.md"><strong>🧭 ROADMAP</strong></a>
+  &nbsp;•&nbsp;
   <a href="docs/CONTENT-GUIDE.md"><strong>📜 CONTENT GUIDE</strong></a>
 </p>
 
@@ -48,6 +50,10 @@ the installer.
 > six-ability fantasy-RPG structure, while the campaign archive works for any
 > tabletop system. No commercial rules, published adventures or third-party
 > artwork are bundled.
+
+See where the journey is headed in the public
+**[QuestKeeper 2026–2027 roadmap](ROADMAP.md)**—written for players and Game
+Masters, without a wall of technical implementation details.
 
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 
