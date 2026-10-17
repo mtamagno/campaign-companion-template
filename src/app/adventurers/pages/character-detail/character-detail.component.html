@@ -47,6 +47,12 @@
                 <dt>{{ lang() === 'it' ? 'Competenza' : 'Proficiency' }}</dt>
                 <dd>+{{ char.sheet.proficiencyBonus }}</dd>
               </div>
+              @if (char.heightCm) {
+                <div class="character-detail__quick-stat">
+                  <dt>{{ lang() === 'it' ? 'Altezza' : 'Height' }}</dt>
+                  <dd>{{ formatHeight(char.heightCm) }}</dd>
+                </div>
+              }
             </dl>
           } @else {
             <span class="character-detail__pending">
@@ -110,6 +116,12 @@
             <div class="character-detail__profile-item">
               <h3>{{ lang() === 'it' ? 'Difetti' : 'Flaws' }}</h3>
               <p>{{ char.publicProfile.flaws | bilingual }}</p>
+            </div>
+          }
+          @if (char.publicProfile.hobbies && isRecorded(char.publicProfile.hobbies)) {
+            <div class="character-detail__profile-item">
+              <h3>{{ lang() === 'it' ? 'Interessi e abitudini' : 'Interests & Habits' }}</h3>
+              <p>{{ char.publicProfile.hobbies | bilingual }}</p>
             </div>
           }
         </div>

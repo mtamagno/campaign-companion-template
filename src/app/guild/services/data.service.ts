@@ -27,6 +27,18 @@ import { type Relationship } from '@guild/models/relationship.model';
 import { type Campaign } from '@guild/models/campaign.model';
 import { CampaignService } from '@guild/services/campaign.service';
 
+/**
+ * Campaign JSON is not fingerprinted like the compiled application bundles.
+ * A per-load query string prevents browsers and CDNs from serving stale story
+ * data after a new deployment while still allowing requests within one visit
+ * to share the same cache key.
+ */
+const DATA_REQUEST_VERSION = Date.now().toString(36);
+
+function versionedDataUrl(path: string): string {
+  return `${path}?v=${DATA_REQUEST_VERSION}`;
+}
+
 /** Tracks the loading state of the data layer. */
 interface DataState {
   readonly isLoading: boolean;
@@ -304,7 +316,7 @@ export class DataService {
    * @returns Observable of the parsed JSON data, or empty array on error.
    */
   private loadJson<T>(path: string): Observable<T> {
-    return this.http.get<T>(path).pipe(catchError(() => of([] as unknown as T)));
+    return this.http.get<T>(versionedDataUrl(path)).pipe(catchError(() => of([] as unknown as T)));
   }
 
   /**
@@ -314,13 +326,13 @@ export class DataService {
    * @returns Observable of the combined array of entities.
    */
   private loadFromManifest<T>(folder: string): Observable<ReadonlyArray<T>> {
-    return this.http.get<ReadonlyArray<string>>(`${folder}/manifest.json`).pipe(
+    return this.http.get<ReadonlyArray<string>>(versionedDataUrl(`${folder}/manifest.json`)).pipe(
       switchMap((filenames: ReadonlyArray<string>) => {
         if (filenames.length === 0) {
           return of([] as ReadonlyArray<T>);
         }
         const fileLoads: ReadonlyArray<Observable<T>> = filenames.map((filename: string) =>
-          this.http.get<T>(`${folder}/${filename}`),
+          this.http.get<T>(versionedDataUrl(`${folder}/${filename}`)),
         );
         return forkJoin([...fileLoads]);
       }),

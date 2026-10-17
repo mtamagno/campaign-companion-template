@@ -97,6 +97,11 @@ any screenshot to enter the live sample.
 | Backups, build validation and original-image uploads   | Mobile-friendly maps, galleries and relationship views |
 | Optional local Discord transcription                   | A remembered language and spoiler-warning choice       |
 
+Character profiles also keep a canonical height, everyday interests and two
+independent pieces of art: a square face/profile image and a full 2:3 portrait.
+The manager preserves each image separately, so refining one never erases the
+other.
+
 And yes, the site remembers when a visitor accepts the spoiler warning—because
 defeating the same modal every session is not a heroic quest.
 

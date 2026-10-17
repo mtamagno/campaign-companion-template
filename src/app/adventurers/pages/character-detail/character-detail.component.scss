@@ -43,6 +43,8 @@
   &__portrait-frame {
     flex-shrink: 0;
     width: 350px;
+    aspect-ratio: 1;
+    align-self: center;
     border: $border-width-default solid $color-border-accent;
     border-radius: $border-radius-md;
     overflow: hidden;
@@ -123,6 +125,8 @@
   &__fullbody-frame {
     flex-shrink: 0;
     width: 250px;
+    aspect-ratio: 2 / 3;
+    align-self: center;
     border: $border-width-default solid $color-border-accent;
     border-radius: $border-radius-md;
     overflow: hidden;

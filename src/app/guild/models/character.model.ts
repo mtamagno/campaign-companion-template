@@ -23,6 +23,8 @@ export interface CharacterPublicProfile {
   readonly bonds: BilingualText;
   readonly flaws: BilingualText;
   readonly knownHistory: BilingualText;
+  /** Everyday interests, comforts and habits established during play. */
+  readonly hobbies?: BilingualText;
 }
 
 /** Private profile — secrets only the player and DM know. */
@@ -132,12 +134,14 @@ export interface Character {
   readonly id: string;
   readonly name: string;
   readonly sex: BilingualText;
+  /** Canonical standing height, useful for profiles and proportion guides. */
+  readonly heightCm?: number;
   readonly playerName?: string;
   readonly avatar: ImageRef;
   readonly gallery: ReadonlyArray<ImageRef>;
-  /** 800x600 profile image (main). */
+  /** Square face or bust image shown on the left side of the profile header. */
   readonly profileImageUrl: string;
-  /** 1024x1536 portrait image (side, desktop only). */
+  /** 2:3 full portrait shown on the right side of the profile header. */
   readonly portraitImageUrl: string;
   readonly publicProfile: CharacterPublicProfile;
   readonly privateProfile: CharacterPrivateProfile;

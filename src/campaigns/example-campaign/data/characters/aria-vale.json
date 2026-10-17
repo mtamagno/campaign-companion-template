@@ -2,10 +2,11 @@
   "id": "aria-vale",
   "name": "Aria Vale",
   "sex": { "en": "Woman", "it": "Donna" },
+  "heightCm": 168,
   "playerName": "Sample Player",
   "avatar": { "url": "images/characters/aria.svg", "alt": "Portrait of Aria Vale" },
   "gallery": [],
-  "profileImageUrl": "images/characters/aria.svg",
+  "profileImageUrl": "images/characters/aria-profile.svg",
   "portraitImageUrl": "images/characters/aria.svg",
   "publicProfile": {
     "backstory": {
@@ -31,6 +32,10 @@
     "knownHistory": {
       "en": "Known in Embercross as a careful craftswoman.",
       "it": "Conosciuta a Crocebrace come artigiana scrupolosa."
+    },
+    "hobbies": {
+      "en": "Restoring old lanterns, sketching road signs and brewing tea before dawn.",
+      "it": "Restaurare vecchie lanterne, disegnare segnali stradali e preparare il tÃ¨ prima dell'alba."
     }
   },
   "privateProfile": {

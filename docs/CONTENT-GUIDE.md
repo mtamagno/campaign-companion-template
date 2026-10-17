@@ -70,13 +70,21 @@ Do not paste untrusted HTML.
 
 Each character JSON contains:
 
-- public profile: backstory, traits, ideals, bonds, flaws and known history;
+- public profile: backstory, traits, ideals, bonds, flaws, known history and
+  optional hobbies;
 - private profile: secrets, motivations and GM notes;
 - sheet: level, archetype/class, ancestry, background, abilities, saves,
   skills, equipment, features, spells and currency;
 - optional `sheetHistory`: prior sheet snapshots for level progression;
 - diary, session knowledge and quotes;
-- image paths and a temporary spoiler password.
+- optional standing height in centimetres (`heightCm`), useful for consistent
+  party-art proportions;
+- separate square `profileImageUrl` and 2:3 `portraitImageUrl` artwork (the
+  manager accepts both independently), plus a temporary spoiler password.
+
+The local manager is the recommended way to maintain these fields. Existing
+art is preserved when editing a character; uploading a new square profile no
+longer overwrites the full-body portrait.
 
 Use `"password": "cambiami"` only while setting up. Remember that a static
 site cannot provide real server-side secrecy.

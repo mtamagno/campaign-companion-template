@@ -407,6 +407,11 @@ function entityForm(type, item = {}) {
       field('name', 'Name', item.name, { required: true }),
       field('playerName', 'Player', item.playerName),
       ...localizedFields('sex', 'Gender', item.sex, languages),
+      field('heightCm', 'Height (cm)', item.heightCm ?? '', {
+        type: 'number',
+        min: 1,
+        hint: 'Optional. Used on the profile and as an artwork proportion reference.',
+      }),
       field('level', 'Level', item.sheet?.level ?? 1, { type: 'number', min: 1 }),
       field('classType', 'Class / archetype', item.sheet?.classType),
       field('race', 'Species / ancestry', item.sheet?.race),
@@ -415,7 +420,14 @@ function entityForm(type, item = {}) {
       field('password', 'Spoiler password', item.password ?? 'cambiami', {
         hint: 'Discourages casual spoilers; this is not encryption.',
       }),
-      field('image', 'Profile image', '', { type: 'file', wide: true }),
+      field('profileImage', 'Square profile image', '', {
+        type: 'file',
+        hint: 'Face or bust crop; square images work best.',
+      }),
+      field('portraitImage', 'Full portrait image', '', {
+        type: 'file',
+        hint: 'Optional full-body art; a 2:3 portrait works best.',
+      }),
       section('Public profile'),
       ...localizedFields('backstory', 'Backstory', item.publicProfile?.backstory, languages, {
         type: 'textarea',
@@ -435,6 +447,15 @@ function entityForm(type, item = {}) {
       ...localizedFields('known', 'Known history', item.publicProfile?.knownHistory, languages, {
         type: 'textarea',
       }),
+      ...localizedFields(
+        'hobbies',
+        'Interests and habits',
+        item.publicProfile?.hobbies,
+        languages,
+        {
+          type: 'textarea',
+        },
+      ),
       section('Private notes'),
       ...localizedFields(
         'secret',
@@ -658,6 +679,7 @@ function baseCharacter(original = {}) {
             id: '',
             name: '',
             sex: { en: '', it: '' },
+            heightCm: undefined,
             avatar: { url: '', alt: '' },
             gallery: [],
             profileImageUrl: '',
@@ -669,6 +691,7 @@ function baseCharacter(original = {}) {
               bonds: { en: '', it: '' },
               flaws: { en: '', it: '' },
               knownHistory: { en: '', it: '' },
+              hobbies: { en: '', it: '' },
             },
             privateProfile: {
               secretBackstory: { en: '', it: '' },
@@ -717,16 +740,29 @@ async function buildEntity(type, form, original = {}) {
   const languages = campaignLanguages();
   if (type === 'characters') {
     const item = baseCharacter(original);
-    const image = await uploadSelectedImage('image', 'characters');
+    const profileImage = await uploadSelectedImage('profileImage', 'characters');
+    const portraitImage = await uploadSelectedImage('portraitImage', 'characters');
     item.id = id;
     item.name = form.get('name').toString();
     item.playerName = form.get('playerName').toString();
     item.sex = localizedFormValue(form, 'sex', '', languages);
+    const heightCm = Number(form.get('heightCm'));
+    if (heightCm > 0) item.heightCm = heightCm;
+    else delete item.heightCm;
     item.password = form.get('password').toString() || 'cambiami';
-    if (image) {
-      item.avatar = { url: image.path, alt: item.name };
-      item.profileImageUrl = image.path;
-      item.portraitImageUrl = image.path;
+    if (profileImage) {
+      item.avatar = { url: profileImage.path, alt: item.name };
+      item.profileImageUrl = profileImage.path;
+    }
+    if (portraitImage) {
+      item.portraitImageUrl = portraitImage.path;
+    }
+    if (!item.profileImageUrl && item.portraitImageUrl) {
+      item.profileImageUrl = item.portraitImageUrl;
+      item.avatar = { url: item.portraitImageUrl, alt: item.name };
+    }
+    if (!item.portraitImageUrl && item.profileImageUrl) {
+      item.portraitImageUrl = item.profileImageUrl;
     }
     item.publicProfile = {
       ...item.publicProfile,
@@ -736,6 +772,7 @@ async function buildEntity(type, form, original = {}) {
       bonds: localizedFormValue(form, 'bonds', '', languages),
       flaws: localizedFormValue(form, 'flaws', '', languages),
       knownHistory: localizedFormValue(form, 'known', '', languages),
+      hobbies: localizedFormValue(form, 'hobbies', '', languages),
     };
     item.privateProfile = {
       ...item.privateProfile,

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Aria Vale profile</title>
+  <desc id="desc">Original geometric square profile illustration of Aria Vale.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#17243b"/><stop offset="1" stop-color="#7c493f"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ffe7a3" stop-opacity=".75"/><stop offset="1" stop-color="#d18d32" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <circle cx="615" cy="170" r="170" fill="url(#glow)"/>
+  <path d="M135 800Q165 505 400 470Q635 505 665 800Z" fill="#304952"/>
+  <circle cx="400" cy="325" r="168" fill="#c8a27d"/>
+  <path d="M205 350Q215 85 415 100Q635 118 605 405Q535 235 402 218Q292 300 205 350Z" fill="#362b2b"/>
+  <path d="M318 337q30 22 60 0M438 337q30 22 60 0" fill="none" stroke="#2b2018" stroke-width="12" stroke-linecap="round"/>
+  <path d="M372 410q28 22 56 0" fill="none" stroke="#7c493f" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="400" cy="600" r="76" fill="#d18d32" stroke="#2b2018" stroke-width="18"/>
+  <path d="M370 615l30-70 30 70-30 35Z" fill="#ffe7a3"/>
+</svg>

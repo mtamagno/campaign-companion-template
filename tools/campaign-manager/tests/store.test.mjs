@@ -54,7 +54,14 @@ test('creates a complete campaign and reports its counts', async (t) => {
 test('manages characters, sessions and maps without editing manifests', async (t) => {
   const root = await fixture(t);
   await createCampaign(root, campaignInput);
-  await saveEntity(root, campaignInput.id, 'characters', { id: 'aria', name: 'Aria' });
+  await saveEntity(root, campaignInput.id, 'characters', {
+    id: 'aria',
+    name: 'Aria',
+    heightCm: 168,
+    profileImageUrl: 'images/characters/aria-profile.webp',
+    portraitImageUrl: 'images/characters/aria-portrait.webp',
+    publicProfile: { hobbies: { en: 'Restoring lanterns.' } },
+  });
   await saveEntity(root, campaignInput.id, 'sessions', {
     id: 'sessione-uno',
     title: { it: 'Il ponte', en: 'The bridge' },
@@ -66,6 +73,10 @@ test('manages characters, sessions and maps without editing manifests', async (t
 
   let campaign = await getCampaign(root, campaignInput.id);
   assert.equal(campaign.characters[0].name, 'Aria');
+  assert.equal(campaign.characters[0].heightCm, 168);
+  assert.equal(campaign.characters[0].profileImageUrl, 'images/characters/aria-profile.webp');
+  assert.equal(campaign.characters[0].portraitImageUrl, 'images/characters/aria-portrait.webp');
+  assert.equal(campaign.characters[0].publicProfile.hobbies.en, 'Restoring lanterns.');
   assert.equal(campaign.sessions[0].title.it, 'Il ponte');
   assert.equal(campaign.maps[0].name.en, 'The Valley');
 

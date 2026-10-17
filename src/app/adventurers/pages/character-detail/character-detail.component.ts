@@ -128,6 +128,7 @@ export class CharacterDetailComponent {
       return false;
     }
     return (
+      Boolean(char.portraitImageUrl) &&
       char.portraitImageUrl !== char.profileImageUrl &&
       !char.portraitImageUrl.includes('placeholder-portrait')
     );
@@ -138,9 +139,10 @@ export class CharacterDetailComponent {
     const profile = this.character()?.publicProfile;
     return (
       profile !== undefined &&
-      [profile.backstory, profile.traits, profile.ideals, profile.bonds, profile.flaws].some(
+      ([profile.backstory, profile.traits, profile.ideals, profile.bonds, profile.flaws].some(
         (value) => this.isRecorded(value),
-      )
+      ) ||
+        (profile.hobbies !== undefined && this.isRecorded(profile.hobbies)))
     );
   });
 
@@ -150,7 +152,13 @@ export class CharacterDetailComponent {
     return !normalized.includes('not yet recorded') && !normalized.includes('non ancora registrat');
   }
 
-  /** Handles profile image (800x600) load error. */
+  /** Formats a canonical centimetre value as metres in the selected language. */
+  formatHeight(heightCm: number): string {
+    const metres = (heightCm / 100).toFixed(2);
+    return `${this.lang() === 'it' ? metres.replace('.', ',') : metres} m`;
+  }
+
+  /** Handles square profile image load errors. */
   onProfileImageError(event: Event): void {
     const img = event.target;
     if (img instanceof HTMLImageElement) {
@@ -158,7 +166,7 @@ export class CharacterDetailComponent {
     }
   }
 
-  /** Handles full-body portrait (1024x1536) load error. */
+  /** Handles 2:3 full-body portrait load errors. */
   onPortraitImageError(event: Event): void {
     const img = event.target;
     if (img instanceof HTMLImageElement) {
