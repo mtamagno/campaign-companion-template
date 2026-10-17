@@ -14,6 +14,9 @@
  * // → 'assets/images/kaelen/thumbs/profile-800x600.jpg'
  */
 export function toThumbUrl(fullUrl: string): string {
+  if (!supportsGeneratedVariant(fullUrl)) {
+    return fullUrl;
+  }
   const lastSlash = fullUrl.lastIndexOf('/');
   if (lastSlash === -1) {
     return `thumbs/${fullUrl}`;
@@ -34,10 +37,19 @@ export function toThumbUrl(fullUrl: string): string {
  * // → 'assets/images/group/display/allStanding.jpg'
  */
 export function toDisplayUrl(fullUrl: string): string {
+  if (!supportsGeneratedVariant(fullUrl)) {
+    return fullUrl;
+  }
   const lastSlash = fullUrl.lastIndexOf('/');
   const prefix = lastSlash === -1 ? '' : fullUrl.substring(0, lastSlash);
   const fileName = lastSlash === -1 ? fullUrl : fullUrl.substring(lastSlash + 1);
   const displayFileName = fileName.replace(/\.png$/i, '.jpg');
   const separator = prefix === '' ? '' : '/';
   return `${prefix}${separator}display/${displayFileName}`;
+}
+
+/** Mirrors the raster formats processed by the display and thumbnail scripts. */
+function supportsGeneratedVariant(url: string): boolean {
+  const path = url.split(/[?#]/, 1)[0];
+  return /\.(?:png|jpe?g|webp)$/i.test(path);
 }

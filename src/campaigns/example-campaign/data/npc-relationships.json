@@ -8,5 +8,15 @@
       "it": "Rowan ha insegnato ad Aria a leggere le antiche luci stradali."
     },
     "isBidirectional": true
+  },
+  {
+    "sourceId": "mira-thorn",
+    "targetId": "sable-finch",
+    "type": "respect",
+    "description": {
+      "en": "Sable once charted a safe route through a storm that should have swallowed Mira's courier company.",
+      "it": "Sable tracciò una rotta sicura attraverso una tempesta che avrebbe dovuto inghiottire la compagnia di corrieri di Mira."
+    },
+    "isBidirectional": true
   }
 ]

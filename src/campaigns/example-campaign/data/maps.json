@@ -19,5 +19,28 @@
     ],
     "explorationStatus": "in-progress",
     "region": { "en": "The Lantern Valley", "it": "La Valle delle Lanterne" }
+  },
+  {
+    "id": "glass-beacon",
+    "name": { "en": "The Glass Beacon", "it": "Il Faro di Vetro" },
+    "description": {
+      "en": "A shattered signal tower whose mirrored chambers still gather light from a sun that is no longer in the sky.",
+      "it": "Una torre di segnalazione in rovina, le cui camere specchiate raccolgono ancora la luce di un sole che non è più nel cielo."
+    },
+    "images": [
+      { "url": "images/maps/glass-beacon.svg", "alt": "The ruined Glass Beacon at blue dusk" }
+    ],
+    "discoveries": [
+      {
+        "title": { "en": "A flame without heat", "it": "Una fiamma senza calore" },
+        "description": {
+          "en": "A pale flame burns beneath the broken lens and casts its shadow toward the mountains.",
+          "it": "Una fiamma pallida arde sotto la lente spezzata e proietta la propria ombra verso le montagne."
+        },
+        "sessionId": "session-2"
+      }
+    ],
+    "explorationStatus": "in-progress",
+    "region": { "en": "The Lantern Valley", "it": "La Valle delle Lanterne" }
   }
 ]

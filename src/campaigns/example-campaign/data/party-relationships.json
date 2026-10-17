@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "sourceId": "aria-vale",
+    "targetId": "mira-thorn",
+    "type": "friendship",
+    "description": {
+      "en": "Aria plans every mile; Mira makes sure they actually walk it. Their opposing rhythms have become a dependable partnership.",
+      "it": "Aria pianifica ogni miglio; Mira fa in modo che lo percorrano davvero. I loro ritmi opposti sono diventati una collaborazione affidabile."
+    },
+    "isBidirectional": true,
+    "sharedEvents": [
+      {
+        "sessionId": "session-2",
+        "title": { "en": "Across the broken span", "it": "Oltre il ponte spezzato" },
+        "description": {
+          "en": "Mira trusted Aria's old road marks and crossed the ravine without hesitation.",
+          "it": "Mira si è fidata degli antichi segnali letti da Aria e ha attraversato il burrone senza esitare."
+        }
+      }
+    ]
+  }
+]

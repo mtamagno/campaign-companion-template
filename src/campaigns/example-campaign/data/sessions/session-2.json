@@ -1,0 +1,47 @@
+{
+  "id": "session-2",
+  "sessionNumber": 2,
+  "date": "2026-01-08",
+  "title": { "en": "The Shadow of the Beacon", "it": "L'ombra del Faro" },
+  "summary": {
+    "en": "A trail of reversed road signs leads the Wayfarers to a beacon that shines without warmth.",
+    "it": "Una scia di segnali stradali rovesciati conduce i Viandanti a un faro che brilla senza calore."
+  },
+  "keyEvents": [
+    {
+      "description": {
+        "en": "Aria deciphers a warning hidden in the old mile markers.",
+        "it": "Aria decifra un avvertimento nascosto negli antichi segnali di distanza."
+      }
+    },
+    {
+      "description": {
+        "en": "Mira crosses the broken span and retrieves a shard of the beacon lens.",
+        "it": "Mira attraversa il ponte spezzato e recupera una scheggia della lente del faro."
+      }
+    }
+  ],
+  "location": { "en": "The Glass Beacon", "it": "Il Faro di Vetro" },
+  "prose": {
+    "en": "Every road sign beyond Embercross faced the wrong direction. Aria read their scratches as a second language: not directions, but a warning.<hr>At the ravine, Mira crossed first. The ruined beacon waited on the far side, holding a white flame that gave no heat and cast its shadow toward the mountains.",
+    "it": "Ogni segnale oltre Crocebrace indicava la direzione sbagliata. Aria lesse i graffi come una seconda lingua: non indicazioni, ma un avvertimento.<hr>Al burrone, Mira attraversò per prima. Il faro in rovina attendeva dall'altro lato, custodendo una fiamma bianca priva di calore che proiettava la propria ombra verso le montagne."
+  },
+  "images": [
+    {
+      "url": "images/maps/glass-beacon.svg",
+      "alt": {
+        "en": "The ruined Glass Beacon at dusk",
+        "it": "Il Faro di Vetro in rovina al crepuscolo"
+      },
+      "caption": {
+        "en": "The light pointed nowhere. Its shadow did.",
+        "it": "La luce non indicava nulla. La sua ombra sì."
+      },
+      "afterSection": 1
+    }
+  ],
+  "storySoFar": {
+    "en": "The Wayfarers found the Glass Beacon and a flame whose shadow points north.",
+    "it": "I Viandanti hanno trovato il Faro di Vetro e una fiamma la cui ombra indica il nord."
+  }
+}

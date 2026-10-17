@@ -1,0 +1,32 @@
+{
+  "id": "sable-finch",
+  "name": "Sable Finch",
+  "sex": { "en": "Non-binary", "it": "Non binario" },
+  "title": "Cartographer of Lost Roads",
+  "profileImageUrl": "images/npcs/sable.svg",
+  "portraitImageUrl": "images/npcs/sable.svg",
+  "avatar": { "url": "images/npcs/sable.svg", "alt": "Portrait of Sable Finch" },
+  "gallery": [],
+  "profile": {
+    "description": {
+      "en": "A soft-spoken cartographer whose maps include roads that only appear during certain weather.",
+      "it": "Un cartografo dalla voce pacata, le cui mappe includono strade che compaiono soltanto con determinati fenomeni atmosferici."
+    },
+    "role": { "en": "Informant and mapmaker", "it": "Informatore e cartografo" },
+    "personality": {
+      "en": "Patient, dryly humorous and incapable of leaving a map unfinished.",
+      "it": "Paziente, ironico e incapace di lasciare incompleta una mappa."
+    },
+    "location": {
+      "en": "The Folded Compass, Embercross",
+      "it": "La Bussola Piegata, Crocebrace"
+    },
+    "knownHistory": {
+      "en": "Sable returned from the eastern pass alone and refuses to draw what happened there.",
+      "it": "Sable è tornato da solo dal passo orientale e si rifiuta di disegnare ciò che è accaduto laggiù."
+    }
+  },
+  "allegiance": "neutral",
+  "isAlive": true,
+  "category": "Embercross"
+}

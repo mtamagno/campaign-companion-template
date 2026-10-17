@@ -247,6 +247,25 @@
         color: var(--muted);
       }
 
+      .chapter-points {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .chapter-points li,
+      .demo-badge {
+        padding: 5px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--gold-soft);
+        background: rgba(213, 173, 61, 0.06);
+        font-size: 0.78rem;
+      }
+
       .screen {
         position: relative;
         margin-top: auto;
@@ -255,6 +274,12 @@
         border-radius: 14px;
         background: #090910;
         box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+        cursor: zoom-in;
+      }
+
+      .screen:focus-visible {
+        outline: 2px solid var(--gold-soft);
+        outline-offset: 4px;
       }
 
       .screen::before {
@@ -285,6 +310,243 @@
         justify-content: space-between;
         gap: 12px;
         margin-top: 22px;
+      }
+
+      .tour-progress {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        margin-top: 18px;
+      }
+
+      .tour-progress span {
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(213, 173, 61, 0.15);
+      }
+
+      .tour-progress span.active {
+        background: var(--gold);
+      }
+
+      .sandbox {
+        margin-top: 34px;
+        padding: clamp(24px, 5vw, 48px);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(18, 18, 29, 0.9);
+        box-shadow: 0 24px 72px rgba(0, 0, 0, 0.38);
+      }
+
+      .sandbox-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+
+      .sandbox-heading h2 {
+        margin: 5px 0 0;
+        color: var(--gold-soft);
+        font-size: clamp(1.7rem, 4vw, 2.7rem);
+      }
+
+      .sandbox-heading p {
+        max-width: 62ch;
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .sandbox-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.4fr);
+        gap: 22px;
+      }
+
+      .sandbox-form,
+      .sandbox-preview {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      .sandbox-form h3,
+      .sandbox-preview h3 {
+        margin: 0 0 16px;
+        color: var(--gold-soft);
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .demo-field {
+        display: grid;
+        gap: 5px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .demo-field.wide {
+        grid-column: 1 / -1;
+      }
+
+      .demo-field input,
+      .demo-field select,
+      .demo-field textarea {
+        width: 100%;
+        border: 1px solid rgba(213, 173, 61, 0.28);
+        border-radius: 8px;
+        padding: 10px 11px;
+        color: var(--ink);
+        background: #101019;
+        font: inherit;
+      }
+
+      .demo-field textarea {
+        min-height: 84px;
+        resize: vertical;
+      }
+
+      .demo-field input:focus,
+      .demo-field select:focus,
+      .demo-field textarea:focus {
+        border-color: var(--gold);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(213, 173, 61, 0.09);
+      }
+
+      .form-divider {
+        margin: 20px 0 14px;
+        border: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .preview-hero {
+        position: relative;
+        min-height: 210px;
+        display: flex;
+        align-items: end;
+        padding: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(213, 173, 61, 0.22);
+        border-radius: 12px;
+        background:
+          linear-gradient(0deg, rgba(8, 8, 15, 0.96), rgba(8, 8, 15, 0.12)),
+          radial-gradient(circle at 78% 25%, rgba(213, 173, 61, 0.38), transparent 8rem),
+          linear-gradient(135deg, #243249, #422e3f 55%, #171722);
+      }
+
+      .preview-hero::after {
+        content: '✦';
+        position: absolute;
+        top: 24px;
+        right: 30px;
+        color: var(--gold-soft);
+        font-size: 4rem;
+        filter: drop-shadow(0 0 18px rgba(213, 173, 61, 0.6));
+      }
+
+      .preview-hero h3 {
+        margin: 4px 0;
+        font-size: clamp(1.6rem, 4vw, 2.6rem);
+      }
+
+      .preview-hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .preview-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 14px 0;
+      }
+
+      .preview-metrics div {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        text-align: center;
+        background: rgba(213, 173, 61, 0.04);
+      }
+
+      .preview-metrics strong {
+        display: block;
+        color: var(--gold-soft);
+        font:
+          600 1.5rem Cinzel,
+          serif;
+      }
+
+      .preview-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .preview-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 11px 13px;
+        border: 1px solid rgba(213, 173, 61, 0.16);
+        border-radius: 8px;
+        background: var(--panel-light);
+      }
+
+      .preview-card small {
+        color: var(--muted);
+      }
+
+      .empty-copy {
+        color: var(--muted);
+        font-style: italic;
+      }
+
+      .sandbox-note {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .lightbox {
+        width: min(1180px, calc(100% - 30px));
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        color: var(--ink);
+        background: var(--night);
+      }
+
+      .lightbox::backdrop {
+        background: rgba(0, 0, 0, 0.86);
+        backdrop-filter: blur(5px);
+      }
+
+      .lightbox img {
+        display: block;
+        width: 100%;
+      }
+
+      .lightbox .button {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(13, 13, 20, 0.92);
       }
 
       .footer {
@@ -333,6 +595,15 @@
           display: none;
         }
 
+        .sandbox-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .sandbox-heading {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
         .step {
           min-width: 160px;
         }
@@ -351,6 +622,11 @@
 
         .stage-copy {
           min-height: 170px;
+        }
+
+        .field-grid,
+        .preview-metrics {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -420,17 +696,115 @@
               Create a campaign, restore a backup and see the whole archive at a glance—without
               opening a JSON file.
             </p>
+            <ul class="chapter-points" id="chapter-points"></ul>
           </div>
-          <div class="screen">
+          <div
+            class="screen"
+            id="zoom-screen"
+            role="button"
+            tabindex="0"
+            aria-label="Enlarge screenshot"
+          >
             <img
               id="screen"
               src="images/campaign-manager-dashboard.webp"
               alt="QuestKeeper Campaign Manager dashboard"
             />
           </div>
+          <div class="tour-progress" id="tour-progress" aria-label="Tour progress"></div>
           <div class="controls">
             <button class="button" id="previous" type="button">← Previous</button>
             <button class="button" id="next" type="button">Next chapter →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="sandbox" aria-labelledby="sandbox-title">
+        <div class="sandbox-heading">
+          <div>
+            <span class="eyebrow">Hands-on browser sandbox</span>
+            <h2 id="sandbox-title">Try the workflow yourself</h2>
+            <p>
+              Rename the campaign, add adventurers and jot down a session beat. This miniature demo
+              stays in your browser; the installed manager performs the same actions on real,
+              portable campaign files.
+            </p>
+          </div>
+          <span class="demo-badge">No account · no upload</span>
+        </div>
+
+        <div class="sandbox-grid">
+          <form class="sandbox-form" id="sandbox-form">
+            <h3>Campaign setup</h3>
+            <div class="field-grid">
+              <label class="demo-field wide"
+                >Campaign name<input id="demo-name" value="The Lantern Road"
+              /></label>
+              <label class="demo-field">Game Master<input id="demo-gm" value="Mara" /></label>
+              <label class="demo-field"
+                >Party name<input id="demo-party" value="The Wayfarers"
+              /></label>
+              <label class="demo-field wide"
+                >Default language<select id="demo-language">
+                  <option>English</option>
+                  <option>Italiano</option>
+                  <option>Español</option>
+                  <option>Deutsch</option>
+                  <option>日本語</option>
+                </select></label
+              >
+            </div>
+            <hr class="form-divider" />
+            <h3>Add an adventurer</h3>
+            <div class="field-grid">
+              <label class="demo-field"
+                >Name<input id="demo-character" placeholder="e.g. Mira Thorn"
+              /></label>
+              <label class="demo-field"
+                >Class / archetype<input id="demo-class" placeholder="e.g. Wayfinder"
+              /></label>
+            </div>
+            <div class="form-actions">
+              <button class="button" type="button" id="add-character">Add adventurer</button>
+            </div>
+            <hr class="form-divider" />
+            <h3>Record a session beat</h3>
+            <label class="demo-field"
+              ><span>Note</span
+              ><textarea
+                id="demo-note"
+                placeholder="The final roadside lantern went dark..."
+              ></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="button" type="button" id="add-note">Save note</button>
+              <button class="button" type="button" id="reset-demo">Reset demo</button>
+            </div>
+            <p class="sandbox-note" id="sandbox-status" aria-live="polite">
+              Ready. Nothing leaves this browser.
+            </p>
+          </form>
+
+          <div class="sandbox-preview" aria-live="polite">
+            <div class="preview-hero">
+              <div>
+                <span class="eyebrow" id="preview-language">English chronicle</span>
+                <h3 id="preview-name">The Lantern Road</h3>
+                <p>
+                  <span id="preview-party">The Wayfarers</span> · GM
+                  <span id="preview-gm">Mara</span>
+                </p>
+              </div>
+            </div>
+            <div class="preview-metrics">
+              <div><strong id="character-count">2</strong><span>Adventurers</span></div>
+              <div><strong id="note-count">1</strong><span>Session notes</span></div>
+              <div><strong>1</strong><span>Campaign</span></div>
+            </div>
+            <h3>Party roster</h3>
+            <div class="preview-list" id="preview-characters"></div>
+            <h3>Latest session beat</h3>
+            <div class="preview-card" id="preview-note"></div>
           </div>
         </div>
       </section>
@@ -441,6 +815,11 @@
       </footer>
     </main>
 
+    <dialog class="lightbox" id="lightbox">
+      <button class="button" id="close-lightbox" type="button">Close</button>
+      <img id="lightbox-image" alt="" />
+    </dialog>
+
     <script>
       const chapters = [
         {
@@ -450,6 +829,7 @@
             'Create a campaign, restore a backup and see the whole archive at a glance—without opening a JSON file.',
           image: 'images/campaign-manager-dashboard.webp',
           alt: 'QuestKeeper Campaign Manager dashboard',
+          points: ['Create or import', 'Instant archive totals', 'Recoverable deletion'],
         },
         {
           eyebrow: 'Chapter II',
@@ -458,6 +838,7 @@
             'Choose any campaign languages and edit the title, premise, system and table details from friendly forms.',
           image: 'images/campaign-manager-editor.webp',
           alt: 'QuestKeeper campaign editor with language settings',
+          points: ['Any language code', 'Friendly forms', 'Saved visitor preference'],
         },
         {
           eyebrow: 'Chapter III',
@@ -466,6 +847,7 @@
             'Add characters, NPCs, sessions, maps and original artwork. QuestKeeper keeps IDs and indexes synchronized.',
           image: 'images/campaign-manager-content.webp',
           alt: 'QuestKeeper character and campaign content archive',
+          points: ['Separate profile art', 'Private lore', 'Height & hobbies'],
         },
         {
           eyebrow: 'Chapter IV',
@@ -474,6 +856,7 @@
             'Launch the optional local Discord transcription bot—or skip it entirely and bring your handwritten notes.',
           image: 'images/campaign-manager-scribe.webp',
           alt: 'QuestKeeper Discord Session Scribe controls',
+          points: ['Speaker names', 'Local transcription', 'Handwritten notes welcome'],
         },
         {
           eyebrow: 'Chapter V',
@@ -482,6 +865,7 @@
             'Prepare dependencies, preview the real Companion and validate a production build before GitHub Pages deploys it.',
           image: 'images/campaign-manager-publish.webp',
           alt: 'QuestKeeper preview and publishing screen',
+          points: ['Production check', 'Local preview', 'GitHub Pages ready'],
         },
       ];
 
@@ -491,6 +875,10 @@
       const chapter = document.querySelector('#chapter');
       const title = document.querySelector('#title');
       const description = document.querySelector('#description');
+      const chapterPoints = document.querySelector('#chapter-points');
+      const progress = document.querySelector('#tour-progress');
+
+      progress.innerHTML = chapters.map(() => '<span></span>').join('');
 
       function show(index) {
         active = (index + chapters.length) % chapters.length;
@@ -498,11 +886,15 @@
         chapter.textContent = item.eyebrow;
         title.textContent = item.title;
         description.textContent = item.description;
+        chapterPoints.innerHTML = item.points.map((point) => `<li>${point}</li>`).join('');
         image.src = item.image;
         image.alt = item.alt;
         image.classList.remove('swap');
         requestAnimationFrame(() => image.classList.add('swap'));
         tabs.forEach((tab, tabIndex) => tab.setAttribute('aria-selected', tabIndex === active));
+        [...progress.children].forEach((bar, barIndex) =>
+          bar.classList.toggle('active', barIndex <= active),
+        );
       }
 
       tabs.forEach((tab) => tab.addEventListener('click', () => show(Number(tab.dataset.step))));
@@ -512,6 +904,144 @@
         if (event.key === 'ArrowLeft') show(active - 1);
         if (event.key === 'ArrowRight') show(active + 1);
       });
+
+      show(0);
+
+      const lightbox = document.querySelector('#lightbox');
+      const lightboxImage = document.querySelector('#lightbox-image');
+      function openLightbox() {
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+        lightbox.showModal();
+      }
+      document.querySelector('#zoom-screen').addEventListener('click', openLightbox);
+      document.querySelector('#zoom-screen').addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') openLightbox();
+      });
+      document.querySelector('#close-lightbox').addEventListener('click', () => lightbox.close());
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) lightbox.close();
+      });
+
+      const demoDefaults = {
+        name: 'The Lantern Road',
+        gm: 'Mara',
+        party: 'The Wayfarers',
+        language: 'English',
+        characters: [
+          { name: 'Aria Vale', role: 'Wayfinder' },
+          { name: 'Mira Thorn', role: 'Storm Courier' },
+        ],
+        notes: ['The final roadside lantern went dark.'],
+      };
+      let demoState;
+      try {
+        demoState = {
+          ...demoDefaults,
+          ...JSON.parse(localStorage.getItem('questkeeper-demo') || '{}'),
+        };
+      } catch {
+        demoState = structuredClone(demoDefaults);
+      }
+
+      const demoName = document.querySelector('#demo-name');
+      const demoGm = document.querySelector('#demo-gm');
+      const demoParty = document.querySelector('#demo-party');
+      const demoLanguage = document.querySelector('#demo-language');
+      const sandboxStatus = document.querySelector('#sandbox-status');
+
+      function persistDemo(message = 'Draft saved locally in this browser.') {
+        try {
+          localStorage.setItem('questkeeper-demo', JSON.stringify(demoState));
+        } catch {
+          message = 'Preview updated. Browser storage is unavailable in this mode.';
+        }
+        sandboxStatus.textContent = message;
+      }
+
+      function renderSandbox() {
+        demoName.value = demoState.name;
+        demoGm.value = demoState.gm;
+        demoParty.value = demoState.party;
+        demoLanguage.value = demoState.language;
+        document.querySelector('#preview-name').textContent = demoState.name || 'Untitled campaign';
+        document.querySelector('#preview-gm').textContent = demoState.gm || 'Unknown';
+        document.querySelector('#preview-party').textContent = demoState.party || 'Unnamed party';
+        document.querySelector('#preview-language').textContent = `${demoState.language} chronicle`;
+        document.querySelector('#character-count').textContent = demoState.characters.length;
+        document.querySelector('#note-count').textContent = demoState.notes.length;
+        document.querySelector('#preview-characters').innerHTML = demoState.characters.length
+          ? demoState.characters
+              .map(
+                (character) =>
+                  `<div class="preview-card"><strong>${escapeDemo(character.name)}</strong><small>${escapeDemo(character.role || 'Adventurer')}</small></div>`,
+              )
+              .join('')
+          : '<p class="empty-copy">No adventurers yet.</p>';
+        document.querySelector('#preview-note').innerHTML = demoState.notes.length
+          ? `<span>${escapeDemo(demoState.notes.at(-1))}</span><small>Just now</small>`
+          : '<span class="empty-copy">No session notes yet.</span>';
+      }
+
+      function escapeDemo(value) {
+        const element = document.createElement('span');
+        element.textContent = value;
+        return element.innerHTML;
+      }
+
+      [
+        [demoName, 'name'],
+        [demoGm, 'gm'],
+        [demoParty, 'party'],
+        [demoLanguage, 'language'],
+      ].forEach(([control, key]) =>
+        control.addEventListener('input', () => {
+          demoState[key] = control.value;
+          persistDemo();
+          renderSandbox();
+        }),
+      );
+
+      document.querySelector('#add-character').addEventListener('click', () => {
+        const name = document.querySelector('#demo-character');
+        const role = document.querySelector('#demo-class');
+        if (!name.value.trim()) {
+          sandboxStatus.textContent = 'Give the adventurer a name first.';
+          name.focus();
+          return;
+        }
+        demoState.characters.push({ name: name.value.trim(), role: role.value.trim() });
+        name.value = '';
+        role.value = '';
+        persistDemo('Adventurer added to the local demo roster.');
+        renderSandbox();
+      });
+
+      document.querySelector('#add-note').addEventListener('click', () => {
+        const note = document.querySelector('#demo-note');
+        if (!note.value.trim()) {
+          sandboxStatus.textContent = 'Write a short session beat first.';
+          note.focus();
+          return;
+        }
+        demoState.notes.push(note.value.trim());
+        note.value = '';
+        persistDemo('Session beat saved in the browser demo.');
+        renderSandbox();
+      });
+
+      document.querySelector('#reset-demo').addEventListener('click', () => {
+        demoState = structuredClone(demoDefaults);
+        try {
+          localStorage.removeItem('questkeeper-demo');
+        } catch {
+          // The in-memory demo can still be reset when storage is unavailable.
+        }
+        sandboxStatus.textContent = 'Demo restored to its original state.';
+        renderSandbox();
+      });
+
+      renderSandbox();
     </script>
   </body>
 </html>

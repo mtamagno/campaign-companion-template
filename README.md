@@ -45,8 +45,10 @@ installer.
 ## See the Companion in action
 
 The published Companion is the party-facing archive: choose a chronicle, revisit
-the campaign and open a character without digging through chat history. Click
-any screenshot to enter the live sample.
+the campaign and open a character without digging through chat history. The
+original **Lantern Road** demo now includes two adventurers, two sessions, two
+locations, NPC connections and a level-history example. Click any screenshot to
+enter the live sample.
 
 <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/">
   <img src="docs/images/companion-campaigns.jpg" alt="QuestKeeper campaign selector showing The Lantern Road sample campaign" width="100%">
@@ -110,7 +112,9 @@ defeating the same modal every session is not a heroic quest.
 ## The Campaign Manager
 
 The manager is your local GM screen. It writes portable campaign files behind
-the scenes while you work through a visual interface.
+the scenes while you work through a visual interface. Its online demo includes
+both the guided visual tour and a hands-on browser sandbox: rename the sample
+campaign, add adventurers and record session beats without installing anything.
 
 <p align="center">
   <a href="https://mtamagno.github.io/questkeeper-rpg-campaign-manager/manager-demo/"><strong>🗺️ Open the interactive Campaign Manager demo →</strong></a>

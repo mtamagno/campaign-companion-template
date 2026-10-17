@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Sable Finch</title><desc id="desc">Original geometric portrait of a travelling cartographer.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#263046"/><stop offset="1" stop-color="#786140"/></linearGradient></defs>
+  <rect width="800" height="1000" fill="url(#bg)"/><circle cx="400" cy="330" r="160" fill="#9b7058"/><path d="M215 340Q230 90 405 105Q595 112 602 365Q540 238 400 220Q300 282 215 340Z" fill="#ddd0bd"/><path d="M170 1000Q190 555 400 520Q620 555 650 1000Z" fill="#3b3947"/><path d="M205 650l195 120 195-120" fill="none" stroke="#bc9b58" stroke-width="22"/><rect x="318" y="660" width="164" height="215" rx="12" fill="#6c5135" stroke="#c9af72" stroke-width="12"/><path d="M342 715q58-38 116 0v105q-58-38-116 0Z" fill="#d8c79c"/><circle cx="400" cy="410" r="10" fill="#5c3940"/></svg>

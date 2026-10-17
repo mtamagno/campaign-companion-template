@@ -1,0 +1,143 @@
+{
+  "id": "mira-thorn",
+  "name": "Mira Thorn",
+  "sex": { "en": "Woman", "it": "Donna" },
+  "heightCm": 174,
+  "playerName": "Demo Player",
+  "avatar": { "url": "images/characters/mira-profile.svg", "alt": "Profile of Mira Thorn" },
+  "gallery": [],
+  "profileImageUrl": "images/characters/mira-profile.svg",
+  "portraitImageUrl": "images/characters/mira-portrait.svg",
+  "publicProfile": {
+    "backstory": {
+      "en": "Mira carried messages between isolated valley towns, racing storms and washed-out roads. She joined Aria after delivering a letter written in ink that had not dried in a century.",
+      "it": "Mira trasportava messaggi tra i villaggi isolati della valle, sfidando tempeste e strade franate. Si è unita ad Aria dopo aver consegnato una lettera scritta con inchiostro che non si asciugava da un secolo."
+    },
+    "traits": {
+      "en": "Restless, candid and fiercely attentive when others speak.",
+      "it": "Irrequieta, schietta e intensamente attenta quando gli altri parlano."
+    },
+    "ideals": {
+      "en": "A promise must arrive, even when the road does not.",
+      "it": "Una promessa deve arrivare, anche quando la strada non esiste più."
+    },
+    "bonds": {
+      "en": "She keeps every undelivered letter in a weatherproof red case.",
+      "it": "Conserva ogni lettera mai consegnata in una custodia rossa impermeabile."
+    },
+    "flaws": {
+      "en": "She mistakes motion for progress and silence for danger.",
+      "it": "Scambia il movimento per progresso e il silenzio per pericolo."
+    },
+    "knownHistory": {
+      "en": "Most innkeepers along the old north road know her by the sound of her silver whistle.",
+      "it": "Quasi tutti i locandieri della vecchia strada del nord la riconoscono dal suono del suo fischietto d'argento."
+    },
+    "hobbies": {
+      "en": "Folding paper birds, collecting local weather sayings and racing anyone willing to lose.",
+      "it": "Piegare uccelli di carta, raccogliere proverbi sul tempo e sfidare in corsa chiunque sia disposto a perdere."
+    }
+  },
+  "privateProfile": {
+    "secretBackstory": {
+      "en": "One letter in the red case is addressed to Mira in her own handwriting.",
+      "it": "Una lettera nella custodia rossa è indirizzata a Mira con la sua stessa calligrafia."
+    },
+    "hiddenMotivations": {
+      "en": "Find where the impossible letter entered the courier route.",
+      "it": "Scoprire dove la lettera impossibile è entrata nella rotta dei corrieri."
+    },
+    "secrets": [
+      {
+        "en": "She has read the first line and is afraid to read the rest.",
+        "it": "Ha letto la prima riga e teme di leggere il resto."
+      }
+    ],
+    "dmNotes": {
+      "en": "The letter can foreshadow a location chosen later by the table.",
+      "it": "La lettera può anticipare un luogo scelto in seguito dal tavolo."
+    }
+  },
+  "sheetHistory": [
+    {
+      "title": { "en": "Before the Glass Beacon", "it": "Prima del Faro di Vetro" },
+      "recordedAt": "2026-01-01",
+      "sheet": {
+        "level": 1,
+        "classType": "Storm Courier",
+        "race": "Human",
+        "background": "Road Messenger",
+        "alignment": "Bold-hearted",
+        "experiencePoints": 0,
+        "hitPoints": 11,
+        "maxHitPoints": 11,
+        "armorClass": 13,
+        "speed": 30,
+        "proficiencyBonus": 2,
+        "abilityScores": {
+          "strength": 12,
+          "dexterity": 16,
+          "constitution": 14,
+          "intelligence": 11,
+          "wisdom": 13,
+          "charisma": 14
+        },
+        "savingThrows": ["Dexterity", "Charisma"],
+        "skills": ["Acrobatics", "Insight", "Survival"],
+        "languages": ["Common", "Courier Cant"],
+        "equipment": ["Weatherproof coat", "Red letter case", "Silver whistle"],
+        "features": ["Sure-footed", "Weather Eye"],
+        "currency": { "gp": 8, "sp": 9 }
+      }
+    }
+  ],
+  "sheet": {
+    "level": 2,
+    "classType": "Storm Courier",
+    "race": "Human",
+    "background": "Road Messenger",
+    "alignment": "Bold-hearted",
+    "experiencePoints": 300,
+    "hitPoints": 18,
+    "maxHitPoints": 18,
+    "armorClass": 14,
+    "speed": 30,
+    "proficiencyBonus": 2,
+    "abilityScores": {
+      "strength": 12,
+      "dexterity": 16,
+      "constitution": 14,
+      "intelligence": 11,
+      "wisdom": 13,
+      "charisma": 14
+    },
+    "savingThrows": ["Dexterity", "Charisma"],
+    "skills": ["Acrobatics", "Insight", "Survival"],
+    "languages": ["Common", "Courier Cant"],
+    "equipment": ["Weatherproof coat", "Red letter case", "Silver whistle", "Glass-beacon shard"],
+    "features": ["Sure-footed", "Weather Eye", "Tailwind Step"],
+    "currency": { "gp": 11, "sp": 4 }
+  },
+  "diary": [
+    {
+      "sessionId": "session-2",
+      "date": "2026-01-08",
+      "title": { "en": "The wrong shadow", "it": "L'ombra sbagliata" },
+      "content": {
+        "en": "Aria was right about the marks. I wish she had been wrong about where they led.",
+        "it": "Aria aveva ragione sui segni. Vorrei che si fosse sbagliata sulla loro destinazione."
+      }
+    }
+  ],
+  "sessionKnowledge": [],
+  "quotes": [
+    {
+      "sessionId": "session-2",
+      "text": {
+        "en": "Roads do not vanish. They become secrets.",
+        "it": "Le strade non svaniscono. Diventano segreti."
+      }
+    }
+  ],
+  "password": "cambiami"
+}
