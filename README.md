@@ -53,7 +53,10 @@ the installer.
 
 See where the journey is headed in the public
 **[QuestKeeper 2026–2027 roadmap](ROADMAP.md)**—written for players and Game
-Masters, without a wall of technical implementation details.
+Masters, without a wall of technical implementation details. Monthly
+checkpoints cover the **Game Night Edition**, living characters, connected
+worlds, the Session Scribe, player contributions, a visual GM studio, local
+creative AI, portable campaigns and the road to **QuestKeeper 2.0**.
 
 <p align="center">◆ ───────────── ✦ ───────────── ◆</p>
 
