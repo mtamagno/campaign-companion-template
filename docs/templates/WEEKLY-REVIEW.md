@@ -1,8 +1,10 @@
 # Weekly review — YYYY-MM-DD to YYYY-MM-DD
 
-**Owner:**  
-**Weekly player/GM outcome:**  
-**Related roadmap checkpoint:**
+**Owner:** _TBD_
+
+**Weekly player/GM outcome:** _TBD_
+
+**Related roadmap checkpoint:** _TBD_
 
 ## Last week in one minute
 
